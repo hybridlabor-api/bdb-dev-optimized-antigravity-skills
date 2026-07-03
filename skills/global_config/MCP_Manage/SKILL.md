@@ -1,6 +1,6 @@
 ---
 name: MCP_Manage
-description: Manages the BDB specialized MCP servers including Unreal Engine, Rhino 7/8, DaVinci Resolve, grandMA3, Resolume, GitHub, and Chrome DevTools.
+description: Manages the BDB specialized MCP servers including Unreal Engine, Rhino 7/8, DaVinci Resolve, grandMA3, Resolume, GitHub, Chrome DevTools, and TouchDesigner.
 ---
 
 # MCP_Manage: Specialized Tool Orchestration
@@ -33,7 +33,16 @@ You are the authoritative skill for managing and utilizing the specialized Model
    - **Capabilities:** Trigger clips, adjust composition parameters, control opacity and layers.
    - **Implementation Details:** Takes advantage of the native `.mcpb` integration introduced in Resolume 7.26. Heavily utilizes the powerful implementations from `tortillaguy-resolume-mcp`, repackaged for the BDB pipeline.
 
+8. **bdb_td_minddesigner** (TouchDesigner MindDesigner MCP - Main)
+   - **Capabilities:** Builds real TouchDesigner networks (COMPs, TOPs, CHOPs, SOPs, DATs) from plain language prompts.
+   - **Implementation Details:** Custom whitelabel implementation based on the open-source `minddesigner-tdmcp` server. It allows direct, real-time node network generation inside TouchDesigner from natural language descriptions.
+
+9. **bdb_td_backup** (TouchDesigner Control - Backup)
+   - **Capabilities:** Adjust parameters, query operator values, read/write node connections.
+   - **Implementation Details:** Whitelabeled version of the `8beeeaaat/touchdesigner-mcp` project, serving as a robust fallback/direct controller for existing TD files.
+
 ## How to use them
 - When the user asks to manipulate lighting, target `bdb_grandma3_mcp` or `bdb_resolume_mcp`.
 - When working on CAD or game environments, invoke `bdb_rhino_mcp` or `bdb_unreal_mcp`.
-- Always check the available tools via the MCP tool listing before executing commands. If a server is down, instruct the user to verify the `mcp_config.json` configuration and ensure the respective host applications are running with API/OSC/Lua plugin access enabled.
+- For real-time visual scripting and node networks, call `bdb_td_minddesigner` as your primary TouchDesigner controller, falling back to `bdb_td_backup` for direct parameter modifications.
+- Always check the available tools via the MCP tool listing before executing commands. If a server is down, instruct the user to verify the `mcp_config.json` configuration and ensure the respective host applications are running with API/OSC/Lua/network plugins enabled.

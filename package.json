@@ -1,6 +1,6 @@
 {
   "name": "@hybridlabor-api/bdb-antigravity-skills",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Optimized Antigravity skills and MCP pack for BDB DEV",
   "main": "installer.sh",
   "bin": {

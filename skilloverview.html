@@ -535,11 +535,11 @@
     <header>
         <div class="logo-area">
             <h1>BDB DEV / ANTIGRAVITY</h1>
-            <span>v1.0.0</span>
+            <span>v1.0.2</span>
         </div>
         <div class="stats-strip">
             <div class="stat-card">
-                <div class="stat-val" id="stat-count">140</div>
+                <div class="stat-val" id="stat-count">142</div>
                 <div class="stat-label">Active Skills</div>
             </div>
             <div class="stat-card">
@@ -547,7 +547,7 @@
                 <div class="stat-label">Custom Orchestrators</div>
             </div>
             <div class="stat-card">
-                <div class="stat-val">7</div>
+                <div class="stat-val">9</div>
                 <div class="stat-label">Active MCPs</div>
             </div>
         </div>
@@ -630,8 +630,8 @@
                         The master skill to manage and utilize whitelabeled Model Context Protocol servers. Connects AI directly to hardware, stage, and design software.
                     </p>
                     <ul>
-                        <li>grandMA3 Console (Python/Lua bridge API)</li>
-                        <li>Resolume Arena 7.26 (Native .mcpb REST integration)</li>
+                        <li>grandMA3 Console & Resolume (Stage & Visual control)</li>
+                        <li>TouchDesigner (MindDesigner network builder & parameter backup)</li>
                         <li>Unreal Engine 5.8 (Native Editor plugin)</li>
                         <li>Rhino 3D, DaVinci Resolve, GitHub, Chrome DevTools</li>
                     </ul>
@@ -644,9 +644,9 @@
             <h2 style="margin-bottom: 20px;">Interactive Skill Explorer</h2>
             <div class="explorer-section">
                 <div class="sidebar">
-                    <button class="category-btn active" onclick="filterCategory('all')">All Skills (140)</button>
+                    <button class="category-btn active" onclick="filterCategory('all')">All Skills (142)</button>
                     <button class="category-btn" onclick="filterCategory('custom')">BDB Custom (2)</button>
-                    <button class="category-btn" onclick="filterCategory('mcp')">Firecrawl & MCPs (14)</button>
+                    <button class="category-btn" onclick="filterCategory('mcp')">Firecrawl & MCPs (16)</button>
                     <button class="category-btn" onclick="filterCategory('frontend')">Frontend & UI/UX (11)</button>
                     <button class="category-btn" onclick="filterCategory('backend')">Backend & DB (14)</button>
                     <button class="category-btn" onclick="filterCategory('devops')">DevOps & Git (9)</button>
@@ -679,7 +679,9 @@
         // Inline skills dataset representing the 140 curated skills
         const skillsData = [
             { name: "bdbrainstorm", desc: "Forces a comprehensive multi-agent brainstorming workflow combining debate, interactive grilling, subagent tasking, and high-end visual design.", cat: "custom", source: "Global Config" },
-            { name: "MCP_Manage", desc: "Command center skill that manages and directs whitelabeled MCP servers like grandMA3 lighting, Resolume, Unreal Engine, Rhino, DaVinci, and Puppeteer.", cat: "custom", source: "Global Config" },
+            { name: "MCP_Manage", desc: "Command center skill that manages and directs whitelabeled MCP servers like grandMA3, Resolume, Unreal Engine, Rhino, DaVinci, TouchDesigner, and Puppeteer.", cat: "custom", source: "Global Config" },
+            { name: "bdb_td_minddesigner", desc: "TouchDesigner MindDesigner MCP - Builds real COMP, TOP, CHOP node networks from natural language prompts.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_td_backup", desc: "TouchDesigner Control MCP - Sets node parameters and queries TouchDesigner project states.", cat: "mcp", source: "Global Config" },
             { name: "firecrawl", desc: "Searches, scrapes, and interacts with the web via the Firecrawl CLI.", cat: "mcp", source: "Workspace Agents" },
             { name: "firecrawl-agent", desc: "AI-powered autonomous data extraction that navigates complex sites and returns structured JSON.", cat: "mcp", source: "Workspace Agents" },
             { name: "firecrawl-build", desc: "Integrate Firecrawl into product code for web scraping, crawling, searching, and interaction.", cat: "mcp", source: "Workspace Agents" },
