@@ -10,7 +10,7 @@ By unifying 140 ultra-optimized skills and integrating state-of-the-art Model Co
 
 We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **140 Optimized Antigravity Skills**. 
 
-These skills are precision-engineered for the **BDB DEV daily workflow**, ensuring our agents waste no time on redundant tasks and instead operate with maximum agency and context awareness. 
+These skills are precision-engineered for how we believe AI should be integrated into a professional daily workflow, ensuring agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
 
 ### 💻 Beyond Events: Normal Software & App Coding
 While heavily optimized for the creative tech industry, these skills are deeply rooted in core software engineering. They include specialized workflows for:
