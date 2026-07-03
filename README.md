@@ -22,7 +22,7 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 ---
 
-## 🔌 Custom Whitelabeled MCP Integrations
+## 🔌 Custom MCP Integrations
 
 The true game-changer of this repository lies in our **Custom Whitelabeled MCP (Model Context Protocol) Integrations**. These bridges allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
 
