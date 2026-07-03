@@ -15,7 +15,7 @@ These skills are precision-engineered for how we believe AI should be integrated
 ### 💻 Beyond Events: Normal Software & App Coding
 While heavily optimized for the creative tech industry, these skills are deeply rooted in core software engineering. They include specialized workflows for:
 - **Full-Stack Development**: Spinning up Next.js App Router boilerplates, building scalable Node.js microservices, and crafting interactive frontends.
-- **App Development**: Architecting databases, designing REST APIs, and building "normal" small apps—like the ones you've successfully deployed.
+- **App Development**: Architecting databases, designing REST APIs, and building standard web and mobile applications from scratch.
 - **Design & Quality Assurance**: Auditing UI/UX patterns, enforcing clean code principles, and setting up strict CI/CD pipelines.
 
 ---

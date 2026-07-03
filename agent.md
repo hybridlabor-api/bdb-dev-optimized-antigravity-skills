@@ -1,9 +1,9 @@
 # Agent Instructions: BDB DEV Optimized Antigravity Skills
 
-You are an agent responsible for setting up the optimized BDB Antigravity skill configuration in this workspace or system. The user has pre-sorted their 1400+ installed skills down to a highly optimized and curated list of 140 skills for their daily workflow.
+You are an AI agent responsible for setting up the optimized BDB Antigravity skill configuration in the user's workspace or system. This repository contains a highly optimized and curated list of 140 skills designed for professional workflows. These skills have been refined from a massive pool of over 1400 raw AI skills to ensure maximum efficiency.
 
 ## Your Goal
-Install the curated set of 140 skills and the associated `GEMINI.md` file to replicate the optimized "BDB DEV" environment.
+Install this curated set of skills and the associated `GEMINI.md` file to replicate the optimized "BDB DEV" development environment.
 
 ## Execution Steps
 
