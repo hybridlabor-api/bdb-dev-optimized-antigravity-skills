@@ -71,7 +71,14 @@ By combining the **140 Optimized Skills** with our **Custom MCPs**, we collapse 
 
 We support multiple installation methods depending on your environment. The installer will safely back up any existing skills, deploy the curated global/workspace skills, and configure your MCP settings.
 
-### Option 1: Using NPM / NPX (Recommended for Node users)
+### Option 1: Autonomous AI Agent (The Easiest Way)
+
+Simply give your AI agent the link to this repository and ask it to read the `agent.md` file. It will clone the repository, read the instructions, and autonomously run the installation process for you!
+
+Prompt example:
+> *"Please read the `agent.md` file in https://github.com/hybridlabor-api/bdb-dev-optimized-antigravity-skills and follow its instructions to install the skills in my workspace."*
+
+### Option 2: Using NPM / NPX (Recommended for Node users)
 
 You can run the installer directly without downloading the repository using `npx`:
 
@@ -86,7 +93,7 @@ npm install -g @hybridlabor-api/bdb-antigravity-skills
 bdb-skills
 ```
 
-### Option 2: Using Homebrew (macOS)
+### Option 3: Using Homebrew (macOS)
 
 If you are on a Mac and prefer Homebrew, you can install the package directly:
 
@@ -96,7 +103,7 @@ brew install bdb-skills
 bdb-skills
 ```
 
-### Option 3: Manual Shell Script
+### Option 4: Manual Shell Script
 
 Clone the repository and run the installer script:
 
