@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+    },
+    "unreal-engine": {
+      "command": "python3",
+      "args": ["-m", "bdb_unreal_mcp"]
+    },
+    "rhino3d": {
+      "command": "python3",
+      "args": ["-m", "bdb_rhino_mcp"]
+    },
+    "davinci-resolve": {
+      "command": "python3",
+      "args": ["-m", "bdb_davinci_mcp"]
+    },
+    "grandma3": {
+      "command": "node",
+      "args": ["bdb_grandma3_mcp.js"]
+    },
+    "resolume": {
+      "command": "node",
+      "args": ["bdb_resolume_mcp.js"]
+    }
+  }
+}

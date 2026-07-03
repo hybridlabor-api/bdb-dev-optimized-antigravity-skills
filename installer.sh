@@ -59,6 +59,20 @@ if [ -f "$SCRIPT_DIR/GEMINI.md" ]; then
     echo " -> Installed GEMINI.md to $HOME/.gemini/GEMINI.md"
 fi
 
+echo ""
+read -p "Do you also want to install the BDB MCP Pack (Unreal, Rhino, Resolve, Grandma3, Resolume, Github, Chrome DevTools)? (y/n): " install_mcp
+if [[ "$install_mcp" =~ ^[Yy]$ ]]; then
+    mkdir -p "$HOME/.gemini/config"
+    if [ -f "$HOME/.gemini/config/mcp_config.json" ]; then
+        cp "$HOME/.gemini/config/mcp_config.json" "$BACKUP_DIR/mcp_config_backup.json"
+        echo " -> Backed up existing mcp_config.json"
+    fi
+    cp "$SCRIPT_DIR/mcp_config.json" "$HOME/.gemini/config/mcp_config.json"
+    echo " -> Installed optimized mcp_config.json to $HOME/.gemini/config/"
+else
+    echo " -> Skipping MCP installation."
+fi
+
 echo "========================================================="
 echo " Installation complete! The environment now has the "
 echo " optimized BDB DEV skill configuration."
