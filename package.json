@@ -1,0 +1,20 @@
+{
+  "name": "bdb-antigravity-skills",
+  "version": "1.0.0",
+  "description": "Optimized Antigravity skills and MCP pack for BDB DEV",
+  "main": "installer.sh",
+  "bin": {
+    "bdb-skills": "./installer.sh"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "installer.sh",
+    "mcp_config.json",
+    "GEMINI.md",
+    "skills/"
+  ],
+  "author": "BDB DEV",
+  "license": "ISC"
+}

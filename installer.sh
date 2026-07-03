@@ -5,7 +5,26 @@ echo "========================================================="
 echo " Starting BDB Optimized Antigravity Skills Installation"
 echo "========================================================="
 
-# Define paths
+# Resolve actual script directory (handles symlinks for Homebrew)
+TARGET="${BASH_SOURCE[0]}"
+while [ -h "$TARGET" ]; do
+  DIR="$(cd -P "$(dirname "$TARGET")" && pwd)"
+  TARGET="$(readlink "$TARGET")"
+  [[ $TARGET != /* ]] && TARGET="$DIR/$TARGET"
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$TARGET")" && pwd)"
+
+# Locate the source directory for skills/configs
+if [ -d "$SCRIPT_DIR/skills" ]; then
+    SRC_DIR="$SCRIPT_DIR"
+elif [ -d "$SCRIPT_DIR/../skills" ]; then
+    SRC_DIR="$SCRIPT_DIR/.."
+else
+    echo "Error: Cannot find skills payload directory."
+    exit 1
+fi
+
+# Define target paths
 GLOBAL_CONFIG_DIR="$HOME/.gemini/config/skills"
 GLOBAL_LEGACY_DIR="$HOME/.gemini/skills"
 WORKSPACE_DIR="$PWD/.agents/skills"
@@ -31,31 +50,30 @@ fi
 
 echo ""
 echo "Installing optimized skills (140 curated skills)..."
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 mkdir -p "$GLOBAL_CONFIG_DIR"
 mkdir -p "$GLOBAL_LEGACY_DIR"
 mkdir -p "$WORKSPACE_DIR"
 
-if [ -d "$SCRIPT_DIR/skills/global_config" ]; then
-    cp -R "$SCRIPT_DIR/skills/global_config/"* "$GLOBAL_CONFIG_DIR/" 2>/dev/null || true
+if [ -d "$SRC_DIR/skills/global_config" ]; then
+    cp -R "$SRC_DIR/skills/global_config/"* "$GLOBAL_CONFIG_DIR/" 2>/dev/null || true
     echo " -> Installed global config skills."
 fi
 
-if [ -d "$SCRIPT_DIR/skills/global_legacy" ]; then
-    cp -R "$SCRIPT_DIR/skills/global_legacy/"* "$GLOBAL_LEGACY_DIR/" 2>/dev/null || true
+if [ -d "$SRC_DIR/skills/global_legacy" ]; then
+    cp -R "$SRC_DIR/skills/global_legacy/"* "$GLOBAL_LEGACY_DIR/" 2>/dev/null || true
     echo " -> Installed global legacy skills."
 fi
 
-if [ -d "$SCRIPT_DIR/skills/workspace_agents" ]; then
-    cp -R "$SCRIPT_DIR/skills/workspace_agents/"* "$WORKSPACE_DIR/" 2>/dev/null || true
+if [ -d "$SRC_DIR/skills/workspace_agents" ]; then
+    cp -R "$SRC_DIR/skills/workspace_agents/"* "$WORKSPACE_DIR/" 2>/dev/null || true
     echo " -> Installed workspace skills."
 fi
 
 echo ""
 # Copy GEMINI.md
-if [ -f "$SCRIPT_DIR/GEMINI.md" ]; then
-    cp "$SCRIPT_DIR/GEMINI.md" "$HOME/.gemini/GEMINI.md"
+if [ -f "$SRC_DIR/GEMINI.md" ]; then
+    cp "$SRC_DIR/GEMINI.md" "$HOME/.gemini/GEMINI.md"
     echo " -> Installed GEMINI.md to $HOME/.gemini/GEMINI.md"
 fi
 
@@ -67,7 +85,7 @@ if [[ "$install_mcp" =~ ^[Yy]$ ]]; then
         cp "$HOME/.gemini/config/mcp_config.json" "$BACKUP_DIR/mcp_config_backup.json"
         echo " -> Backed up existing mcp_config.json"
     fi
-    cp "$SCRIPT_DIR/mcp_config.json" "$HOME/.gemini/config/mcp_config.json"
+    cp "$SRC_DIR/mcp_config.json" "$HOME/.gemini/config/mcp_config.json"
     echo " -> Installed optimized mcp_config.json to $HOME/.gemini/config/"
 else
     echo " -> Skipping MCP installation."
