@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDB DEV - Antigravity Skill Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080710;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary: #8a2be2;
+            --primary-glow: rgba(138, 43, 226, 0.4);
+            --secondary: #00f2fe;
+            --secondary-glow: rgba(0, 242, 254, 0.3);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --glass-blur: blur(16px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* Decorative background elements */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .logo-area h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-area span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains+Mono', monospace;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .stats-strip {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 10px 20px;
+            border-radius: 12px;
+            backdrop-filter: var(--glass-blur);
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-val {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        /* Hero / Guide Section */
+        .guide-section {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .guide-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .concept-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .concept-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .concept-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .concept-box.skills h3 { color: var(--secondary); }
+        .concept-box.mcps h3 { color: var(--primary); }
+
+        /* Step list */
+        .step-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .step-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-text p {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+
+        /* Showcases */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .showcase-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.04) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1);
+        }
+
+        .showcase-card.mcp-showcase:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.15);
+        }
+
+        .badge {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--secondary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .showcase-card.mcp-showcase .badge {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--primary);
+        }
+
+        .showcase-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .showcase-card ul {
+            list-style: none;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .showcase-card li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .showcase-card li::before {
+            content: '✦';
+            color: var(--secondary);
+        }
+
+        .showcase-card.mcp-showcase li::before {
+            content: '❖';
+            color: var(--primary);
+        }
+
+        /* Explorer Section */
+        .explorer-section {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .explorer-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .category-btn {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: left;
+            font-family: inherit;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border-color: var(--secondary);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.05);
+        }
+
+        .search-area {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 16px 20px;
+            border-radius: 14px;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 20px;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .skill-item-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .skill-item-card h4 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-all;
+        }
+
+        .skill-item-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .skill-source {
+            font-size: 0.7rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 7, 16, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #11101d;
+            border: 1px solid var(--card-border);
+            width: 90%;
+            max-width: 650px;
+            border-radius: 20px;
+            padding: 35px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+        }
+
+        .modal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .modal-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin-bottom: 25px;
+        }
+
+        .modal-path {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+
+        .modal-path strong {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <header>
+        <div class="logo-area">
+            <h1>BDB DEV / ANTIGRAVITY</h1>
+            <span>v1.0.0</span>
+        </div>
+        <div class="stats-strip">
+            <div class="stat-card">
+                <div class="stat-val" id="stat-count">140</div>
+                <div class="stat-label">Active Skills</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val">2</div>
+                <div class="stat-label">Custom Orchestrators</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val">7</div>
+                <div class="stat-label">Active MCPs</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Guide -->
+        <section class="guide-section">
+            <div class="glass-card">
+                <h2>How to use Antigravity Skills</h2>
+                <p>
+                    Skills act as the custom instructions, guidelines, and toolsets that direct Antigravity agents. They act as "recipes of expertise" injected dynamically into the LLM context, showing the AI exactly how to solve problems, write code, or execute platform-specific actions without needing complex prompts.
+                </p>
+                <div class="concept-split">
+                    <div class="concept-box skills">
+                        <h3>Antigravity Skills</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 0;">
+                            Pure system instructions, guidelines, scripts, and context files located in <code>.gemini/config/skills/</code>. They teach the agent *how* to think.
+                        </p>
+                    </div>
+                    <div class="concept-box mcps">
+                        <h3>Model Context Protocol</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 0;">
+                            External plugins configured in <code>mcp_config.json</code>. They give the agent *hands* to control live apps (like grandMA3, Resolume, Chrome).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card" style="border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;">
+                <h2>Activation Steps</h2>
+                <ul class="step-list">
+                    <li class="step-item">
+                        <div class="step-num">1</div>
+                        <div class="step-text">
+                            <h4>Implicit Matching</h4>
+                            <p>Mention a task related to a skill. Antigravity matches the YAML metadata and loads the skill automatically.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num">2</div>
+                        <div class="step-text">
+                            <h4>Slash Commands</h4>
+                            <p>Trigger complex agent configurations instantly using commands like <code>/agentflow</code> or <code>/grill-me</code>.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num">3</div>
+                        <div class="step-text">
+                            <h4>Force Usage</h4>
+                            <p>Explicitly instruct the agent: "Use the [skill-name] skill to write this code..." to guarantee compliance.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Showcases -->
+        <section>
+            <h2 style="margin-bottom: 20px;">BDB Customized Extensions</h2>
+            <div class="showcase-grid">
+                <div class="showcase-card" onclick="openSkillModal('bdbrainstorm')">
+                    <div class="badge">Orchestrator</div>
+                    <h3>BDBrainstorm</h3>
+                    <p>
+                        Forces Antigravity into a comprehensive brainstorming and design workflow. Ensures you don't build alone and guarantees top-tier aesthetics.
+                    </p>
+                    <ul>
+                        <li>Forces debate via multi-agent debate sessions</li>
+                        <li>Initiates an interactive /grill-me interview</li>
+                        <li>Delegates execution to specialized subagents</li>
+                        <li>Enforces strict ui-ux-pro-max design guidelines</li>
+                    </ul>
+                </div>
+
+                <div class="showcase-card mcp-showcase" onclick="openSkillModal('MCP_Manage')">
+                    <div class="badge">Tool Command</div>
+                    <h3>MCP_Manage</h3>
+                    <p>
+                        The master skill to manage and utilize whitelabeled Model Context Protocol servers. Connects AI directly to hardware, stage, and design software.
+                    </p>
+                    <ul>
+                        <li>grandMA3 Console (Python/Lua bridge API)</li>
+                        <li>Resolume Arena 7.26 (Native .mcpb REST integration)</li>
+                        <li>Unreal Engine 5.8 (Native Editor plugin)</li>
+                        <li>Rhino 3D, DaVinci Resolve, GitHub, Chrome DevTools</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skill Explorer -->
+        <section>
+            <h2 style="margin-bottom: 20px;">Interactive Skill Explorer</h2>
+            <div class="explorer-section">
+                <div class="sidebar">
+                    <button class="category-btn active" onclick="filterCategory('all')">All Skills (140)</button>
+                    <button class="category-btn" onclick="filterCategory('custom')">BDB Custom (2)</button>
+                    <button class="category-btn" onclick="filterCategory('mcp')">Firecrawl & MCPs (14)</button>
+                    <button class="category-btn" onclick="filterCategory('frontend')">Frontend & UI/UX (11)</button>
+                    <button class="category-btn" onclick="filterCategory('backend')">Backend & DB (14)</button>
+                    <button class="category-btn" onclick="filterCategory('devops')">DevOps & Git (9)</button>
+                    <button class="category-btn" onclick="filterCategory('language')">Python & Go (6)</button>
+                    <button class="category-btn" onclick="filterCategory('general')">Standard Utilities (84)</button>
+                </div>
+                <div class="content-pane">
+                    <div class="search-area">
+                        <input type="text" class="search-input" placeholder="Search skills by name or keyword..." oninput="searchSkills(this.value)">
+                    </div>
+                    <div class="skills-grid" id="skills-container">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="skill-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(event)">&times;</button>
+            <h3 class="modal-title" id="modal-title">Skill Title</h3>
+            <p class="modal-desc" id="modal-desc">Detailed explanation of what the skill does and why it was created.</p>
+            <div class="modal-path" id="modal-path">Path: <code>~/.gemini/config/skills/name/</code></div>
+        </div>
+    </div>
+
+    <script>
+        // Inline skills dataset representing the 140 curated skills
+        const skillsData = [
+            { name: "bdbrainstorm", desc: "Forces a comprehensive multi-agent brainstorming workflow combining debate, interactive grilling, subagent tasking, and high-end visual design.", cat: "custom", source: "Global Config" },
+            { name: "MCP_Manage", desc: "Command center skill that manages and directs whitelabeled MCP servers like grandMA3 lighting, Resolume, Unreal Engine, Rhino, DaVinci, and Puppeteer.", cat: "custom", source: "Global Config" },
+            { name: "firecrawl", desc: "Searches, scrapes, and interacts with the web via the Firecrawl CLI.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-agent", desc: "AI-powered autonomous data extraction that navigates complex sites and returns structured JSON.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-build", desc: "Integrate Firecrawl into product code for web scraping, crawling, searching, and interaction.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-build-interact", desc: "Integrate Firecrawl /interact into product code for dynamic pages and browser actions after scraping.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-build-onboarding", desc: "Get Firecrawl credentials and SDK setup into a project.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-build-scrape", desc: "Integrate Firecrawl /scrape into product code for single-page extraction.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-build-search", desc: "Integrate Firecrawl /search into product code and agent workflows.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-crawl", desc: "Bulk extract content from an entire website or site section.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-download", desc: "Download an entire website as local files — markdown, screenshots, or multiple formats per page.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-interact", desc: "Control and interact with a live browser session on any scraped page — click buttons, fill forms, navigate flows.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-map", desc: "Discover and list all URLs on a website, with optional search filtering.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-scrape", desc: "Extract clean markdown from any URL, including JavaScript-rendered SPAs.", cat: "mcp", source: "Workspace Agents" },
+            { name: "firecrawl-search", desc: "Web search with full page content extraction.", cat: "mcp", source: "Workspace Agents" },
+            { name: "ui-ux-pro-max", desc: "Comprehensive design guide for web and mobile applications with strict design taste, calibrated color, typography, spacing discipline, and animations.", cat: "frontend", source: "Global Config" },
+            { name: "design-taste-frontend", desc: "Rules for high-agency frontend interfaces, color theory, spacing, typography and motion rules.", cat: "frontend", source: "Global Config" },
+            { name: "frontend-design", desc: "Enforces senior design practices for layouts and visuals. Focuses on premium aesthetics over generic layout generation.", cat: "frontend", source: "Global Config" },
+            { name: "frontend-dev-guidelines", desc: "Architectural and performance standards for frontend development, state management, and data mutations.", cat: "frontend", source: "Global Config" },
+            { name: "react-best-practices", desc: "Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel.", cat: "frontend", source: "Global Config" },
+            { name: "react-component-performance", desc: "Diagnoses slow React components and suggests targeted performance fixes.", cat: "frontend", source: "Global Config" },
+            { name: "react-patterns", desc: "Modern React patterns and principles. Hooks, composition, performance, TypeScript best practices.", cat: "frontend", source: "Global Config" },
+            { name: "shadcn", desc: "Manages shadcn/ui components and projects, providing context, documentation, and usage patterns.", cat: "frontend", source: "Global Config" },
+            { name: "threejs-skills", desc: "Create 3D scenes, interactive experiences, and WebGL visualizations using Three.js.", cat: "frontend", source: "Global Config" },
+            { name: "spline-3d-integration", desc: "Integration instructions for adding interactive 3D scenes from Spline.design to web projects.", cat: "frontend", source: "Global Config" },
+            { name: "zustand-store-ts", desc: "Create Zustand stores following established patterns with proper TypeScript types and middleware.", cat: "frontend", source: "Global Config" },
+            { name: "database-design", desc: "Database design principles and decision-making. Schema design, indexing strategy, ORM selection.", cat: "backend", source: "Global Config" },
+            { name: "drizzle-orm-expert", desc: "Expert in Drizzle ORM for TypeScript — schema design, relational queries, migrations, and serverless integration.", cat: "backend", source: "Global Config" },
+            { name: "prisma-expert", desc: "Advanced usage of Prisma ORM, migrations, schema optimization, and relations across DB backends.", cat: "backend", source: "Global Config" },
+            { name: "neon-postgres", desc: "Neon serverless Postgres configuration, connection pooling, and branch management.", cat: "backend", source: "Global Config" },
+            { name: "using-neon", desc: "Guides for using Neon serverless Postgres features in applications.", cat: "backend", source: "Global Config" },
+            { name: "postgresql", desc: "Design a PostgreSQL-specific schema. Covers performance patterns, constraints, indexing, and advanced features.", cat: "backend", source: "Global Config" },
+            { name: "postgres-best-practices", desc: "Performance optimization, indexing, and schema design tips.", cat: "backend", source: "Global Config" },
+            { name: "vector-database-engineer", desc: "Guides for implementing vector databases (Pinecone, pgvector, Weaviate) and embedding models.", cat: "backend", source: "Global Config" },
+            { name: "rag-implementation", desc: "RAG implementation workflow covering embedding selection, chunking, and retrieval optimization.", cat: "backend", source: "Global Config" },
+            { name: "rag-engineer", desc: "Expert RAG engineering architectures.", cat: "backend", source: "Global Config" },
+            { name: "api-design-principles", desc: "REST and GraphQL API design principles for scalability and maintainability.", cat: "backend", source: "Global Config" },
+            { name: "api-patterns", desc: "Deciding between REST, GraphQL, and tRPC. Pagination, versioning, and format rules.", cat: "backend", source: "Global Config" },
+            { name: "microservices-patterns", desc: "Design patterns for distributed microservice systems, communication, and fault tolerance.", cat: "backend", source: "Global Config" },
+            { name: "cloudflare-workers-expert", desc: "Edge computing architectures using Cloudflare Workers, D1, KV, and Durable Objects.", cat: "backend", source: "Global Config" },
+            { name: "docker-expert", desc: "Containerization strategies, multi-stage builds, production configuration, and security hardening.", cat: "devops", source: "Global Config" },
+            { name: "github-actions-templates", desc: "Production-ready CI/CD workflow patterns for building, testing, and deploying.", cat: "devops", source: "Global Config" },
+            { name: "github-workflow-automation", desc: "Patterns for automating GitHub workflows with AI assistance, inspired by Gemini CLI.", cat: "devops", source: "Global Config" },
+            { name: "git-advanced-workflows", desc: "Advanced git techniques, recovery, rebasing, and clean branch management.", cat: "devops", source: "Global Config" },
+            { name: "git-pr-review", desc: "Generate clean PR descriptions automatically from git histories.", cat: "devops", source: "Global Config" },
+            { name: "github", desc: "Leverage gh CLI for managing issues, PRs, actions, and repository metadata.", cat: "devops", source: "Global Config" },
+            { name: "monorepo-management", desc: "Build and scale efficient monorepos sharing code and tooling across packages.", cat: "devops", source: "Global Config" },
+            { name: "turborepo-caching", desc: "Configure Turborepo local and remote caching for optimized build pipelines.", cat: "devops", source: "Global Config" },
+            { name: "vercel-deployment", desc: "Expert deployments for Next.js and frontend stacks to Vercel.", cat: "devops", source: "Global Config" },
+            { name: "python-pro", desc: "Expert Python 3.12+ patterns, async programming, uv, ruff, pydantic, and FastAPI.", cat: "language", source: "Global Config" },
+            { name: "python-patterns", desc: "Python coding style, framework selection, and architectural decisions.", cat: "language", source: "Global Config" },
+            { name: "python-performance-optimization", desc: "Profiling and optimizing bottlenecks using cProfile and memory diagnostics.", cat: "language", source: "Global Config" },
+            { name: "golang-pro", desc: "Modern Go patterns, interface design, testing, and performance optimization.", cat: "language", source: "Global Config" },
+            { name: "go-concurrency-patterns", desc: "Goroutines, channels, sync primitives, context, and worker pool patterns.", cat: "language", source: "Global Config" },
+            { name: "go-playwright", desc: "Browser automation using Playwright in Go environments.", cat: "language", source: "Global Config" },
+            // Populate remaining 84 general utility skills as compact references to reach 140
+            { name: "agent-manager-skill", desc: "Manage multiple local CLI agents via tmux sessions with cron-friendly scheduling.", cat: "general", source: "Global Config" },
+            { name: "agent-memory-mcp", desc: "Persistent, searchable knowledge management for AI agents.", cat: "general", source: "Global Config" },
+            { name: "agent-orchestrator", desc: "Meta-skill coordinating skills, capability scanning, and multi-skill workflows.", cat: "general", source: "Global Config" },
+            { name: "agent-tool-builder", desc: "Guidelines for creating resilient, token-efficient MCP tool schemas.", cat: "general", source: "Global Config" },
+            { name: "ai-agent-development", desc: "Multi-agent orchestration workflow with CrewAI and LangGraph.", cat: "general", source: "Global Config" },
+            { name: "ai-product", desc: "Designing production-ready AI products with guardrails and evaluation metrics.", cat: "general", source: "Global Config" },
+            { name: "antigravity-guide", desc: "Comprehensive guide for Antigravity CLI, IDE, and configurations.", cat: "general", source: "Global Legacy" },
+            { name: "apify-lead-generation", desc: "Scrape leads from multiple social/business directories using Apify Actors.", cat: "general", source: "Global Config" },
+            { name: "apify-ultimate-scraper", desc: "AI-driven extraction using 55+ Apify Actors automatically selected.", cat: "general", source: "Global Config" },
+            { name: "architect-review", desc: "Software architect reviews for scalability, clean code, and design patterns.", cat: "general", source: "Global Config" },
+            { name: "bash-linux", desc: "Terminal patterns, pipe operations, scripting conventions, and safety flags.", cat: "general", source: "Global Config" },
+            { name: "brainstorming", desc: "Disciplined brainstorming rules to validate and refine vague requirements.", cat: "general", source: "Global Legacy" },
+            { name: "browser-automation", desc: "Web automation patterns using Playwright, anti-detection, and wait selectors.", cat: "general", source: "Global Config" },
+            { name: "clean-code", desc: " Robert C. Martin's Clean Code principles implemented for modern coding standard.", cat: "general", source: "Global Config" },
+            { name: "concise-planning", desc: "Generate brief, atomic implementation plans and checklist artifacts.", cat: "general", source: "Global Config" },
+            { name: "copywriting", desc: "High-conversion marketing copy and email frameworks without fabrication.", cat: "general", source: "Global Config" },
+            { name: "crewai", desc: "Role-based multi-agent development with the CrewAI framework.", cat: "general", source: "Global Config" },
+            { name: "debugger", desc: "Specialist debugging guidelines for fixing failures and runtime crashes.", cat: "general", source: "Global Config" },
+            { name: "deep-research", desc: "Recursive web searching and reporting agent strategy.", cat: "general", source: "Global Config" },
+            { name: "design-spells", desc: "UI design micro-interactions, gradients, animations, and typography spells.", cat: "general", source: "Global Config" },
+            { name: "documentation", desc: "Generate clean API documentations, architecture summaries, and docstrings.", cat: "general", source: "Global Config" },
+            { name: "executing-plans", desc: "Executing step-by-step plans with user checkpoints.", cat: "general", source: "Global Config" },
+            { name: "gemini-api-dev", desc: "Gemini API capabilities, prompt tokens, and multi-modal handling.", cat: "general", source: "Global Config" },
+            { name: "gemini-api-integration", desc: "Integrating Gemini SDK, function calling, structured JSON output, and streaming.", cat: "general", source: "Global Config" },
+            { name: "geo-fundamentals", desc: "Optimization for AI search engines (Generative Engine Optimization).", cat: "general", source: "Global Config" },
+            { name: "google-sheets-automation", desc: "Interact with Google Sheets API directly with OAuth credentials.", cat: "general", source: "Global Config" },
+            { name: "landing-page-generator", desc: "Generates high-converting Next.js layouts using conversion copy frameworks.", cat: "general", source: "Global Config" },
+            { name: "linear-claude-skill", desc: "Manage Linear project spaces, issues, tasks, and teams.", cat: "general", source: "Global Config" },
+            { name: "llm-app-patterns", desc: "Production patterns for LLM chains, evaluation, and prompt templates.", cat: "general", source: "Global Config" },
+            { name: "llm-application-dev-ai-assistant", desc: "Building intelligent chatbots and conversational interfaces.", cat: "general", source: "Global Config" },
+            { name: "llm-prompt-optimizer", desc: "Optimizing prompts to save tokens and improve deterministic results.", cat: "general", source: "Global Config" },
+            { name: "llm-structured-output", desc: "Enforce JSON output schemas on Anthropic, OpenAI, and Gemini models.", cat: "general", source: "Global Config" },
+            { name: "local-llm-expert", desc: "Running local models with Ollama, llama.cpp, and memory optimizations.", cat: "general", source: "Global Config" },
+            { name: "modern-javascript-patterns", desc: "ES6+, functional JS, memory optimization, and modern runtime architecture.", cat: "general", source: "Global Config" },
+            { name: "n8n-code-javascript", desc: "Write Javascript scripts inside n8n Code nodes using $json context.", cat: "general", source: "Global Config" },
+            { name: "n8n-code-python", desc: "Write Python scripts inside n8n Code nodes.", cat: "general", source: "Global Config" },
+            { name: "n8n-expression-syntax", desc: "Validate and troubleshoot double-curly syntax expressions in n8n.", cat: "general", source: "Global Config" },
+            { name: "n8n-mcp-tools-expert", desc: "Accessing and configuring n8n-mcp server tools.", cat: "general", source: "Global Config" },
+            { name: "n8n-workflow-patterns", desc: "Workflow architectures, loops, errors, and conditional branches in n8n.", cat: "general", source: "Global Config" },
+            { name: "nextjs-app-router-patterns", desc: "App router structure, Server Components, and Server Actions guidelines.", cat: "general", source: "Global Config" },
+            { name: "nextjs-best-practices", desc: "Vercel-aligned Next.js performance and routing guidelines.", cat: "general", source: "Global Config" },
+            { name: "notion-automation", desc: "Interact with Notion databases, blocks, and pages via MCP.", cat: "general", source: "Global Config" },
+            { name: "obsidian-markdown", desc: "Writing and manipulating Obsidian-flavored MD (wikilinks, properties).", cat: "general", source: "Global Config" },
+            { name: "openapi-spec-generation", desc: "Maintaining API OpenAPI/Swagger specifications.", cat: "general", source: "Global Config" },
+            { name: "os-scripting", desc: "Writing and debugging Shell scripts, PowerShell, and AppleScript.", cat: "general", source: "Global Config" },
+            { name: "planning-with-files", desc: "Working with persistent markdown plan files in the workspace (Manus-style).", cat: "general", source: "Global Config" },
+            { name: "playwright-skill", desc: "Configuration for browser testing with Playwright.", cat: "general", source: "Global Config" },
+            { name: "posix-shell-pro", desc: "Writing ultra-portable POSIX sh scripts without bashisms.", cat: "general", source: "Global Config" },
+            { name: "product-manager-toolkit", desc: "PRDs, roadmap templates, product discovery, and scoping methods.", cat: "general", source: "Global Config" },
+            { name: "programmatic-seo", desc: "Generating landing pages dynamically based on templates and CSV data.", cat: "general", source: "Global Config" },
+            { name: "prompt-engineer", desc: "Frameworks for prompt design (Chain of Thought, RODES, clear).", cat: "general", source: "Global Config" },
+            { name: "prompt-engineering-patterns", desc: "Advanced prompting tactics for complex multi-turn reasoning.", cat: "general", source: "Global Config" },
+            { name: "readme", desc: "Absurdly thorough project README generation template.", cat: "general", source: "Global Config" },
+            { name: "remotion", desc: "Generate programmatic video renderings in code using Remotion.js.", cat: "general", source: "Global Config" },
+            { name: "schema-markup", desc: "Implement schema.org JSON-LD microdata for rich search results.", cat: "general", source: "Global Config" },
+            { name: "senior-frontend", desc: "General frontend guidelines, bundle sizes, accessibility, and quality.", cat: "general", source: "Global Config" },
+            { name: "senior-fullstack", desc: "Architectural guidelines for full-stack applications.", cat: "general", source: "Global Config" },
+            { name: "seo", desc: "Technical, content, and search ranking audit workflows.", cat: "general", source: "Global Config" },
+            { name: "seo-audit", desc: "Diagnosing SEO crawlability and indexation issues.", cat: "general", source: "Global Config" },
+            { name: "seo-technical", desc: "Robots.txt, structured data, Core Web Vitals, and mobile SEO audits.", cat: "general", source: "Global Config" },
+            { name: "simplify-code", desc: "Safe simplification and refactoring of complex code structures.", cat: "general", source: "Global Config" },
+            { name: "slack-automation", desc: "Slack workspace interactions via API (messaging, search).", cat: "general", source: "Global Config" },
+            { name: "software-architecture", desc: "General architectural patterns, decoupling, and domain logic.", cat: "general", source: "Global Config" },
+            { name: "subagent-driven-development", desc: "Running complex coding implementations using independent subagents.", cat: "general", source: "Global Config" },
+            { name: "systematic-debugging", desc: "Root-cause tracing, test pressure, and logic debugging rules.", cat: "general", source: "Global Config" },
+            { name: "tailwind-patterns", desc: "Tailwind CSS v4 guidelines, CSS configuration, and design tokens.", cat: "general", source: "Global Config" },
+            { name: "tanstack-query-expert", desc: "Server-state management using TanStack Query.", cat: "general", source: "Global Config" },
+            { name: "tdd-workflow", desc: "Red-Green-Refactor test cycle principles.", cat: "general", source: "Global Config" },
+            { name: "test-driven-development", desc: "Write failing tests first before writing implementation code.", cat: "general", source: "Global Config" },
+            { name: "tmux", desc: "Manage windows and sessions in tmux for persistent background tasks.", cat: "general", source: "Global Config" },
+            { name: "typescript-pro", desc: "Strict type safety, generics, decorator patterns, and compiler rules.", cat: "general", source: "Global Config" },
+            { name: "ui-component", desc: "Generate modular visual components matching visual system tokens.", cat: "general", source: "Global Config" },
+            { name: "ui-page", desc: "Layout guidelines for scaffolding mobile-first view pages.", cat: "general", source: "Global Config" },
+            { name: "ui-pattern", desc: "Design systems reusable layouts (grids, list cards, shell components).", cat: "general", source: "Global Config" },
+            { name: "ui-review", desc: "Reviewing code for UI design system adherence and visual alignment.", cat: "general", source: "Global Config" },
+            { name: "ui-tokens", desc: "Configuring typography, color variables, spacing, and dark mode tokens.", cat: "general", source: "Global Config" },
+            { name: "ux-audit", desc: "Nielsen's usability heuristic reviews for mobile and desktop screens.", cat: "general", source: "Global Config" },
+            { name: "ux-feedback", desc: "Add loading indicators, empty states, and feedback messages to pages.", cat: "general", source: "Global Config" },
+            { name: "ux-flow", desc: "Designing visual layouts and progression paths (hub-and-spoke).", cat: "general", source: "Global Config" },
+            { name: "ux-persuasion-engineer", desc: "Engineering UX features for user engagement and retention.", cat: "general", source: "Global Config" },
+            { name: "vercel-ai-sdk-expert", desc: "Streaming UIs and function calling using Vercel AI SDK.", cat: "general", source: "Global Config" },
+            { name: "wcag-audit-patterns", desc: "Accessibility audits complying with WCAG 2.2 guidelines.", cat: "general", source: "Global Config" },
+            { name: "web-artifacts-builder", desc: "Building powerful HTML previews, bundled widgets, and interactive apps.", cat: "general", source: "Global Config" },
+            { name: "web-performance-optimization", desc: "Core Web Vitals, speed indexing, caching, and compression optimization.", cat: "general", source: "Global Config" },
+            { name: "web-scraper", desc: "Multi-strategy web scraping, tables, CSV export, and pagination handling.", cat: "general", source: "Global Config" },
+            { name: "webapp-testing", desc: "Write Playwright tests in Python to test web applications.", cat: "general", source: "Global Config" },
+            { name: "writing-plans", desc: "Requirements scoping and building structured plan.md checksheets.", cat: "general", source: "Global Config" }
+        ];
+
+        // Populate skills on load
+        const container = document.getElementById('skills-container');
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        function renderSkills() {
+            container.innerHTML = '';
+            
+            const filtered = skillsData.filter(skill => {
+                const matchesCat = activeCategory === 'all' || 
+                                  (activeCategory === 'custom' && skill.cat === 'custom') ||
+                                  (activeCategory === 'mcp' && skill.cat === 'mcp') ||
+                                  (activeCategory === 'frontend' && skill.cat === 'frontend') ||
+                                  (activeCategory === 'backend' && skill.cat === 'backend') ||
+                                  (activeCategory === 'devops' && skill.cat === 'devops') ||
+                                  (activeCategory === 'language' && skill.cat === 'language') ||
+                                  (activeCategory === 'general' && skill.cat === 'general');
+                
+                const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                     skill.desc.toLowerCase().includes(searchQuery.toLowerCase());
+                
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        No skills found matching your search.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(skill => {
+                const card = document.createElement('div');
+                card.className = 'skill-item-card';
+                card.onclick = () => openSkillModal(skill.name);
+                
+                let sourceBadgeColor = 'var(--secondary)';
+                if (skill.cat === 'custom') sourceBadgeColor = 'var(--secondary)';
+                else if (skill.cat === 'mcp') sourceBadgeColor = 'var(--primary)';
+
+                card.innerHTML = `
+                    <div class="skill-source" style="color: ${sourceBadgeColor}">${skill.source}</div>
+                    <h4>${skill.name}</h4>
+                    <p>${skill.desc}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat) {
+            activeCategory = cat;
+            
+            // Update active state in buttons
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(`'${cat}'`)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            renderSkills();
+        }
+
+        function searchSkills(query) {
+            searchQuery = query;
+            renderSkills();
+        }
+
+        // Modal Functions
+        function openSkillModal(name) {
+            const skill = skillsData.find(s => s.name === name);
+            if (!skill) return;
+
+            document.getElementById('modal-title').innerText = skill.name;
+            document.getElementById('modal-desc').innerText = skill.desc;
+            
+            let pathPrefix = '~/.gemini/config/skills/';
+            if (skill.source === 'Workspace Agents') {
+                pathPrefix = '.agents/skills/';
+            } else if (skill.source === 'Global Legacy') {
+                pathPrefix = '~/.gemini/skills/';
+            }
+            
+            document.getElementById('modal-path').innerHTML = `Location: <strong>${pathPrefix}${skill.name}/</strong>`;
+
+            document.getElementById('skill-modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            document.getElementById('skill-modal').classList.remove('active');
+        }
+
+        // Initialize
+        renderSkills();
+    </script>
+</body>
+</html>

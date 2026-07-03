@@ -8,25 +8,25 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
     },
-    "unreal-engine": {
-      "command": "python3",
-      "args": ["-m", "bdb_unreal_mcp"]
+    "bdb_unreal_mcp": {
+      "command": "npx",
+      "args": ["-y", "bdb-unrealengine5-mcp"]
     },
-    "rhino3d": {
+    "bdb_rhino_mcp": {
       "command": "python3",
       "args": ["-m", "bdb_rhino_mcp"]
     },
-    "davinci-resolve": {
+    "bdb_davinci_mcp": {
       "command": "python3",
       "args": ["-m", "bdb_davinci_mcp"]
     },
-    "grandma3": {
-      "command": "node",
-      "args": ["bdb_grandma3_mcp.js"]
+    "bdb_grandma3_mcp": {
+      "command": "python3",
+      "args": ["-m", "bdb_ma3_mcp"]
     },
-    "resolume": {
-      "command": "node",
-      "args": ["bdb_resolume_mcp.js"]
+    "bdb_resolume_mcp": {
+      "command": "npx",
+      "args": ["-y", "bdb-resolume-mcp"]
     }
   }
 }

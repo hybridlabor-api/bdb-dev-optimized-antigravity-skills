@@ -11,33 +11,29 @@ You are the authoritative skill for managing and utilizing the specialized Model
 
 1. **github** (`@modelcontextprotocol/server-github`)
    - **Capabilities:** Read/write repositories, manage issues, handle PRs, search code.
-   - **Usage:** Ideal for automating git workflows and reviewing code inside GitHub.
 
 2. **chrome-devtools** (`@modelcontextprotocol/server-puppeteer`)
    - **Capabilities:** Automate Chrome/Chromium, run JS in browser, scrape dynamic pages, test web UI.
-   - **Usage:** Used when browser emulation or live web-interaction is required.
 
-3. **unreal-engine** (Python-based Unreal Remote Execution)
+3. **bdb_unreal_mcp** (Unreal Engine 5.8+ Native / Whitelabeled)
    - **Capabilities:** Execute Python or Blueprints in the UE editor, manipulate actors, manage levels, trigger renders.
-   - **Usage:** For automating game dev tasks and generating 3D assets in Unreal.
+   - **Implementation Details:** Based on the official Unreal MCP Plugin integrated natively in UE 5.8 (Edit -> Plugins -> Unreal MCP), incorporating community features from `gimmeDG/UnrealEngine5-mcp` under the BDB whitelabel.
 
-4. **rhino3d** (Rhino 7/8 Compute/Python API)
+4. **bdb_rhino_mcp** (Rhino 7/8 Compute/Python API)
    - **Capabilities:** Generate CAD geometry, process NURBS, bake layers.
-   - **Usage:** Automating architectural and parametric design workflows.
 
-5. **davinci-resolve** (Resolve Scripting API)
+5. **bdb_davinci_mcp** (Resolve Scripting API)
    - **Capabilities:** Automate timelines, apply color grades, render jobs, import media.
-   - **Usage:** Use for video post-production pipelines.
 
-6. **grandma3** (grandMA3 Web API / OSC)
+6. **bdb_grandma3_mcp** (Whitelabeled Pahegi/ma3-mcp)
    - **Capabilities:** Control lighting fixtures, trigger macros, edit sequences, update palettes.
-   - **Usage:** For programming show lighting and synchronizing stage elements.
+   - **Implementation Details:** A customized, whitelabeled version of the open-source `pahegi-ma3-mcp-server`. It connects a Python environment with a Lua plugin directly running inside the grandMA3 software to control the console natively per AI.
 
-7. **resolume** (Resolume Arena REST API)
+7. **bdb_resolume_mcp** (Resolume 7.26+ Native / Whitelabeled)
    - **Capabilities:** Trigger clips, adjust composition parameters, control opacity and layers.
-   - **Usage:** For live VJ setups and syncing visuals with audio/lighting.
+   - **Implementation Details:** Takes advantage of the native `.mcpb` integration introduced in Resolume 7.26. Heavily utilizes the powerful implementations from `tortillaguy-resolume-mcp`, repackaged for the BDB pipeline.
 
 ## How to use them
-- When the user asks to manipulate lighting, target the `grandma3` or `resolume` MCP tools.
-- When working on CAD or game environments, invoke `rhino3d` or `unreal-engine`.
-- Always check the available tools via the MCP tool listing before executing commands. If a server is down, instruct the user to verify the `mcp_config.json` configuration and ensure the respective host applications are running with API/OSC access enabled.
+- When the user asks to manipulate lighting, target `bdb_grandma3_mcp` or `bdb_resolume_mcp`.
+- When working on CAD or game environments, invoke `bdb_rhino_mcp` or `bdb_unreal_mcp`.
+- Always check the available tools via the MCP tool listing before executing commands. If a server is down, instruct the user to verify the `mcp_config.json` configuration and ensure the respective host applications are running with API/OSC/Lua plugin access enabled.
