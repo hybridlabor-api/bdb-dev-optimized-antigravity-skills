@@ -30,30 +30,30 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 ## 🔌 Custom MCP Integrations
 
-The true game-changer of this repository lies in our **Custom Whitelabeled MCP (Model Context Protocol) Integrations**. These bridges allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
+The true game-changer of this repository lies in our **Custom MCP (Model Context Protocol) Integrations**. These bridges allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
 
-### 🎛️ BDB TouchDesigner
+### 🎛️ TouchDesigner
 Integrated directly into TouchDesigner via the **Pantani/tdmcp** (MindDesigner) bridge and utilizing **8beeeaaat/touchdesigner-mcp** as a fallback, agents can construct real TouchDesigner node networks via natural language. They can manipulate operators, patch CHOPs/TOPs, and automate complex node routing inside the visual programming environment.
 
-### 🎮 BDB Unreal Engine
-Built on a hybrid foundation of **Unreal Engine 5.8 native APIs** and the **gimmeDG** toolset, the BDB Unreal MCP allows agents to interact directly with UE5 projects. From scene generation and asset configuration to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
+### 🎮 Unreal Engine
+Built on a hybrid foundation of **Unreal Engine 5.8 native APIs** and the **gimmeDG** toolset, this MCP allows agents to interact directly with UE5 projects. From scene generation and asset configuration to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
 
-### 📐 BDB Rhino 3D & Grasshopper
+### 📐 Rhino 3D & Grasshopper
 Using **mcneel/RhinoMCP** and **TheKingHippopotamus/GOLEM-3DMCP-Rhino-**, agents can now create and manipulate 3D geometry in Rhino 8. This extends to controlling Grasshopper definitions, tweaking parameters, and generating complex parametric 3D models directly from prompt instructions.
 
-### 🎬 BDB DaVinci Resolve
+### 🎬 DaVinci Resolve
 Powered by **samuelgursky/davinci-resolve-mcp** and **hoyt-harness/davinci-mcp-professional**, this integration gives agents the ability to manipulate timelines, organize media pools, and execute complex Fusion composites via external scripting in Resolve Studio.
 
-### 🧊 BDB Blender
+### 🧊 Blender
 Using community servers like **ahujasid/blender-mcp**, agents can script Blender Python (`bpy`) operations directly. This covers everything from mesh generation and material manipulation to camera automation and rendering pipelines.
 
-### ✨ BDB After Effects
+### ✨ After Effects
 Integrated via servers like **Dakkshin/after-effects-mcp** and **sunqirui1987/ae-mcp**, agents can generate compositions, manipulate layers, set keyframes, and write custom ExtendScript expressions, automating motion graphics pipelines.
 
-### 🏗️ BDB Vectorworks
+### 🏗️ Vectorworks
 Through early implementations like **vectorworks-mcp** connecting via the C++ SDK plugin, agents are paving the way for automated drafting, BIM parameter adjustments, and CAD automation within Vectorworks 2025.
 
-### 💡 BDB grandMA3 & Resolume
+### 💡 grandMA3 & Resolume
 - **grandMA3**: Powered by a specialized **Python/Lua bridge** (Pahegi/ma3-mcp), agents can read showfiles, generate macros, and patch fixtures.
 - **Resolume**: Driven by the **tortillaguy** project and the **Resolume 7.26 native integration**, agents can structure compositions, map OSC/MIDI routes, and sequence layers.
 
@@ -63,24 +63,55 @@ Through early implementations like **vectorworks-mcp** connecting via the C++ SD
 
 This setup completely redefines the **Antigravity workflow**. 
 
-By combining the **140 Optimized Skills** with our **Whitelabeled MCPs**, we collapse the gap between software development and production software. An agent can now write a Python microservice, generate the web-based UI for it, write a Lua script for grandMA3 to receive the data, generate a TouchDesigner visual component, and configure an Unreal Engine scene to visualize the output—**all in a single, autonomous flow.**
+By combining the **140 Optimized Skills** with our **Custom MCPs**, we collapse the gap between software development and production software. An agent can now write a Python microservice, generate the web-based UI for it, write a Lua script for grandMA3 to receive the data, generate a TouchDesigner visual component, and configure an Unreal Engine scene to visualize the output—**all in a single, autonomous flow.**
 
 ---
 
 ## 🛠️ Installation
 
-You can have an Antigravity agent install these skills by pointing it to the `agent.md` file, or you can do it manually by running the provided installer script:
+We support multiple installation methods depending on your environment. The installer will safely back up any existing skills, deploy the curated global/workspace skills, and configure your MCP settings.
+
+### Option 1: Using NPM / NPX (Recommended for Node users)
+
+You can run the installer directly without downloading the repository using `npx`:
 
 ```bash
+npx @hybridlabor-api/bdb-antigravity-skills
+```
+
+Or install it globally via npm:
+
+```bash
+npm install -g @hybridlabor-api/bdb-antigravity-skills
+bdb-skills
+```
+
+### Option 2: Using Homebrew (macOS)
+
+If you are on a Mac and prefer Homebrew, you can install the package directly:
+
+```bash
+brew tap hybridlabor-api/bdb-skills
+brew install bdb-skills
+bdb-skills
+```
+
+### Option 3: Manual Shell Script
+
+Clone the repository and run the installer script:
+
+```bash
+git clone https://github.com/hybridlabor-api/bdb-dev-optimized-antigravity-skills.git
+cd bdb-dev-optimized-antigravity-skills
 chmod +x installer.sh
 ./installer.sh
 ```
 
-**The script will automatically:**
+**The installer script will automatically:**
 1. Back up your existing global and workspace skills safely.
 2. Deploy the new curated global config skills.
 3. Install the workspace-specific agent skills.
 4. Copy the customized `GEMINI.md` to `~/.gemini/GEMINI.md`.
 
 ---
-*Elevate your agency. Dominate the show.*
+*Elevate your agency. Dominate the workflow.*
