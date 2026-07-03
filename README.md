@@ -1,8 +1,8 @@
 # 🚀 BDB DEV - Optimized Antigravity Skills
 
-Welcome to the **BDB DEV Antigravity Skills & MCP Configuration** repository. This project serves as the backbone of our creative development ecosystem, supercharging AI agents with highly specialized capabilities tailored specifically for the event and creative technology industry.
+Welcome to the **BDB DEV Antigravity Skills & MCP Configuration** repository. This project serves as the backbone of our creative and full-stack development ecosystem, supercharging AI agents with highly specialized capabilities tailored for the event and creative technology industry, as well as general-purpose software engineering.
 
-By unifying 140 ultra-optimized skills and integrating state-of-the-art Model Context Protocol (MCP) servers, this repository transforms the Antigravity workflow into an unstoppable force for show control, 3D development, and interactive experiences.
+By unifying 140 ultra-optimized skills and integrating state-of-the-art Model Context Protocol (MCP) servers, this repository transforms the Antigravity workflow into an unstoppable force for show control, 3D development, interactive experiences, and robust full-stack applications.
 
 ---
 
@@ -10,7 +10,13 @@ By unifying 140 ultra-optimized skills and integrating state-of-the-art Model Co
 
 We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **140 Optimized Antigravity Skills**. 
 
-These skills are precision-engineered for the **BDB DEV daily workflow**, ensuring our agents waste no time on redundant tasks and instead operate with maximum agency and context awareness. Whether it's spinning up a Next.js App Router boilerplate, structuring complex databases, or auditing UI/UX patterns, these 140 skills cover every aspect of modern full-stack and creative technology development.
+These skills are precision-engineered for the **BDB DEV daily workflow**, ensuring our agents waste no time on redundant tasks and instead operate with maximum agency and context awareness. 
+
+### 💻 Beyond Events: Normal Software & App Coding
+While heavily optimized for the creative tech industry, these skills are deeply rooted in core software engineering. They include specialized workflows for:
+- **Full-Stack Development**: Spinning up Next.js App Router boilerplates, building scalable Node.js microservices, and crafting interactive frontends.
+- **App Development**: Architecting databases, designing REST APIs, and building "normal" small apps—like the ones you've successfully deployed.
+- **Design & Quality Assurance**: Auditing UI/UX patterns, enforcing clean code principles, and setting up strict CI/CD pipelines.
 
 ---
 
@@ -26,22 +32,38 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 The true game-changer of this repository lies in our **Custom Whitelabeled MCP (Model Context Protocol) Integrations**. These bridges allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
 
-### 🎮 BDB Unreal
+### 🎛️ BDB TouchDesigner
+Integrated directly into TouchDesigner via the **Pantani/tdmcp** (MindDesigner) bridge and utilizing **8beeeaaat/touchdesigner-mcp** as a fallback, agents can construct real TouchDesigner node networks via natural language. They can manipulate operators, patch CHOPs/TOPs, and automate complex node routing inside the visual programming environment.
+
+### 🎮 BDB Unreal Engine
 Built on a hybrid foundation of **Unreal Engine 5.8 native APIs** and the **gimmeDG** toolset, the BDB Unreal MCP allows agents to interact directly with UE5 projects. From scene generation and asset configuration to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
 
-### 🎬 BDB Resolume
-Driven by the **tortillaguy** project and the **Resolume 7.26 native integration**, our agents can now control live visual environments. They can programmatically structure compositions, map OSC/MIDI routes, and sequence layers, bringing AI-driven generative logic to live VJ setups and permanent installations.
+### 📐 BDB Rhino 3D & Grasshopper
+Using **mcneel/RhinoMCP** and **TheKingHippopotamus/GOLEM-3DMCP-Rhino-**, agents can now create and manipulate 3D geometry in Rhino 8. This extends to controlling Grasshopper definitions, tweaking parameters, and generating complex parametric 3D models directly from prompt instructions.
 
-### 💡 BDB grandMA3
-Lighting programming takes a massive leap forward with the BDB grandMA3 MCP. Powered by a specialized **Python/Lua bridge** built on top of the **Pahegi/ma3-mcp** foundation, agents can now read showfiles, generate macros, parse patch structures, and script complex lighting sequences without leaving their terminal environment.
+### 🎬 BDB DaVinci Resolve
+Powered by **samuelgursky/davinci-resolve-mcp** and **hoyt-harness/davinci-mcp-professional**, this integration gives agents the ability to manipulate timelines, organize media pools, and execute complex Fusion composites via external scripting in Resolve Studio.
+
+### 🧊 BDB Blender
+Using community servers like **ahujasid/blender-mcp**, agents can script Blender Python (`bpy`) operations directly. This covers everything from mesh generation and material manipulation to camera automation and rendering pipelines.
+
+### ✨ BDB After Effects
+Integrated via servers like **Dakkshin/after-effects-mcp** and **sunqirui1987/ae-mcp**, agents can generate compositions, manipulate layers, set keyframes, and write custom ExtendScript expressions, automating motion graphics pipelines.
+
+### 🏗️ BDB Vectorworks
+Through early implementations like **vectorworks-mcp** connecting via the C++ SDK plugin, agents are paving the way for automated drafting, BIM parameter adjustments, and CAD automation within Vectorworks 2025.
+
+### 💡 BDB grandMA3 & Resolume
+- **grandMA3**: Powered by a specialized **Python/Lua bridge** (Pahegi/ma3-mcp), agents can read showfiles, generate macros, and patch fixtures.
+- **Resolume**: Driven by the **tortillaguy** project and the **Resolume 7.26 native integration**, agents can structure compositions, map OSC/MIDI routes, and sequence layers.
 
 ---
 
 ## ⚡ Workflow Transformation
 
-This setup completely redefines the **Antigravity workflow for event and creative development**.
+This setup completely redefines the **Antigravity workflow**. 
 
-By combining the **140 Optimized Skills** with our **Whitelabeled MCPs**, we collapse the gap between software development and show production. An agent can now write a Python microservice, generate the web-based UI for it, write a Lua script for grandMA3 to receive the data, and configure the Unreal Engine scene to visualize the output—**all in a single, autonomous flow.**
+By combining the **140 Optimized Skills** with our **Whitelabeled MCPs**, we collapse the gap between software development and production software. An agent can now write a Python microservice, generate the web-based UI for it, write a Lua script for grandMA3 to receive the data, generate a TouchDesigner visual component, and configure an Unreal Engine scene to visualize the output—**all in a single, autonomous flow.**
 
 ---
 
