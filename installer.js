@@ -100,12 +100,22 @@ rl.question("Do you also want to install the MCP Pack (Unreal, Rhino, Resolve, G
         const configDir = path.join(geminiDir, 'config');
         fs.mkdirSync(configDir, { recursive: true });
         
+        // Copy MCP servers code
+        const mcpCodeTarget = path.join(configDir, 'mcps');
+        copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
+        console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
+        
         const mcpTarget = path.join(configDir, 'mcp_config.json');
         if (fs.existsSync(mcpTarget)) {
             fs.copyFileSync(mcpTarget, path.join(backupDir, 'mcp_config_backup.json'));
             console.log(" -> Backed up existing mcp_config.json");
         }
-        fs.copyFileSync(path.join(srcDir, 'mcp_config.json'), mcpTarget);
+        
+        // Read and replace template
+        let mcpConfigStr = fs.readFileSync(path.join(srcDir, 'mcp_config.json'), 'utf8');
+        mcpConfigStr = mcpConfigStr.replace(/__MCPS_DIR__/g, mcpCodeTarget);
+        mcpConfigStr = mcpConfigStr.replace(/\{\{HOME\}\}/g, homeDir);
+        fs.writeFileSync(mcpTarget, mcpConfigStr);
         console.log(` -> Installed optimized mcp_config.json to ${configDir}`);
     } else {
         console.log(" -> Skipping MCP installation.");

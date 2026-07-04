@@ -9,24 +9,28 @@
       "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
     },
     "bdb_unreal_mcp": {
-      "command": "npx",
-      "args": ["-y", "bdb-unrealengine5-mcp"]
+      "command": "uv",
+      "args": ["run", "__MCPS_DIR__/unreal_mcp.py"]
     },
     "bdb_rhino_mcp": {
-      "command": "python3",
-      "args": ["-m", "bdb_rhino_mcp"]
+      "command": "uv",
+      "args": ["run", "__MCPS_DIR__/rhino_mcp.py"]
     },
     "bdb_davinci_mcp": {
-      "command": "python3",
-      "args": ["-m", "bdb_davinci_mcp"]
+      "command": "uv",
+      "args": ["run", "__MCPS_DIR__/davinci_mcp.py"]
     },
     "bdb_grandma3_mcp": {
-      "command": "python3",
-      "args": ["-m", "bdb_ma3_mcp"]
+      "command": "uv",
+      "args": ["run", "__MCPS_DIR__/grandma3_mcp.py"]
     },
     "bdb_resolume_mcp": {
-      "command": "npx",
-      "args": ["-y", "bdb-resolume-mcp"]
+      "command": "uv",
+      "args": ["run", "__MCPS_DIR__/resolume_mcp.py"]
+    },
+    "adobe_mcp": {
+      "command": "uv",
+      "args": ["run", "__MCPS_DIR__/adobe_mcp.py"]
     },
     "bdb_td_minddesigner": {
       "command": "npx",

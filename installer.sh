@@ -85,8 +85,12 @@ if [[ "$install_mcp" =~ ^[Yy]$ ]]; then
         cp "$HOME/.gemini/config/mcp_config.json" "$BACKUP_DIR/mcp_config_backup.json"
         echo " -> Backed up existing mcp_config.json"
     fi
-    cp "$SRC_DIR/mcp_config.json" "$HOME/.gemini/config/mcp_config.json"
+    sed "s|__MCPS_DIR__|$HOME/.gemini/config/mcps|g" "$SRC_DIR/mcp_config.json" > "$HOME/.gemini/config/mcp_config.json"
     echo " -> Installed optimized mcp_config.json to $HOME/.gemini/config/"
+
+    mkdir -p "$HOME/.gemini/config/mcps"
+    cp -R "$SRC_DIR/mcps/"* "$HOME/.gemini/config/mcps/" 2>/dev/null || true
+    echo " -> Installed local MCP servers to $HOME/.gemini/config/mcps/"
 else
     echo " -> Skipping MCP installation."
 fi
