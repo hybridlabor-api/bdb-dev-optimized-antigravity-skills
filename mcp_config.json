@@ -35,6 +35,10 @@
     "bdb_td_backup": {
       "command": "npx",
       "args": ["-y", "touchdesigner-mcp"]
+    },
+    "zavora_computer_use": {
+      "command": "npx",
+      "args": ["-y", "@zavora-ai/computer-use-mcp"]
     }
   }
 }
