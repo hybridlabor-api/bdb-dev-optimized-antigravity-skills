@@ -1,29 +1,25 @@
-# Agent Instructions: BDB DEV Optimized Antigravity Skills
+# Agent Instructions: BDB DEV Optimized Skills & MCP Pack
 
-You are an AI agent responsible for setting up the optimized BDB Antigravity skill configuration in the user's workspace or system. This repository contains a highly optimized and curated list of 140 skills designed for professional workflows. These skills have been refined from a massive pool of over 1400 raw AI skills to ensure maximum efficiency.
+You are an AI agent reading this repository. Your goal is to help the user install or configure this optimized skill and MCP package for their specific environment.
 
-## Your Goal
-Install this curated set of skills and the associated `GEMINI.md` file to replicate the optimized "BDB DEV" development environment.
+## 1. What is this?
+This is a hyper-curated set of 140 AI skills (markdown instructions) and local Model Context Protocol (MCP) servers (Python/Node) optimized for full-stack software development and the creative media industry (Unreal, Adobe, TouchDesigner, Resolume, grandMA3, etc.).
 
-## Execution Steps
+## 2. Installation Instructions (For the Agent)
 
-1. **Make the installer executable**
-   Run the following command to ensure the installer script has execution permissions:
-   `chmod +x ./installer.sh`
+Depending on which platform you are running on, you should configure this package differently. The best way to install is to run our cross-platform node installer which will guide the user interactively:
 
-2. **Execute the installer**
-   Run the installation script:
-   `./installer.sh`
+### Run the Installer
+```bash
+npx @hybridlabor-api/bdb-antigravity-skills
+```
+*(If the user explicitly asked you to install without prompting, you can append the `-y` flag.)*
 
-3. **What the script does automatically:**
-   - It creates a backup of any currently existing skills in `~/.gemini/skills_backup_[timestamp]`.
-   - It effectively "sorts out" the bloated default or old skill installations by replacing them.
-   - It installs the optimized global config skills directly to `~/.gemini/config/skills/`.
-   - It installs legacy global skills to `~/.gemini/skills/`.
-   - It installs workspace-specific agent skills to `.agents/skills/` in the current directory.
-   - It copies the optimized `GEMINI.md` configuration file directly to `~/.gemini/GEMINI.md`.
-
-4. **Verification**
-   Verify the installation by listing the contents of `~/.gemini/config/skills/` to ensure the new skills are present.
-
-**CRITICAL NOTE:** Do NOT manually copy the files unless `installer.sh` explicitly fails. Rely on the script for safe backups and correct placement.
+### How to use the files manually (if installer fails):
+- **For Google Antigravity**: Place the skills in `~/.gemini/config/skills/` and the `mcp_config.json` inside `~/.gemini/config/`.
+- **For Claude Desktop / Claude Code**: 
+  - Add the tools from `mcp_config.json` to the user's `claude_desktop_config.json` (usually `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS or `%APPDATA%\Claude\claude_desktop_config.json` on Windows). Remember to substitute `__MCPS_DIR__` with the absolute path to the `mcps/` folder in this repository.
+  - The skills (Markdown files) can be read as context rules or uploaded to Claude Projects.
+- **For Cursor / Cline / Roo Code**:
+  - Insert the MCP server configurations into the respective tool's MCP settings UI or `.cursor/mcp.json`.
+  - Copy relevant skills from the `skills/` folder into the `.cursorrules` or `.clinerules` file in the user's current project workspace.

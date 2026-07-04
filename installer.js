@@ -46,17 +46,23 @@ const isAutoYes = process.argv.includes('-y') || process.argv.includes('--yes');
 
 function promptMode(callback) {
     if (isAutoYes) {
-        return callback('1'); // Default to merge in auto mode
+        return callback({ mode: '1', platform: '1' });
     }
-    console.log("\nInstallation Mode:");
-    console.log(" (1) Merge: Keep your existing skills/MCPs and add/update BDB tools.");
-    console.log(" (2) Replace: Backup and wipe your existing skills/MCPs, installing ONLY BDB tools.");
-    rl.question("\nSelect mode [1/2]: ", (answer) => {
-        if (answer.trim() === '2') {
-            callback('2');
-        } else {
-            callback('1');
-        }
+    console.log("\nTarget AI Platform:");
+    console.log(" (1) Google Antigravity (Default)");
+    console.log(" (2) Claude Desktop / Claude Code");
+    console.log(" (3) Cursor / Generic IDE");
+    
+    rl.question("\nSelect platform [1/2/3]: ", (platformAns) => {
+        const platform = platformAns.trim() || '1';
+        
+        console.log("\nInstallation Mode:");
+        console.log(" (1) Merge: Keep your existing skills/MCPs and add/update BDB tools.");
+        console.log(" (2) Replace: Backup and wipe your existing skills/MCPs, installing ONLY BDB tools.");
+        rl.question("\nSelect mode [1/2]: ", (modeAns) => {
+            const mode = modeAns.trim() === '2' ? '2' : '1';
+            callback({ mode, platform });
+        });
     });
 }
 
@@ -93,71 +99,102 @@ function copyDirRecursiveSync(source, target) {
     });
 }
 
-promptMode((mode) => {
+promptMode(({ mode, platform }) => {
     fs.mkdirSync(backupDir, { recursive: true });
+    
+    let targetSkillDir = globalConfigDir;
+    let targetLegacyDir = globalLegacyDir;
+    let targetWorkspaceDir = workspaceDir;
+    let targetMcpDir = path.join(geminiDir, 'config');
+    let mcpConfigPath = path.join(targetMcpDir, 'mcp_config.json');
+    
+    if (platform === '2') {
+        // Claude Desktop
+        console.log("\n[Platform: Claude Desktop] Adapting installation paths...");
+        targetSkillDir = path.join(homeDir, '.bdb-skills');
+        targetLegacyDir = path.join(homeDir, '.bdb-skills', 'legacy');
+        
+        let claudeAppSupport = process.platform === 'win32' 
+            ? path.join(process.env.APPDATA || homeDir, 'Claude')
+            : path.join(homeDir, 'Library', 'Application Support', 'Claude');
+            
+        targetMcpDir = claudeAppSupport;
+        mcpConfigPath = path.join(claudeAppSupport, 'claude_desktop_config.json');
+    } else if (platform === '3') {
+        // Cursor / Generic
+        console.log("\n[Platform: Cursor / Generic IDE] Adapting installation paths...");
+        targetSkillDir = path.join(currentDir, '.cursor', 'bdb-skills');
+        targetLegacyDir = path.join(currentDir, '.cursor', 'bdb-skills', 'legacy');
+        targetWorkspaceDir = path.join(currentDir, '.cursor', 'workspace_skills');
+        targetMcpDir = path.join(currentDir, '.cursor');
+        mcpConfigPath = path.join(targetMcpDir, 'mcp.json');
+    }
 
     if (mode === '2') {
         console.log(`\n[Replace Mode] Creating backup of current skills in ${backupDir}...`);
-        moveIfExists(globalConfigDir, path.join(backupDir, 'config_skills_backup'), 'global config skills');
-        moveIfExists(globalLegacyDir, path.join(backupDir, 'legacy_skills_backup'), 'global legacy skills');
-        moveIfExists(workspaceDir, path.join(backupDir, 'workspace_skills_backup'), 'workspace skills');
+        moveIfExists(targetSkillDir, path.join(backupDir, 'config_skills_backup'), 'global config skills');
+        moveIfExists(targetLegacyDir, path.join(backupDir, 'legacy_skills_backup'), 'global legacy skills');
+        moveIfExists(targetWorkspaceDir, path.join(backupDir, 'workspace_skills_backup'), 'workspace skills');
     } else {
         console.log(`\n[Merge Mode] Installing over existing directories. Existing skills will not be deleted.`);
     }
 
     console.log("\nInstalling optimized skills (140 curated skills)...");
-    fs.mkdirSync(globalConfigDir, { recursive: true });
-    fs.mkdirSync(globalLegacyDir, { recursive: true });
-    fs.mkdirSync(workspaceDir, { recursive: true });
+    fs.mkdirSync(targetSkillDir, { recursive: true });
+    fs.mkdirSync(targetLegacyDir, { recursive: true });
+    fs.mkdirSync(targetWorkspaceDir, { recursive: true });
 
-    copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_config'), globalConfigDir);
+    copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_config'), targetSkillDir);
     console.log(" -> Installed global config skills.");
 
-    copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_legacy'), globalLegacyDir);
+    copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_legacy'), targetLegacyDir);
     console.log(" -> Installed global legacy skills.");
 
-    copyDirRecursiveSync(path.join(srcDir, 'skills', 'workspace_agents'), workspaceDir);
+    copyDirRecursiveSync(path.join(srcDir, 'skills', 'workspace_agents'), targetWorkspaceDir);
     console.log(" -> Installed workspace skills.");
 
     const geminiMdSrc = path.join(srcDir, 'GEMINI.md');
-    if (fs.existsSync(geminiMdSrc)) {
+    if (platform === '1' && fs.existsSync(geminiMdSrc)) {
         fs.copyFileSync(geminiMdSrc, path.join(geminiDir, 'GEMINI.md'));
         console.log(` -> Installed GEMINI.md to ${path.join(geminiDir, 'GEMINI.md')}`);
     }
 
     promptMCP((answer) => {
         if (answer.toLowerCase().startsWith('y')) {
-            const configDir = path.join(geminiDir, 'config');
-            fs.mkdirSync(configDir, { recursive: true });
+            fs.mkdirSync(targetMcpDir, { recursive: true });
             
-            const mcpCodeTarget = path.join(configDir, 'mcps');
+            const mcpCodeTarget = path.join(targetMcpDir, 'mcps');
             copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
             console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
             
-            const mcpTarget = path.join(configDir, 'mcp_config.json');
-            if (fs.existsSync(mcpTarget)) {
-                fs.copyFileSync(mcpTarget, path.join(backupDir, 'mcp_config_backup.json'));
-                console.log(" -> Backed up existing mcp_config.json");
+            if (fs.existsSync(mcpConfigPath)) {
+                fs.copyFileSync(mcpConfigPath, path.join(backupDir, 'mcp_config_backup.json'));
+                console.log(` -> Backed up existing ${path.basename(mcpConfigPath)}`);
             }
             
             let mcpConfigStr = fs.readFileSync(path.join(srcDir, 'mcp_config.json'), 'utf8');
             mcpConfigStr = mcpConfigStr.replace(/__MCPS_DIR__/g, mcpCodeTarget);
             mcpConfigStr = mcpConfigStr.replace(/\{\{HOME\}\}/g, homeDir);
             
-            if (mode === '1' && fs.existsSync(mcpTarget)) {
+            if (mode === '1' && fs.existsSync(mcpConfigPath)) {
                 try {
-                    const oldConfig = JSON.parse(fs.readFileSync(mcpTarget, 'utf8'));
+                    const oldConfig = JSON.parse(fs.readFileSync(mcpConfigPath, 'utf8'));
                     const newConfig = JSON.parse(mcpConfigStr);
                     oldConfig.mcpServers = Object.assign({}, oldConfig.mcpServers || {}, newConfig.mcpServers || {});
-                    fs.writeFileSync(mcpTarget, JSON.stringify(oldConfig, null, 2));
-                    console.log(` -> Merged BDB MCPs into existing mcp_config.json`);
+                    fs.writeFileSync(mcpConfigPath, JSON.stringify(oldConfig, null, 2));
+                    console.log(` -> Merged BDB MCPs into existing ${path.basename(mcpConfigPath)}`);
                 } catch (e) {
-                    console.log(` -> Failed to parse existing JSON, overwriting mcp_config.json`);
-                    fs.writeFileSync(mcpTarget, mcpConfigStr);
+                    console.log(` -> Failed to parse existing JSON, overwriting ${path.basename(mcpConfigPath)}`);
+                    fs.writeFileSync(mcpConfigPath, mcpConfigStr);
                 }
             } else {
-                fs.writeFileSync(mcpTarget, mcpConfigStr);
-                console.log(` -> Installed optimized mcp_config.json to ${configDir}`);
+                if (platform === '2' && !fs.existsSync(mcpConfigPath)) {
+                     const wrapper = { mcpServers: JSON.parse(mcpConfigStr).mcpServers };
+                     fs.writeFileSync(mcpConfigPath, JSON.stringify(wrapper, null, 2));
+                } else {
+                     fs.writeFileSync(mcpConfigPath, mcpConfigStr);
+                }
+                console.log(` -> Installed optimized MCP config to ${targetMcpDir}`);
             }
         } else {
             console.log(" -> Skipping MCP installation.");
