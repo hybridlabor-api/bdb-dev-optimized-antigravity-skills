@@ -32,6 +32,10 @@
       "command": "uv",
       "args": ["run", "__MCPS_DIR__/adobe_mcp.py"]
     },
+    "adobe_uxp_mcp": {
+      "command": "node",
+      "args": ["__MCPS_DIR__/adobe_uxp_mcp/index.js"]
+    },
     "bdb_td_minddesigner": {
       "command": "npx",
       "args": ["-y", "minddesigner-tdmcp"]
