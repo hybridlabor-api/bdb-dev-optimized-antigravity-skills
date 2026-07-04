@@ -82,13 +82,27 @@ Prompt example:
 
 ### Option 2: Using NPM / NPX (Recommended for Node users)
 
-You can run the installer directly without downloading the repository using `npx`:
+### 🤖 Autonomous Installation
+Alternatively, you can simply ask your AI agent to install it for you:
+> "Please install the @hybridlabor-api/bdb-antigravity-skills package via npx."
 
+---
+
+## 🔄 Updates & Auto-Update
+Because this package is hosted on NPM, updating to the latest version is as simple as re-running the installation command:
 ```bash
-npx @hybridlabor-api/bdb-antigravity-skills
+npx -y @hybridlabor-api/bdb-antigravity-skills@latest
 ```
 
-Or install it globally via npm:
+**Autonomous Agent Updates (`bdb-updater`):**
+We include a dedicated `bdb-updater` skill in the package. Your AI agent natively understands how to update itself! 
+Simply ask your agent: *"Check for BDB skill updates"* and it will query NPM and install the latest version automatically.
+
+**Set it and forget it:**
+You can tell your agent to automatically check for updates every week using the `/schedule` slash command:
+> `/schedule CronExpression="0 10 * * 1" Prompt="Check if there is a new version of @hybridlabor-api/bdb-antigravity-skills and update it using the bdb-updater skill"`
+
+You can install it globally via npm:
 
 ```bash
 npm install -g @hybridlabor-api/bdb-antigravity-skills
