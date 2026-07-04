@@ -30,7 +30,7 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 ## 🔌 Custom MCP Integrations
 
-The true game-changer of this repository lies in our **Custom MCP (Model Context Protocol) Integrations**. These bridges allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
+The true game-changer of this repository lies in our **Custom MCP (Model Context Protocol) Integrations**. Rather than leaving you to piece together disconnected third-party packages, this repository bundles **custom, local MCP wrappers** (in the `mcps/` directory). These bridges are installed automatically and allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
 
 ### 🎛️ TouchDesigner
 Integrated directly into TouchDesigner via the **Pantani/tdmcp** (MindDesigner) bridge and utilizing **8beeeaaat/touchdesigner-mcp** as a fallback, agents can construct real TouchDesigner node networks via natural language. They can manipulate operators, patch CHOPs/TOPs, and automate complex node routing inside the visual programming environment.
@@ -39,7 +39,7 @@ Integrated directly into TouchDesigner via the **Pantani/tdmcp** (MindDesigner) 
 Built on a hybrid foundation of **Unreal Engine 5.8 native APIs** and the **gimmeDG** toolset, this MCP allows agents to interact directly with UE5 projects. From scene generation and asset configuration to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
 
 ### 📐 Rhino 3D & Grasshopper
-Using **mcneel/RhinoMCP** and **TheKingHippopotamus/GOLEM-3DMCP-Rhino-**, agents can now create and manipulate 3D geometry in Rhino 8. This extends to controlling Grasshopper definitions, tweaking parameters, and generating complex parametric 3D models directly from prompt instructions.
+Using a custom local `rhino_mcp.py` inspired by **mcneel/RhinoMCP** and **GOLEM-3DMCP-Rhino**, agents can connect directly to Rhino Compute (via REST on port 6500) to manipulate 3D geometry in Rhino 8. This extends to controlling Grasshopper definitions, tweaking parameters, and generating complex parametric 3D models directly from prompt instructions.
 
 ### 🎬 DaVinci Resolve
 Powered by **samuelgursky/davinci-resolve-mcp** and **hoyt-harness/davinci-mcp-professional**, this integration gives agents the ability to manipulate timelines, organize media pools, and execute complex Fusion composites via external scripting in Resolve Studio.
@@ -47,8 +47,8 @@ Powered by **samuelgursky/davinci-resolve-mcp** and **hoyt-harness/davinci-mcp-p
 ### 🧊 Blender
 Using community servers like **ahujasid/blender-mcp**, agents can script Blender Python (`bpy`) operations directly. This covers everything from mesh generation and material manipulation to camera automation and rendering pipelines.
 
-### ✨ After Effects
-Integrated via servers like **Dakkshin/after-effects-mcp** and **sunqirui1987/ae-mcp**, agents can generate compositions, manipulate layers, set keyframes, and write custom ExtendScript expressions, automating motion graphics pipelines.
+### ✨ Adobe Creative Cloud (Photoshop, Illustrator, Premiere, After Effects)
+Instead of forcing you to install complex UXP plugins for every Adobe app, our unified **`adobe_mcp.py`** executes cross-platform. On **macOS**, it drives Adobe apps directly via zero-install `osascript` AppleEvents. On **Windows**, it natively hooks into Adobe's `win32com` interfaces via PowerShell COM objects. This allows agents to seamlessly generate layers, adjust paths, render compositions, and write custom ExtendScript expressions across the entire Adobe Suite natively.
 
 ### 🏗️ Vectorworks
 Through early implementations like **vectorworks-mcp** connecting via the C++ SDK plugin, agents are paving the way for automated drafting, BIM parameter adjustments, and CAD automation within Vectorworks 2025.
