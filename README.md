@@ -36,26 +36,28 @@ The true game-changer of this repository lies in our **Custom MCP (Model Context
 Integrated directly into TouchDesigner via the **Pantani/tdmcp** (MindDesigner) bridge and utilizing **8beeeaaat/touchdesigner-mcp** as a fallback, agents can construct real TouchDesigner node networks via natural language. They can manipulate operators, patch CHOPs/TOPs, and automate complex node routing inside the visual programming environment.
 
 ### 🎮 Unreal Engine
-Built on a hybrid foundation of **Unreal Engine 5.8 native APIs** and the **gimmeDG** toolset, this MCP allows agents to interact directly with UE5 projects. From scene generation and asset configuration to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
+Built on a hybrid foundation of **Unreal Engine 5 Web Remote APIs** and the **gimmeDG** toolset, our locally bundled `unreal_mcp.py` allows agents to execute REST calls directly to your UE5 project (via port 30010). From scene generation and actor spawning to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
 
 ### 📐 Rhino 3D & Grasshopper
 Using a custom local `rhino_mcp.py` inspired by **mcneel/RhinoMCP** and **GOLEM-3DMCP-Rhino**, agents can connect directly to Rhino Compute (via REST on port 6500) to manipulate 3D geometry in Rhino 8. This extends to controlling Grasshopper definitions, tweaking parameters, and generating complex parametric 3D models directly from prompt instructions.
 
 ### 🎬 DaVinci Resolve
-Powered by **samuelgursky/davinci-resolve-mcp** and **hoyt-harness/davinci-mcp-professional**, this integration gives agents the ability to manipulate timelines, organize media pools, and execute complex Fusion composites via external scripting in Resolve Studio.
+Powered by our locally bundled `davinci_mcp.py` (which directly wraps the native `DaVinciResolveScript` Python API), this integration gives agents the ability to manipulate timelines, organize media pools, and execute complex Fusion composites via external scripting in Resolve Studio.
 
 ### 🧊 Blender
 Using community servers like **ahujasid/blender-mcp**, agents can script Blender Python (`bpy`) operations directly. This covers everything from mesh generation and material manipulation to camera automation and rendering pipelines.
 
 ### ✨ Adobe Creative Cloud (Photoshop, Illustrator, Premiere, After Effects)
-Instead of forcing you to install complex UXP plugins for every Adobe app, our unified **`adobe_mcp.py`** executes cross-platform. On **macOS**, it drives Adobe apps directly via zero-install `osascript` AppleEvents. On **Windows**, it natively hooks into Adobe's `win32com` interfaces via PowerShell COM objects. This allows agents to seamlessly generate layers, adjust paths, render compositions, and write custom ExtendScript expressions across the entire Adobe Suite natively.
+We provide **two native execution modes** bundled right into this package:
+1. **OS-Native Scripting (`adobe_mcp.py`)**: Executes zero-install `osascript` AppleEvents on macOS and `win32com` PowerShell hooks on Windows for immediate scripting without any plugin installation.
+2. **UXP Proxy Architecture (`adobe_uxp_mcp`)**: A three-tier WebSocket proxy (Node.js backend + native `manifest.json` plugins for Photoshop/Premiere) allowing deep DOM control and continuous network states.
 
 ### 🏗️ Vectorworks
 Through early implementations like **vectorworks-mcp** connecting via the C++ SDK plugin, agents are paving the way for automated drafting, BIM parameter adjustments, and CAD automation within Vectorworks 2025.
 
 ### 💡 grandMA3 & Resolume
-- **grandMA3**: Powered by a specialized **Python/Lua bridge** (Pahegi/ma3-mcp), agents can read showfiles, generate macros, and patch fixtures.
-- **Resolume**: Driven by the **tortillaguy** project and the **Resolume 7.26 native integration**, agents can structure compositions, map OSC/MIDI routes, and sequence layers.
+- **grandMA3**: Powered by our local `grandma3_mcp.py`, agents can send UDP/OSC commands and execute macros or patch fixtures directly in the console.
+- **Resolume**: Driven by our `resolume_mcp.py` wrapping the Arena REST API, agents can structure compositions, trigger clips, and sequence layers dynamically.
 
 ---
 
