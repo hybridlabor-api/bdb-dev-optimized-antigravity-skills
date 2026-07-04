@@ -3,683 +3,637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BDB DEV - Antigravity Skill Overview</title>
+    <title>BDB DEV - Universal AI Creative OS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #080710;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --primary: #8a2be2;
-            --primary-glow: rgba(138, 43, 226, 0.4);
-            --secondary: #00f2fe;
-            --secondary-glow: rgba(0, 242, 254, 0.3);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --glass-blur: blur(16px);
+            --bg-base: #030305;
+            --bg-surface: rgba(255, 255, 255, 0.02);
+            --bg-surface-hover: rgba(255, 255, 255, 0.04);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-highlight: rgba(255, 255, 255, 0.15);
+            --brand-primary: #FF2E93;
+            --brand-secondary: #00F0FF;
+            --brand-tertiary: #7000FF;
+            --text-high: #FFFFFF;
+            --text-medium: #A1A1AA;
+            --text-low: #71717A;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 32px;
+            --blur-md: blur(12px);
+            --blur-lg: blur(24px);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
+            background-color: var(--bg-base);
+            color: var(--text-high);
+            line-height: 1.6;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 45%);
-            background-attachment: fixed;
+            position: relative;
         }
 
-        /* Decorative background elements */
-        .grid-bg {
+        /* Dynamic Gradients */
+        .ambient-glow {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
-            background-size: 40px 40px;
+            width: 80vw;
+            height: 80vh;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--brand-tertiary) 0%, transparent 60%);
+            opacity: 0.15;
+            top: -20%;
+            left: -10%;
             pointer-events: none;
-            z-index: -1;
+            z-index: -2;
+            filter: blur(100px);
+        }
+        .ambient-glow-2 {
+            position: fixed;
+            width: 60vw;
+            height: 60vh;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--brand-secondary) 0%, transparent 60%);
+            opacity: 0.1;
+            bottom: -10%;
+            right: -10%;
+            pointer-events: none;
+            z-index: -2;
+            filter: blur(80px);
         }
 
-        header {
-            max-width: 1200px;
+        /* Grid Pattern */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(var(--border-subtle) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--text-high) 0%, var(--text-medium) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-text-brand {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px 20px;
+            padding: 0 40px;
+        }
+        
+        header {
+            padding: 40px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 60px;
         }
 
-        .logo-area h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--text-main) 30%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-area span {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains+Mono', monospace;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 4px 8px;
-            border-radius: 6px;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
-
-        .stats-strip {
-            display: flex;
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 10px 20px;
-            border-radius: 12px;
-            backdrop-filter: var(--glass-blur);
-            text-align: center;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-val {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--secondary);
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-
-        /* Hero / Guide Section */
-        .guide-section {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .guide-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .glass-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: var(--glass-blur);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s ease;
-        }
-
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        h2 {
+        .logo {
             font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -1px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .version-badge {
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--brand-secondary);
+            border: 1px solid var(--border-subtle);
         }
 
-        .concept-split {
+        /* Sections */
+        section {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .section-header p {
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+
+        /* Cards */
+        .glass-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            backdrop-filter: var(--blur-md);
+            -webkit-backdrop-filter: var(--blur-md);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-highlight);
+        }
+        .glass-panel:hover::before {
+            opacity: 1;
+        }
+
+        /* Installation Manual */
+        .manual-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 30px;
         }
-
-        .concept-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+        .code-block {
+            background: #000;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
             padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--brand-secondary);
+            overflow-x: auto;
+            margin-top: 16px;
         }
+        .code-block span.comment { color: var(--text-low); }
+        .code-block span.keyword { color: var(--brand-primary); }
 
-        .concept-box h3 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
+        /* MCP Grid */
+        .mcp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
         }
-
-        .concept-box.skills h3 { color: var(--secondary); }
-        .concept-box.mcps h3 { color: var(--primary); }
-
-        /* Step list */
-        .step-list {
-            list-style: none;
+        .mcp-card {
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
         }
-
-        .step-item {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .step-num {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        .mcp-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--brand-tertiary), var(--brand-primary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-            box-shadow: 0 0 10px var(--primary-glow);
+            font-size: 24px;
+            box-shadow: 0 8px 32px rgba(112, 0, 255, 0.3);
         }
-
-        .step-text h4 {
+        .mcp-card h3 {
+            font-size: 1.4rem;
+        }
+        .mcp-card p {
+            color: var(--text-medium);
             font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 4px;
+            flex-grow: 1;
+        }
+        .tag-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            color: var(--text-medium);
         }
 
-        .step-text p {
-            font-size: 0.85rem;
-            margin-bottom: 0;
-        }
-
-        /* Showcases */
-        .showcase-grid {
+        /* Use Cases */
+        .usecase-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 40px;
         }
-
-        @media (max-width: 768px) {
-            .showcase-grid {
-                grid-template-columns: 1fr;
-            }
+        .usecase-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
         }
-
-        .showcase-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.04) 100%);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-
-        .showcase-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--secondary);
-            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1);
-        }
-
-        .showcase-card.mcp-showcase:hover {
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.15);
-        }
-
-        .badge {
-            background: rgba(0, 242, 254, 0.1);
-            color: var(--secondary);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .showcase-card.mcp-showcase .badge {
-            background: rgba(138, 43, 226, 0.1);
-            color: var(--primary);
-        }
-
-        .showcase-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
+        .usecase-num {
+            font-size: 3rem;
             font-weight: 800;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border-highlight);
+            line-height: 0.8;
+            transition: all 0.3s;
+        }
+        .usecase-item:hover .usecase-num {
+            -webkit-text-stroke: 1px var(--brand-primary);
+            color: rgba(255, 46, 147, 0.1);
+        }
+        .usecase-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        .usecase-content p {
+            color: var(--text-medium);
+            font-size: 0.95rem;
         }
 
-        .showcase-card ul {
-            list-style: none;
-            margin-top: 15px;
+        /* Interactive Explorer */
+        .explorer-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .sidebar-nav {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            position: sticky;
+            top: 40px;
         }
-
-        .showcase-card li {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .showcase-card li::before {
-            content: '✦';
-            color: var(--secondary);
-        }
-
-        .showcase-card.mcp-showcase li::before {
-            content: '❖';
-            color: var(--primary);
-        }
-
-        /* Explorer Section */
-        .explorer-section {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .explorer-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .category-btn {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--card-border);
-            color: var(--text-muted);
-            padding: 15px 20px;
-            border-radius: 12px;
+        .filter-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-medium);
+            padding: 12px 20px;
             text-align: left;
+            border-radius: var(--radius-md);
             font-family: inherit;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            backdrop-filter: var(--glass-blur);
+            transition: all 0.2s;
         }
-
-        .category-btn:hover, .category-btn.active {
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--text-main);
-            border-color: var(--secondary);
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.05);
+        .filter-btn:hover {
+            background: var(--bg-surface);
+            color: var(--text-high);
         }
-
-        .search-area {
-            margin-bottom: 25px;
-            position: relative;
+        .filter-btn.active {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--brand-secondary);
+            border-color: rgba(0, 240, 255, 0.2);
         }
-
-        .search-input {
+        .search-bar {
             width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--card-border);
-            padding: 16px 20px;
-            border-radius: 14px;
-            color: var(--text-main);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            color: var(--text-high);
             font-family: inherit;
             font-size: 1rem;
+            margin-bottom: 30px;
             outline: none;
-            backdrop-filter: var(--glass-blur);
-            transition: all 0.3s ease;
+            transition: border-color 0.3s;
         }
-
-        .search-input:focus {
-            border-color: var(--secondary);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        .search-bar:focus {
+            border-color: var(--brand-secondary);
         }
-
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
-
-        .skill-item-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 20px;
-            backdrop-filter: var(--glass-blur);
-            transition: all 0.2s ease;
-            position: relative;
+        .skill-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
         }
-
-        .skill-item-card:hover {
-            border-color: rgba(255,255,255,0.15);
+        .skill-item:hover {
+            border-color: var(--border-highlight);
             transform: translateY(-2px);
         }
-
-        .skill-item-card h4 {
-            font-size: 1.05rem;
+        .skill-cat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--brand-primary);
             margin-bottom: 8px;
             font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            word-break: break-all;
         }
-
-        .skill-item-card p {
+        .skill-item h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+        .skill-item p {
+            color: var(--text-medium);
             font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
-            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .skill-source {
-            font-size: 0.7rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        /* Modal styling */
-        .modal {
+        /* Modal */
+        .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(8, 7, 16, 0.8);
-            backdrop-filter: blur(10px);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s;
         }
-
-        .modal.active {
+        .modal-overlay.active {
             opacity: 1;
             pointer-events: auto;
         }
-
         .modal-content {
-            background: #11101d;
-            border: 1px solid var(--card-border);
+            background: var(--bg-base);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
             width: 90%;
-            max-width: 650px;
-            border-radius: 20px;
-            padding: 35px;
-            position: relative;
-            transform: scale(0.9);
+            max-width: 600px;
+            padding: 40px;
+            transform: scale(0.95) translateY(10px);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
         }
-
-        .modal.active .modal-content {
-            transform: scale(1);
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
         }
-
-        .close-btn {
+        .modal-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 24px; right: 24px;
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: var(--text-medium);
             font-size: 1.5rem;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
+            transition: color 0.2s;
         }
+        .modal-close:hover { color: var(--text-high); }
 
-        .close-btn:hover {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-main);
-        }
-
-        .modal-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-
-        .modal-desc {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-main);
-            margin-bottom: 25px;
-        }
-
-        .modal-path {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 12px 15px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            word-break: break-all;
-        }
-
-        .modal-path strong {
-            color: var(--primary);
+        @media (max-width: 900px) {
+            .manual-grid, .usecase-layout, .explorer-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                position: static;
+            }
+            .filter-btn {
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="grid-bg"></div>
+    <div class="ambient-glow"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="grid-overlay"></div>
 
-    <header>
-        <div class="logo-area">
-            <h1>BDB DEV / ANTIGRAVITY</h1>
-            <span>v1.0.2</span>
-        </div>
-        <div class="stats-strip">
-            <div class="stat-card">
-                <div class="stat-val" id="stat-count">142</div>
-                <div class="stat-label">Active Skills</div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                BDB<span class="gradient-text-brand">OS</span>
+                <div class="version-badge">v1.1.4</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-val">2</div>
-                <div class="stat-label">Custom Orchestrators</div>
+            <div style="display: flex; gap: 24px; font-size: 0.9rem; color: var(--text-medium);">
+                <div><strong>142</strong> Skills</div>
+                <div><strong>9</strong> MCP Servers</div>
+                <div><strong>Universal</strong> Agent Support</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-val">9</div>
-                <div class="stat-label">Active MCPs</div>
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <main>
-        <!-- Hero Guide -->
-        <section class="guide-section">
-            <div class="glass-card">
-                <h2>How to use Antigravity Skills</h2>
-                <p>
-                    Skills act as the custom instructions, guidelines, and toolsets that direct Antigravity agents. They act as "recipes of expertise" injected dynamically into the LLM context, showing the AI exactly how to solve problems, write code, or execute platform-specific actions without needing complex prompts.
-                </p>
-                <div class="concept-split">
-                    <div class="concept-box skills">
-                        <h3>Antigravity Skills</h3>
-                        <p style="font-size: 0.85rem; margin-bottom: 0;">
-                            Pure system instructions, guidelines, scripts, and context files located in <code>.gemini/config/skills/</code>. They teach the agent *how* to think.
-                        </p>
-                    </div>
-                    <div class="concept-box mcps">
-                        <h3>Model Context Protocol</h3>
-                        <p style="font-size: 0.85rem; margin-bottom: 0;">
-                            External plugins configured in <code>mcp_config.json</code>. They give the agent *hands* to control live apps (like grandMA3, Resolume, Chrome).
-                        </p>
+        <!-- Installation Manual -->
+        <section>
+            <div class="section-header">
+                <h2>Installation Manual</h2>
+                <p>Deploy the BDB Creative OS to any AI Agent environment (Antigravity, Claude Desktop, Cursor). The smart installer adapts to your workspace.</p>
+            </div>
+            <div class="manual-grid">
+                <div class="glass-panel">
+                    <h3>One-Command Setup</h3>
+                    <p style="color: var(--text-medium); margin-top: 10px;">Run the interactive installer via NPM. It will automatically ask you which platform you are configuring and whether to merge or replace existing skills.</p>
+                    <div class="code-block">
+                        <span class="comment"># Works on macOS, Windows, Linux</span><br>
+                        <span class="keyword">npx</span> @hybridlabor-api/bdb-antigravity-skills
                     </div>
                 </div>
-            </div>
-
-            <div class="glass-card" style="border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;">
-                <h2>Activation Steps</h2>
-                <ul class="step-list">
-                    <li class="step-item">
-                        <div class="step-num">1</div>
-                        <div class="step-text">
-                            <h4>Implicit Matching</h4>
-                            <p>Mention a task related to a skill. Antigravity matches the YAML metadata and loads the skill automatically.</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-num">2</div>
-                        <div class="step-text">
-                            <h4>Slash Commands</h4>
-                            <p>Trigger complex agent configurations instantly using commands like <code>/agentflow</code> or <code>/grill-me</code>.</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-num">3</div>
-                        <div class="step-text">
-                            <h4>Force Usage</h4>
-                            <p>Explicitly instruct the agent: "Use the [skill-name] skill to write this code..." to guarantee compliance.</p>
-                        </div>
-                    </li>
-                </ul>
+                <div class="glass-panel">
+                    <h3>Supported Platforms</h3>
+                    <ul style="color: var(--text-medium); margin-top: 16px; margin-left: 20px; display: flex; flex-direction: column; gap: 12px;">
+                        <li><strong>Google Antigravity:</strong> Injects natively into <code>~/.gemini/config/</code>.</li>
+                        <li><strong>Claude Desktop:</strong> Wires MCPs into <code>claude_desktop_config.json</code> and extracts skills.</li>
+                        <li><strong>Cursor & IDEs:</strong> Dumps context rules into <code>.cursor/</code> for project-level intelligence.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
-        <!-- Showcases -->
+        <!-- MCP Overview -->
         <section>
-            <h2 style="margin-bottom: 20px;">BDB Customized Extensions</h2>
-            <div class="showcase-grid">
-                <div class="showcase-card" onclick="openSkillModal('bdbrainstorm')">
-                    <div class="badge">Orchestrator</div>
-                    <h3>BDBrainstorm</h3>
-                    <p>
-                        Forces Antigravity into a comprehensive brainstorming and design workflow. Ensures you don't build alone and guarantees top-tier aesthetics.
-                    </p>
-                    <ul>
-                        <li>Forces debate via multi-agent debate sessions</li>
-                        <li>Initiates an interactive /grill-me interview</li>
-                        <li>Delegates execution to specialized subagents</li>
-                        <li>Enforces strict ui-ux-pro-max design guidelines</li>
-                    </ul>
+            <div class="section-header">
+                <h2>Model Context Protocol (MCP)</h2>
+                <p>BDB OS includes custom-built, production-ready MCP servers that allow your AI to directly manipulate creative hardware and software.</p>
+            </div>
+            <div class="mcp-grid">
+                <!-- Unreal -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🎮</div>
+                    <h3>Unreal Engine 5</h3>
+                    <p>Native HTTP Web Remote Control integration. Allows the AI to spawn actors, modify material parameters, and structure scenes.</p>
+                    <div class="tag-row">
+                        <span class="tag">Python 3</span>
+                        <span class="tag">Web Remote</span>
+                    </div>
                 </div>
+                <!-- Adobe -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🎨</div>
+                    <h3>Adobe Suite</h3>
+                    <p>Uses a Node.js WebSocket proxy bridging to native UXP plugins for Photoshop and Premiere. Avoids sluggish AppleScript.</p>
+                    <div class="tag-row">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">UXP</span>
+                    </div>
+                </div>
+                <!-- grandMA3 -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">💡</div>
+                    <h3>grandMA3</h3>
+                    <p>Lighting console integration via WebAPI and OSC sockets. AI can trigger macros, patch fixtures, and cue lists.</p>
+                    <div class="tag-row">
+                        <span class="tag">OSC</span>
+                        <span class="tag">Lua Bridge</span>
+                    </div>
+                </div>
+                <!-- Resolume -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🎛️</div>
+                    <h3>Resolume Arena</h3>
+                    <p>Direct VJ software manipulation via Arena REST API. AI can trigger clips, clear layers, and adjust composition effects.</p>
+                    <div class="tag-row">
+                        <span class="tag">REST</span>
+                        <span class="tag">VJ</span>
+                    </div>
+                </div>
+                <!-- TouchDesigner -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">⛓️</div>
+                    <h3>TouchDesigner</h3>
+                    <p>MindDesigner nodes network manipulation. AI can construct TOP/CHOP chains and backup parameter states.</p>
+                    <div class="tag-row">
+                        <span class="tag">Python</span>
+                        <span class="tag">TD</span>
+                    </div>
+                </div>
+                <!-- Browser -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🌐</div>
+                    <h3>Firecrawl & Chrome</h3>
+                    <p>Advanced web scraping and live Chrome DevTools integration for automated browser testing and interaction.</p>
+                    <div class="tag-row">
+                        <span class="tag">Puppeteer</span>
+                        <span class="tag">Scraping</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <div class="showcase-card mcp-showcase" onclick="openSkillModal('MCP_Manage')">
-                    <div class="badge">Tool Command</div>
-                    <h3>MCP_Manage</h3>
-                    <p>
-                        The master skill to manage and utilize whitelabeled Model Context Protocol servers. Connects AI directly to hardware, stage, and design software.
-                    </p>
-                    <ul>
-                        <li>grandMA3 Console & Resolume (Stage & Visual control)</li>
-                        <li>TouchDesigner (MindDesigner network builder & parameter backup)</li>
-                        <li>Unreal Engine 5.8 (Native Editor plugin)</li>
-                        <li>Rhino 3D, DaVinci Resolve, GitHub, Chrome DevTools</li>
-                    </ul>
+        <!-- Use Cases -->
+        <section>
+            <div class="section-header">
+                <h2>Use Case Examples</h2>
+                <p>How the Skills and MCPs combine to create autonomous creative workflows.</p>
+            </div>
+            <div class="usecase-layout">
+                <div class="usecase-item">
+                    <div class="usecase-num">01</div>
+                    <div class="usecase-content">
+                        <h4>Generative Stage Visuals</h4>
+                        <p>Ask the agent to "Create a rhythmic VJ loop". It will use <strong>Resolume MCP</strong> to clear layers, load clips, and sync BPM, while using the <strong>Brainstorming skill</strong> to design the aesthetic flow.</p>
+                    </div>
+                </div>
+                <div class="usecase-item">
+                    <div class="usecase-num">02</div>
+                    <div class="usecase-content">
+                        <h4>End-to-End Landing Pages</h4>
+                        <p>Tell the agent to "Build a site inspired by Apple". It triggers <strong>Firecrawl</strong> to scrape references, uses <strong>ui-ux-pro-max</strong> to ensure glassmorphic premium design, and writes the Next.js code.</p>
+                    </div>
+                </div>
+                <div class="usecase-item">
+                    <div class="usecase-num">03</div>
+                    <div class="usecase-content">
+                        <h4>Automated Show Lighting</h4>
+                        <p>Command: "Patch 12 moving heads and create a red chase." The agent uses <strong>grandMA3 MCP</strong> to patch the fixtures via OSC and write the sequence into the console automatically.</p>
+                    </div>
+                </div>
+                <div class="usecase-item">
+                    <div class="usecase-num">04</div>
+                    <div class="usecase-content">
+                        <h4>Batch Photoshop Edits</h4>
+                        <p>Command: "Export all layers with a blue tint." The agent communicates through the <strong>Adobe UXP MCP</strong> WebSocket bridge to execute ExtendScript logic directly inside Photoshop.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Skill Explorer -->
         <section>
-            <h2 style="margin-bottom: 20px;">Interactive Skill Explorer</h2>
-            <div class="explorer-section">
-                <div class="sidebar">
-                    <button class="category-btn active" onclick="filterCategory('all')">All Skills (142)</button>
-                    <button class="category-btn" onclick="filterCategory('custom')">BDB Custom (2)</button>
-                    <button class="category-btn" onclick="filterCategory('mcp')">Firecrawl & MCPs (16)</button>
-                    <button class="category-btn" onclick="filterCategory('frontend')">Frontend & UI/UX (11)</button>
-                    <button class="category-btn" onclick="filterCategory('backend')">Backend & DB (14)</button>
-                    <button class="category-btn" onclick="filterCategory('devops')">DevOps & Git (9)</button>
-                    <button class="category-btn" onclick="filterCategory('language')">Python & Go (6)</button>
-                    <button class="category-btn" onclick="filterCategory('general')">Standard Utilities (84)</button>
+            <div class="section-header">
+                <h2>Interactive Skill Explorer</h2>
+                <p>Browse the 142 highly curated AI instructions injected into your agent's context.</p>
+            </div>
+            <div class="explorer-layout">
+                <div class="sidebar-nav">
+                    <button class="filter-btn active" onclick="filterCategory('all')">All Skills (142)</button>
+                    <button class="filter-btn" onclick="filterCategory('custom')">BDB Orchestrators</button>
+                    <button class="filter-btn" onclick="filterCategory('mcp')">MCP & Scraping</button>
+                    <button class="filter-btn" onclick="filterCategory('frontend')">Frontend & UI/UX</button>
+                    <button class="filter-btn" onclick="filterCategory('backend')">Backend & DB</button>
+                    <button class="filter-btn" onclick="filterCategory('devops')">DevOps & Tooling</button>
+                    <button class="filter-btn" onclick="filterCategory('general')">General Utilities</button>
                 </div>
-                <div class="content-pane">
-                    <div class="search-area">
-                        <input type="text" class="search-input" placeholder="Search skills by name or keyword..." oninput="searchSkills(this.value)">
-                    </div>
-                    <div class="skills-grid" id="skills-container">
-                        <!-- Dynamically populated -->
-                    </div>
+                <div>
+                    <input type="text" class="search-bar" placeholder="Search skills..." oninput="searchSkills(this.value)">
+                    <div class="skills-grid" id="skills-container"></div>
                 </div>
             </div>
         </section>
-    </main>
+    </div>
 
     <!-- Modal -->
-    <div class="modal" id="skill-modal" onclick="closeModal(event)">
+    <div class="modal-overlay" id="skill-modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(event)">&times;</button>
-            <h3 class="modal-title" id="modal-title">Skill Title</h3>
-            <p class="modal-desc" id="modal-desc">Detailed explanation of what the skill does and why it was created.</p>
-            <div class="modal-path" id="modal-path">Path: <code>~/.gemini/config/skills/name/</code></div>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="skill-cat-label" id="modal-cat">CATEGORY</div>
+            <h3 id="modal-title" style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; margin-bottom: 16px; color: var(--brand-secondary);">Skill Title</h3>
+            <p id="modal-desc" style="color: var(--text-medium); margin-bottom: 24px;">Description</p>
+            <div style="background: rgba(0,0,0,0.5); padding: 16px; border-radius: 8px; border: 1px solid var(--border-subtle); font-family: 'JetBrains Mono'; font-size: 0.85rem; color: var(--text-low);">
+                Path: <span id="modal-path" style="color: var(--text-high);">...</span>
+            </div>
         </div>
     </div>
 
     <script>
-        // Inline skills dataset representing the 140 curated skills
+        // Inline skills dataset
         const skillsData = [
             { name: "bdbrainstorm", desc: "Forces a comprehensive multi-agent brainstorming workflow combining debate, interactive grilling, subagent tasking, and high-end visual design.", cat: "custom", source: "Global Config" },
             { name: "MCP_Manage", desc: "Command center skill that manages and directs whitelabeled MCP servers like grandMA3, Resolume, Unreal Engine, Rhino, DaVinci, TouchDesigner, and Puppeteer.", cat: "custom", source: "Global Config" },
+            { name: "bdb-updater", desc: "Allows agents to autonomously check NPM for new versions of this OS and update themselves via background schedule.", cat: "custom", source: "Global Config" },
             { name: "bdb_td_minddesigner", desc: "TouchDesigner MindDesigner MCP - Builds real COMP, TOP, CHOP node networks from natural language prompts.", cat: "mcp", source: "Global Config" },
             { name: "bdb_td_backup", desc: "TouchDesigner Control MCP - Sets node parameters and queries TouchDesigner project states.", cat: "mcp", source: "Global Config" },
             { name: "firecrawl", desc: "Searches, scrapes, and interacts with the web via the Firecrawl CLI.", cat: "mcp", source: "Workspace Agents" },
@@ -735,7 +689,6 @@
             { name: "golang-pro", desc: "Modern Go patterns, interface design, testing, and performance optimization.", cat: "language", source: "Global Config" },
             { name: "go-concurrency-patterns", desc: "Goroutines, channels, sync primitives, context, and worker pool patterns.", cat: "language", source: "Global Config" },
             { name: "go-playwright", desc: "Browser automation using Playwright in Go environments.", cat: "language", source: "Global Config" },
-            // Populate remaining 84 general utility skills as compact references to reach 140
             { name: "agent-manager-skill", desc: "Manage multiple local CLI agents via tmux sessions with cron-friendly scheduling.", cat: "general", source: "Global Config" },
             { name: "agent-memory-mcp", desc: "Persistent, searchable knowledge management for AI agents.", cat: "general", source: "Global Config" },
             { name: "agent-orchestrator", desc: "Meta-skill coordinating skills, capability scanning, and multi-skill workflows.", cat: "general", source: "Global Config" },
@@ -825,103 +778,76 @@
             { name: "writing-plans", desc: "Requirements scoping and building structured plan.md checksheets.", cat: "general", source: "Global Config" }
         ];
 
-        // Populate skills on load
-        const container = document.getElementById('skills-container');
-        let activeCategory = 'all';
-        let searchQuery = '';
+        let currentCat = 'all';
+        let currentSearch = '';
 
         function renderSkills() {
+            const container = document.getElementById('skills-container');
             container.innerHTML = '';
             
-            const filtered = skillsData.filter(skill => {
-                const matchesCat = activeCategory === 'all' || 
-                                  (activeCategory === 'custom' && skill.cat === 'custom') ||
-                                  (activeCategory === 'mcp' && skill.cat === 'mcp') ||
-                                  (activeCategory === 'frontend' && skill.cat === 'frontend') ||
-                                  (activeCategory === 'backend' && skill.cat === 'backend') ||
-                                  (activeCategory === 'devops' && skill.cat === 'devops') ||
-                                  (activeCategory === 'language' && skill.cat === 'language') ||
-                                  (activeCategory === 'general' && skill.cat === 'general');
+            const filtered = skillsData.filter(s => {
+                const matchCat = currentCat === 'all' || 
+                                (currentCat === 'custom' && s.cat === 'custom') ||
+                                (currentCat === 'mcp' && s.cat === 'mcp') ||
+                                (currentCat === 'frontend' && s.cat === 'frontend') ||
+                                (currentCat === 'backend' && s.cat === 'backend') ||
+                                (currentCat === 'devops' && s.cat === 'devops') ||
+                                (currentCat === 'general' && s.cat === 'general');
                 
-                const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                     skill.desc.toLowerCase().includes(searchQuery.toLowerCase());
-                
-                return matchesCat && matchesSearch;
+                const matchSearch = s.name.toLowerCase().includes(currentSearch.toLowerCase()) || 
+                                    s.desc.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchCat && matchSearch;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
-                        No skills found matching your search.
-                    </div>
-                `;
+                container.innerHTML = `<div style="color: var(--text-medium); padding: 20px;">No skills found.</div>`;
                 return;
             }
 
             filtered.forEach(skill => {
-                const card = document.createElement('div');
-                card.className = 'skill-item-card';
-                card.onclick = () => openSkillModal(skill.name);
-                
-                let sourceBadgeColor = 'var(--secondary)';
-                if (skill.cat === 'custom') sourceBadgeColor = 'var(--secondary)';
-                else if (skill.cat === 'mcp') sourceBadgeColor = 'var(--primary)';
-
-                card.innerHTML = `
-                    <div class="skill-source" style="color: ${sourceBadgeColor}">${skill.source}</div>
+                const el = document.createElement('div');
+                el.className = 'skill-item';
+                el.onclick = () => openModal(skill);
+                el.innerHTML = `
+                    <div class="skill-cat-label">${skill.cat.toUpperCase()}</div>
                     <h4>${skill.name}</h4>
                     <p>${skill.desc}</p>
                 `;
-                container.appendChild(card);
+                container.appendChild(el);
             });
         }
 
         function filterCategory(cat) {
-            activeCategory = cat;
-            
-            // Update active state in buttons
-            const buttons = document.querySelectorAll('.category-btn');
-            buttons.forEach(btn => {
-                if (btn.getAttribute('onclick').includes(`'${cat}'`)) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+            currentCat = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('onclick').includes(`'${cat}'`)) btn.classList.add('active');
             });
-
             renderSkills();
         }
 
         function searchSkills(query) {
-            searchQuery = query;
+            currentSearch = query;
             renderSkills();
         }
 
-        // Modal Functions
-        function openSkillModal(name) {
-            const skill = skillsData.find(s => s.name === name);
-            if (!skill) return;
-
+        function openModal(skill) {
+            document.getElementById('modal-cat').innerText = skill.cat.toUpperCase();
             document.getElementById('modal-title').innerText = skill.name;
             document.getElementById('modal-desc').innerText = skill.desc;
             
-            let pathPrefix = '~/.gemini/config/skills/';
-            if (skill.source === 'Workspace Agents') {
-                pathPrefix = '.agents/skills/';
-            } else if (skill.source === 'Global Legacy') {
-                pathPrefix = '~/.gemini/skills/';
-            }
+            let prefix = '~/.gemini/config/skills/';
+            if(skill.source === 'Workspace Agents') prefix = '.agents/skills/';
+            if(skill.source === 'Global Legacy') prefix = '~/.gemini/skills/';
             
-            document.getElementById('modal-path').innerHTML = `Location: <strong>${pathPrefix}${skill.name}/</strong>`;
-
+            document.getElementById('modal-path').innerText = `${prefix}${skill.name}/`;
             document.getElementById('skill-modal').classList.add('active');
         }
 
-        function closeModal(event) {
+        function closeModal() {
             document.getElementById('skill-modal').classList.remove('active');
         }
 
-        // Initialize
         renderSkills();
     </script>
 </body>
