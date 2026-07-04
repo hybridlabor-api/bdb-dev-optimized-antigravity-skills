@@ -31,7 +31,6 @@ const globalConfigDir = path.join(geminiDir, 'config', 'skills');
 const globalLegacyDir = path.join(geminiDir, 'skills');
 const workspaceDir = path.join(currentDir, '.agents', 'skills');
 
-// Format timestamp like YYYYMMDD_HHMMSS
 const now = new Date();
 const timestamp = now.getFullYear().toString() + 
     (now.getMonth()+1).toString().padStart(2, '0') + 
@@ -42,8 +41,34 @@ const timestamp = now.getFullYear().toString() +
     
 const backupDir = path.join(geminiDir, `skills_backup_${timestamp}`);
 
-console.log(`Creating backup of current skills in ${backupDir}...`);
-fs.mkdirSync(backupDir, { recursive: true });
+// Auto-accept flags for CI/CD or autonomous agents
+const isAutoYes = process.argv.includes('-y') || process.argv.includes('--yes');
+
+function promptMode(callback) {
+    if (isAutoYes) {
+        return callback('1'); // Default to merge in auto mode
+    }
+    console.log("\nInstallation Mode:");
+    console.log(" (1) Merge: Keep your existing skills/MCPs and add/update BDB tools.");
+    console.log(" (2) Replace: Backup and wipe your existing skills/MCPs, installing ONLY BDB tools.");
+    rl.question("\nSelect mode [1/2]: ", (answer) => {
+        if (answer.trim() === '2') {
+            callback('2');
+        } else {
+            callback('1');
+        }
+    });
+}
+
+function promptMCP(callback) {
+    if (isAutoYes) {
+        return callback('y');
+    }
+    console.log("");
+    rl.question("Do you also want to install the MCP Pack (Unreal, Rhino, Resolve, Grandma3, Resolume, Github, etc)? (y/n): ", (answer) => {
+        callback(answer);
+    });
+}
 
 function moveIfExists(src, dest, label) {
     if (fs.existsSync(src)) {
@@ -51,16 +76,6 @@ function moveIfExists(src, dest, label) {
         console.log(` -> Backed up ${label}.`);
     }
 }
-
-moveIfExists(globalConfigDir, path.join(backupDir, 'config_skills_backup'), 'global config skills');
-moveIfExists(globalLegacyDir, path.join(backupDir, 'legacy_skills_backup'), 'global legacy skills');
-moveIfExists(workspaceDir, path.join(backupDir, 'workspace_skills_backup'), 'workspace skills');
-
-console.log("\nInstalling optimized skills (140 curated skills)...");
-
-fs.mkdirSync(globalConfigDir, { recursive: true });
-fs.mkdirSync(globalLegacyDir, { recursive: true });
-fs.mkdirSync(workspaceDir, { recursive: true });
 
 function copyDirRecursiveSync(source, target) {
     if (!fs.existsSync(source)) return;
@@ -78,52 +93,80 @@ function copyDirRecursiveSync(source, target) {
     });
 }
 
-copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_config'), globalConfigDir);
-console.log(" -> Installed global config skills.");
+promptMode((mode) => {
+    fs.mkdirSync(backupDir, { recursive: true });
 
-copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_legacy'), globalLegacyDir);
-console.log(" -> Installed global legacy skills.");
+    if (mode === '2') {
+        console.log(`\n[Replace Mode] Creating backup of current skills in ${backupDir}...`);
+        moveIfExists(globalConfigDir, path.join(backupDir, 'config_skills_backup'), 'global config skills');
+        moveIfExists(globalLegacyDir, path.join(backupDir, 'legacy_skills_backup'), 'global legacy skills');
+        moveIfExists(workspaceDir, path.join(backupDir, 'workspace_skills_backup'), 'workspace skills');
+    } else {
+        console.log(`\n[Merge Mode] Installing over existing directories. Existing skills will not be deleted.`);
+    }
 
-copyDirRecursiveSync(path.join(srcDir, 'skills', 'workspace_agents'), workspaceDir);
-console.log(" -> Installed workspace skills.");
+    console.log("\nInstalling optimized skills (140 curated skills)...");
+    fs.mkdirSync(globalConfigDir, { recursive: true });
+    fs.mkdirSync(globalLegacyDir, { recursive: true });
+    fs.mkdirSync(workspaceDir, { recursive: true });
 
-console.log("");
-const geminiMdSrc = path.join(srcDir, 'GEMINI.md');
-if (fs.existsSync(geminiMdSrc)) {
-    fs.copyFileSync(geminiMdSrc, path.join(geminiDir, 'GEMINI.md'));
-    console.log(` -> Installed GEMINI.md to ${path.join(geminiDir, 'GEMINI.md')}`);
-}
+    copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_config'), globalConfigDir);
+    console.log(" -> Installed global config skills.");
 
-console.log("");
-rl.question("Do you also want to install the MCP Pack (Unreal, Rhino, Resolve, Grandma3, Resolume, Github, Chrome DevTools)? (y/n): ", function(answer) {
-    if (answer.toLowerCase().startsWith('y')) {
-        const configDir = path.join(geminiDir, 'config');
-        fs.mkdirSync(configDir, { recursive: true });
-        
-        // Copy MCP servers code
-        const mcpCodeTarget = path.join(configDir, 'mcps');
-        copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
-        console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
-        
-        const mcpTarget = path.join(configDir, 'mcp_config.json');
-        if (fs.existsSync(mcpTarget)) {
-            fs.copyFileSync(mcpTarget, path.join(backupDir, 'mcp_config_backup.json'));
-            console.log(" -> Backed up existing mcp_config.json");
+    copyDirRecursiveSync(path.join(srcDir, 'skills', 'global_legacy'), globalLegacyDir);
+    console.log(" -> Installed global legacy skills.");
+
+    copyDirRecursiveSync(path.join(srcDir, 'skills', 'workspace_agents'), workspaceDir);
+    console.log(" -> Installed workspace skills.");
+
+    const geminiMdSrc = path.join(srcDir, 'GEMINI.md');
+    if (fs.existsSync(geminiMdSrc)) {
+        fs.copyFileSync(geminiMdSrc, path.join(geminiDir, 'GEMINI.md'));
+        console.log(` -> Installed GEMINI.md to ${path.join(geminiDir, 'GEMINI.md')}`);
+    }
+
+    promptMCP((answer) => {
+        if (answer.toLowerCase().startsWith('y')) {
+            const configDir = path.join(geminiDir, 'config');
+            fs.mkdirSync(configDir, { recursive: true });
+            
+            const mcpCodeTarget = path.join(configDir, 'mcps');
+            copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
+            console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
+            
+            const mcpTarget = path.join(configDir, 'mcp_config.json');
+            if (fs.existsSync(mcpTarget)) {
+                fs.copyFileSync(mcpTarget, path.join(backupDir, 'mcp_config_backup.json'));
+                console.log(" -> Backed up existing mcp_config.json");
+            }
+            
+            let mcpConfigStr = fs.readFileSync(path.join(srcDir, 'mcp_config.json'), 'utf8');
+            mcpConfigStr = mcpConfigStr.replace(/__MCPS_DIR__/g, mcpCodeTarget);
+            mcpConfigStr = mcpConfigStr.replace(/\{\{HOME\}\}/g, homeDir);
+            
+            if (mode === '1' && fs.existsSync(mcpTarget)) {
+                try {
+                    const oldConfig = JSON.parse(fs.readFileSync(mcpTarget, 'utf8'));
+                    const newConfig = JSON.parse(mcpConfigStr);
+                    oldConfig.mcpServers = Object.assign({}, oldConfig.mcpServers || {}, newConfig.mcpServers || {});
+                    fs.writeFileSync(mcpTarget, JSON.stringify(oldConfig, null, 2));
+                    console.log(` -> Merged BDB MCPs into existing mcp_config.json`);
+                } catch (e) {
+                    console.log(` -> Failed to parse existing JSON, overwriting mcp_config.json`);
+                    fs.writeFileSync(mcpTarget, mcpConfigStr);
+                }
+            } else {
+                fs.writeFileSync(mcpTarget, mcpConfigStr);
+                console.log(` -> Installed optimized mcp_config.json to ${configDir}`);
+            }
+        } else {
+            console.log(" -> Skipping MCP installation.");
         }
         
-        // Read and replace template
-        let mcpConfigStr = fs.readFileSync(path.join(srcDir, 'mcp_config.json'), 'utf8');
-        mcpConfigStr = mcpConfigStr.replace(/__MCPS_DIR__/g, mcpCodeTarget);
-        mcpConfigStr = mcpConfigStr.replace(/\{\{HOME\}\}/g, homeDir);
-        fs.writeFileSync(mcpTarget, mcpConfigStr);
-        console.log(` -> Installed optimized mcp_config.json to ${configDir}`);
-    } else {
-        console.log(" -> Skipping MCP installation.");
-    }
-    
-    console.log("=========================================================");
-    console.log(" Installation complete! The environment now has the ");
-    console.log(" optimized skill configuration.");
-    console.log("=========================================================");
-    rl.close();
+        console.log("=========================================================");
+        console.log(" Installation complete! The environment now has the ");
+        console.log(" optimized skill configuration.");
+        console.log("=========================================================");
+        rl.close();
+    });
 });
