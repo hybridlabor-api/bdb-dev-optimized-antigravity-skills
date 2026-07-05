@@ -9,8 +9,8 @@
       "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
     },
     "bdb_unreal_mcp": {
-      "command": "uv",
-      "args": ["run", "__MCPS_DIR__/unreal_mcp.py"]
+      "command": "node",
+      "args": ["__MCPS_DIR__/unreal_mcp/dist/cli.js"]
     },
     "bdb_rhino_mcp": {
       "command": "uv",

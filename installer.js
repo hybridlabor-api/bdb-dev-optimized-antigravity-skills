@@ -257,6 +257,25 @@ promptMode(({ mode, platform, customPaths }) => {
             copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
             console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
             
+            // Build / Setup Node-based MCPs (like adobe_uxp_mcp and unreal_mcp)
+            const nodeMcps = ['adobe_uxp_mcp', 'unreal_mcp'];
+            const execSync = require('child_process').execSync;
+            nodeMcps.forEach(mcpFolder => {
+                const targetFolder = path.join(mcpCodeTarget, mcpFolder);
+                if (fs.existsSync(path.join(targetFolder, 'package.json'))) {
+                    console.log(` -> Setting up Node dependencies for ${mcpFolder}...`);
+                    try {
+                        execSync('npm install --no-audit --no-fund', { cwd: targetFolder, stdio: 'ignore' });
+                        if (fs.existsSync(path.join(targetFolder, 'tsconfig.json'))) {
+                            console.log(` -> Compiling TypeScript for ${mcpFolder}...`);
+                            execSync('npm run build', { cwd: targetFolder, stdio: 'ignore' });
+                        }
+                    } catch (e) {
+                        console.warn(`Warning: Failed to set up ${mcpFolder}: ${e.message}`);
+                    }
+                }
+            });
+
             if (fs.existsSync(mcpConfigPath)) {
                 fs.copyFileSync(mcpConfigPath, path.join(backupDir, 'mcp_config_backup.json'));
                 console.log(` -> Backed up existing ${path.basename(mcpConfigPath)}`);
