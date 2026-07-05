@@ -21,6 +21,10 @@
       "args": ["--directory", "__MCPS_DIR__/golem-rhino-mcp", "run", "-m", "mcp_server"]
     },
     "bdb_davinci_mcp": {
+      "command": "uv",
+      "args": ["run", "-r", "__MCPS_DIR__/davinci-resolve-mcp-free/requirements.txt", "__MCPS_DIR__/davinci-resolve-mcp-free/src/resolve_mcp_bridge.py"]
+    },
+    "bdb_davinci_mcp_studio": {
       "command": "node",
       "args": ["__MCPS_DIR__/davinci-resolve-mcp/bin/davinci-resolve-mcp.mjs"]
     },
