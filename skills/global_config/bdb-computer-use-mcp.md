@@ -1,80 +1,67 @@
 ---
 name: bdb-computer-use-mcp
-description: Utilizes the computer-use-mcp server to control the OS desktop via mouse, keyboard, window focus, accessibility trees, and scripting.
+description: Utilizes native Rust/Node and Python-based computer-use-mcp servers to control macOS, Windows, and Linux desktops.
 ---
 
-# Computer Use MCP — Integration and AI Agent Guide
+# Computer Use & OS Control MCP — Integration and AI Agent Guide
 
-This skill file instructs AI agents on how to control macOS, Windows, or Linux desktop environments using the high-performance `computer-use-mcp` server. It details tool hierarchy, accessibility automation, scripting, window focus strategies, and troubleshooting steps.
+This skill file instructs AI agents on how to control macOS, Windows, or Linux desktop environments using the dual-platform `computer-use-mcp` servers. It details tool hierarchy, accessibility automation, scripting, window focus strategies, and troubleshooting steps.
 
 ## 1. Overview and Pipeline Value
 
-The **Computer Use MCP Server** leverages a Rust NAPI module to interact directly with OS APIs (CoreGraphics/AppKit on Mac; Win32/COM on Windows; X11 on Linux). It serves as the ultimate fallback when structured application APIs do not exist. Agents use it to configure settings, install dependencies, click modal dialogs, copy coordinates, and interact with graphical interfaces.
+The **OS Control MCP Servers** act as the ultimate fallback when structured application APIs do not exist. Agents use them to configure system settings, install dependencies, bypass modal dialogs, crop regions, perform OCR, and automate graphical interfaces.
 
-### Architecture
-- **In-Process native execution:** Avoids shell hopping by using direct OS calls inside Node.js.
-- **Ordered Automation:**
-  1. *Scripting first:* Use AppleScript/JXA (macOS) or PowerShell (Windows).
-  2. *Accessibility second:* Query and interact with elements using Accessibility APIs (AX UI Automation).
-  3. *Coordinate Clicks last:* Use screenshots and pixel coordinates only as a fallback.
+### Dual-Engine Architecture
+- **macOS & Linux (`zavora_computer_use`):** Powered by a Rust NAPI module executing native OS calls inside Node.js (CoreGraphics/AppKit/X11).
+- **Windows (`bdb_windows_computer_use`):** Powered by a Python/PyWin32 automation bridge using `pywinauto`, `pyautogui`, `comtypes`, and local `pytesseract` OCR for deep Windows Desktop UI discovery.
 
 ---
 
 ## 2. System Instructions
 
 ### Workflow Priorities
-1. **Discovery first:** Always call `get_tool_guide` or `get_app_capabilities` to evaluate if the target app supports AppleScript/PowerShell or Accessibility trees.
-2. **Accessibility over Coordinates:** Use `click_element` or `set_value` instead of mapping pixel coordinates from a screenshot. It survives window resizes, retina scaling, and display moves.
+1. **Discovery first:** Always call `get_tool_guide` (macOS) or query window titles/automation trees (Windows) to evaluate if target apps support scripts/PowerShell or accessibility trees.
+2. **Accessibility over Coordinates:** Use native Win32 Automation IDs / macOS Accessibility labels (`AXButton`, `AXTextField`, etc.) instead of mapping pixel coordinates from a screenshot. It survives window resizes, DPI changes, and layout changes.
 3. **Window Focus Strategies:** 
-   - Use `strict` focus for keyboard inputs. This forces the server to verify the target window is frontmost and visible before typing, preventing key drops.
+   - Verify focus before writing key streams.
+   - Use `strict` focus for keyboard inputs to force the server to verify the target window is frontmost and visible before typing, preventing key drops.
    - Use `prepare_display` to automatically hide background apps that might steal focus or pop up notifications during execution.
-4. **Retroactive Inspection:** If a screenshot shows small text or dense detail, call `zoom` with a cropped coordinate box to view full-resolution assets.
 
 ---
 
 ## 3. Available Tools and API Parameters
 
+### macOS & Linux Engine (`zavora_computer_use`)
 Exposes 58 native tools. Key tools include:
+- **`run_script(language, script)`**: Runs AppleScript, JXA, or Shell commands.
+- **`get_ui_tree(target_app, target_window_id)`**: Returns a JSON structure of active UI roles and labels.
+- **`click_element(role, label)`**: Performs a semantic click on a button or menu.
+- **`set_value(role, label, value)`**: Sets values in text fields directly.
+- **`screenshot(width, quality, target_window_id)`**: Captures the viewport.
+- **`left_click(coordinate, target_app)`**: Simulates a left-click.
 
-### Discovery and Scripting
-- **`get_tool_guide(task_description: string)`**: Plans if JXA, AppleScript, AX UI Automation, or pixel click is recommended.
-- **`run_script(language: string, script: string)`**: Executes JXA, AppleScript, or PowerShell.
-- **`get_app_capabilities(bundle_id: string)`**: Queries scriptable, accessible, or active state.
-
-### Accessibility (AX UI Automation)
-- **`get_ui_tree(target_app?: string, target_window_id?: int)`**: Returns a JSON structure of active UI roles and labels.
-- **`click_element(role: string, label: string)`**: Performs a semantic click on a button or menu.
-- **`set_value(role: string, label: string, value: string)`**: Sets values in text fields directly.
-- **`fill_form(fields: array, target_app?: string)`**: Sets multiple text fields in a single call.
-- **`list_menu_bar(bundle_id: string)`**: Lists menu items and keyboard shortcuts.
-
-### Mouse and Keyboard
-- **`screenshot(width?: int, quality?: int, target_window_id?: int)`**: Captures the viewport.
-- **`left_click(coordinate: int[], target_app?: string)`**: Simulates a left-click.
-- **`type(text: string, press_enter?: boolean, target_app?: string)`**: Enters text.
-- **`key(text: string, target_app?: string)`**: Triggers combinations (e.g. `command+s`).
-
-### Windows and Displays
-- **`list_windows(bundle_id?: string)`**: Queries all visible windows.
-- **`activate_window(window_id: int)`**: Places focus on a targeted window.
-- **`list_spaces()`**: Interacts with macOS Spaces or Windows Virtual Desktops.
+### Windows Automation Engine (`bdb_windows_computer_use`)
+Exposes 22 specialized tools. Key tools include:
+- **`mouse_move(x, y)` / `left_click()`**: Simulates physical mouse interactions.
+- **`type(text, press_enter)`**: Types strings utilizing SendInput.
+- **`screenshot()`**: Grabs active monitor outputs.
+- **`get_ui_tree(backend)`**: Dumps the complete Windows UIAutomation or MSActiveAccessibility control tree.
+- **`ocr(region)`**: Executes local Tesseract OCR on a screen subregion to extract text without cloud APIs.
+- **`find_element(criteria)`**: Resolves a control using criteria (title, class, automation_id).
 
 ---
 
 ## 4. Code Recipes and Prompt Cookbook
 
-### Recipe 1: Retrieve and Interact with Photoshop AX Tree
-Instead of taking a screenshot and clicking coordinates, find the "New Layer" button semantically:
+### Recipe 1: Retrieve and Click elements on Windows via UI Automation
+Instead of coordinates, locate the Notepad "File" menu item on Windows semantically:
 
 ```json
-// Step 1: Probe Photoshop Capabilities
-// Tool: get_app_capabilities(bundle_id="com.adobe.Photoshop")
+// Step 1: Find target window and element info
+// Tool: find_element(criteria={"title": "Notepad", "control_type": "Window"})
 
-// Step 2: Get Window list to target the correct window ID
-// Tool: list_windows(bundle_id="com.adobe.Photoshop")
-
-// Step 3: Semantic Click on the New Layer Button
-// Tool: click_element(role="AXButton", label="New Layer", target_app="com.adobe.Photoshop")
+// Step 2: Semantic click on File menu button
+// Tool: click_element(role="MenuItem", label="File")
 ```
 
 ### Recipe 2: Run JXA (Javascript for Automation) Script on macOS
@@ -96,24 +83,15 @@ Notes.activate();
 ## 5. Troubleshooting and Connection Details
 
 ### Configuration and Setup
-- **MacOS Permissions Required:** You must grant **Accessibility** access to the parent application (e.g. Terminal, Cursor, or Claude Desktop) in `System Settings -> Privacy & Security -> Accessibility`.
-- **Linux Packages Required:** 
-  ```bash
-  sudo apt-get install -y xdotool wmctrl xclip scrot
-  ```
+- **Windows Pre-requisites:**
+  - Python >=3.12 is required. The installer auto-compiles dependencies with `uv`.
+  - For full OCR support, ensure Tesseract OCR is installed on Windows (`winget install UB-Mannheim.TesseractOCR`).
+- **macOS Permissions Required:** You must grant **Accessibility** and **Screen Recording** access to your editor (e.g. Cursor, Claude Desktop, or Terminal) in `System Settings -> Privacy & Security`.
 
 ### Common Errors and Fixes
-
 1. **`FocusFailure: Target window is not frontmost`**
    - *Cause:* The `strict` focus strategy detected another application stole active focus.
    - *Fix:* Switch your `focus_strategy` to `prepare_display` to auto-hide background applications, or call `activate_window` first.
-2. **`spawn uvx ENOENT / command not found`**
-   - *Cause:* The client (GUI) did not inherit terminal shell PATH settings.
-   - *Fix:* Configure your client to use the absolute path of `npx` or wrap it with `cmd /c` on Windows:
-     ```json
-     "command": "npx",
-     "args": ["--yes", "--prefer-offline", "@zavora-ai/computer-use-mcp"]
-     ```
-3. **`Accessibility tree AXError: API Disabled`**
-   - *Cause:* System Sandbox is blocking accessibility inspector calls.
-   - *Fix:* Relaunch the parent application (Cursor/Claude Code) and verify the Accessibility toggle is active in your OS System Preferences.
+2. **`pywinauto.findwindows.ElementNotFoundError`**
+   - *Cause:* The Win32 backend failed to resolve the title or control.
+   - *Fix:* Switch backends (e.g., from `win32` to `uia`) or verify if the app requires Admin escalation.

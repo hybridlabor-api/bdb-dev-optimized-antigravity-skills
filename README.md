@@ -28,9 +28,9 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 ---
 
-## 🔌 20 Custom Local MCP Integrations
+## 🔌 21 Custom Local MCP Integrations
 
-Rather than relying on skeletal python mocks or broken remote APIs, this repository bundles **20 custom, local MCP wrappers** (in the `mcps/` directory). These are built/warmed automatically and allow your AI assistant to read, write, and execute commands within the industry's leading creative software.
+Rather than relying on skeletal python mocks or broken remote APIs, this repository bundles **21 custom, local MCP wrappers** (in the `mcps/` directory). These are built/warmed automatically and allow your AI assistant to read, write, and execute commands within the industry's leading creative software.
 
 ### 🎬 DaVinci Resolve (Triple Coverage)
 - **Primary: `bdb_davinci_mcp`**: Works on both the **Free and Studio** versions using a workspace script menu loop. Exposes 162 tools (Timeline, clips, markers, grades, Fusion) and includes local CPU-based AI models (Meta Demucs v4 for voice isolation, faster-whisper for auto-subtitles, and rembg for background removal) so free users get Studio-grade features.
@@ -63,8 +63,9 @@ Rather than relying on skeletal python mocks or broken remote APIs, this reposit
 - **grandMA3**: `bdb_ma3_mcp` sends OSC/UDP command streams directly to your grandMA3 console (port 8000) to automate cues, macros, and patch fixtures.
 - **Resolume**: `bdb_resolume_mcp` wraps Arena's REST API (port 8080) to sequence layers, query statuses, and trigger clips.
 
-### 🖥️ OS Control
+### 🖥️ OS Control (Dual-Engine)
 - **zavora_computer_use**: Bundled with precompiled native Rust NAPI binary objects (macOS arm64/x64, Windows, Linux) to control mouse, keyboard, windows, and apps without runtime compile errors.
+- **bdb_windows_computer_use**: Native python-based Win32 / COM / UIAutomation controller with local OCR (Tesseract) support for advanced Windows GUI automation.
 
 ---
 

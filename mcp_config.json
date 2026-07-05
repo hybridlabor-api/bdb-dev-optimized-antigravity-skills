@@ -79,6 +79,10 @@
     "zavora_computer_use": {
       "command": "node",
       "args": ["__MCPS_DIR__/computer-use-mcp/dist/server.js"]
+    },
+    "bdb_windows_computer_use": {
+      "command": "uv",
+      "args": ["run", "--directory", "__MCPS_DIR__/windows-computer-use-mcp", "run_server.py"]
     }
   }
 }

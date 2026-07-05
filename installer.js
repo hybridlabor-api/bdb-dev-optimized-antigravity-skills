@@ -283,7 +283,8 @@ promptMode(({ mode, platform, customPaths }) => {
                 { folder: 'davinci-resolve-mcp-free', cmd: 'uv run -r requirements.txt src/resolve_mcp_bridge.py --help' },
                 { folder: 'blender-mcp', cmd: 'uv run -m blender_mcp.server --help' },
                 { folder: 'blender-mcp-server', cmd: 'uv run -m blender_mcp_server --help' },
-                { folder: 'vectorworks-mcp', cmd: 'uv run -r requirements.txt app/mcp_server.py --help' }
+                { folder: 'vectorworks-mcp', cmd: 'uv run -r requirements.txt app/mcp_server.py --help' },
+                { folder: 'windows-computer-use-mcp', cmd: 'uv run run_server.py --help' }
             ];
             pythonMcps.forEach(mcp => {
                 const targetFolder = path.join(mcpCodeTarget, mcp.folder);
