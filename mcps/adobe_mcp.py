@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#     "mcp[cli]>=1.3.0",
+# ]
+# ///
+
 from mcp.server.fastmcp import FastMCP
 import subprocess
 import platform
@@ -14,8 +20,17 @@ def execute_adobe_jsx(app_name: str, jsx_code: str) -> str:
         if "After Effects" in app_name:
             command = "DoScript"
             
+        # Version-independent Bundle ID routing
+        app_target = f'"{app_name}"'
+        if "Photoshop" in app_name:
+            app_target = 'id "com.adobe.Photoshop"'
+        elif "Illustrator" in app_name:
+            app_target = 'id "com.adobe.illustrator"'
+        elif "After Effects" in app_name:
+            app_target = 'id "com.adobe.AfterEffects"'
+            
         apple_script = f'''
-        tell application "{app_name}"
+        tell application {app_target}
             {command} "{escaped_jsx}"
         end tell
         '''
@@ -93,6 +108,21 @@ def ae_render_active_comp() -> str:
     }
     """
     return execute_adobe_jsx("Adobe After Effects", jsx)
+
+@mcp.tool()
+def ai_draw_rectangle(width: float = 200.0, height: float = 150.0, red: int = 255, green: int = 0, blue: int = 0) -> str:
+    """Creates a new document in Illustrator (if none exists) and draws a filled rectangle."""
+    jsx = f"""
+    var doc = app.documents.length > 0 ? app.activeDocument : app.documents.add();
+    var rect = doc.pathItems.rectangle(200, 100, {width}, {height});
+    var fillColor = new RGBColor();
+    fillColor.red = {red};
+    fillColor.green = {green};
+    fillColor.blue = {blue};
+    rect.fillColor = fillColor;
+    "Success";
+    """
+    return execute_adobe_jsx("Adobe Illustrator", jsx)
 
 if __name__ == "__main__":
     mcp.run()
