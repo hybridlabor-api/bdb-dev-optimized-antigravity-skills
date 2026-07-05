@@ -44,16 +44,69 @@ const backupDir = path.join(geminiDir, `skills_backup_${timestamp}`);
 // Auto-accept flags for CI/CD or autonomous agents
 const isAutoYes = process.argv.includes('-y') || process.argv.includes('--yes');
 
+function detectPlatforms() {
+    const detections = [];
+    
+    // Antigravity
+    if (fs.existsSync(geminiDir)) {
+        detections.push("Google Antigravity (detected at " + geminiDir + ")");
+    }
+    
+    // Claude Desktop
+    const claudePath = process.platform === 'win32' 
+        ? path.join(process.env.APPDATA || homeDir, 'Claude')
+        : path.join(homeDir, 'Library', 'Application Support', 'Claude');
+    if (fs.existsSync(claudePath)) {
+        detections.push("Claude Desktop (detected at " + claudePath + ")");
+    }
+    
+    // Cursor
+    const cursorPath = process.platform === 'win32' 
+        ? path.join(process.env.APPDATA || homeDir, 'Cursor')
+        : path.join(homeDir, 'Library', 'Application Support', 'Cursor');
+    if (fs.existsSync(cursorPath)) {
+        detections.push("Cursor IDE (detected at " + cursorPath + ")");
+    }
+
+    // VS Code (for Cline/Roo Code)
+    const vscodePath = process.platform === 'win32' 
+        ? path.join(process.env.APPDATA || homeDir, 'Code')
+        : path.join(homeDir, 'Library', 'Application Support', 'Code');
+    if (fs.existsSync(vscodePath)) {
+        detections.push("VS Code / Cline / Roo Code (detected at " + vscodePath + ")");
+    }
+
+    // Windsurf
+    const windsurfPath = process.platform === 'win32' 
+        ? path.join(process.env.APPDATA || homeDir, 'Windsurf')
+        : path.join(homeDir, 'Library', 'Application Support', 'Windsurf');
+    if (fs.existsSync(windsurfPath)) {
+        detections.push("Windsurf IDE (detected at " + windsurfPath + ")");
+    }
+
+    return detections;
+}
+
 function promptMode(callback) {
     if (isAutoYes) {
         return callback({ mode: '1', platform: '1' });
     }
+
+    const detections = detectPlatforms();
+    if (detections.length > 0) {
+        console.log("\nDetected Agent Environments on this system:");
+        detections.forEach(d => console.log("  * " + d));
+    } else {
+        console.log("\nNo active agent config directories auto-detected in standard locations.");
+    }
+
     console.log("\nTarget AI Platform:");
     console.log(" (1) Google Antigravity (Default)");
     console.log(" (2) Claude Desktop / Claude Code");
-    console.log(" (3) Cursor / Generic IDE");
+    console.log(" (3) Cursor / Generic IDE (Project-local)");
+    console.log(" (4) Custom Installation (Specify custom paths manually)");
     
-    rl.question("\nSelect platform [1/2/3]: ", (platformAns) => {
+    rl.question("\nSelect platform [1/2/3/4]: ", (platformAns) => {
         const platform = platformAns.trim() || '1';
         
         console.log("\nInstallation Mode:");
@@ -61,7 +114,36 @@ function promptMode(callback) {
         console.log(" (2) Replace: Backup and wipe your existing skills/MCPs, installing ONLY BDB tools.");
         rl.question("\nSelect mode [1/2]: ", (modeAns) => {
             const mode = modeAns.trim() === '2' ? '2' : '1';
-            callback({ mode, platform });
+            
+            if (platform === '4') {
+                // Prompt for custom paths
+                console.log("\n--- Custom Path Configuration ---");
+                rl.question("Target directory for global skills [default: " + path.join(homeDir, '.bdb-skills') + "]: ", (skillDir) => {
+                    const customSkillDir = skillDir.trim() || path.join(homeDir, '.bdb-skills');
+                    rl.question("Target directory for legacy skills [default: " + path.join(customSkillDir, 'legacy') + "]: ", (legacyDir) => {
+                        const customLegacyDir = legacyDir.trim() || path.join(customSkillDir, 'legacy');
+                        rl.question("Target directory for workspace skills [default: " + workspaceDir + "]: ", (workDir) => {
+                            const customWorkspaceDir = workDir.trim() || workspaceDir;
+                            rl.question("Target path for MCP Config JSON file [default: " + path.join(homeDir, 'mcp_config.json') + "]: ", (mcpConf) => {
+                                const customMcpConfigPath = mcpConf.trim() || path.join(homeDir, 'mcp_config.json');
+                                callback({
+                                    mode,
+                                    platform,
+                                    customPaths: {
+                                        skillDir: customSkillDir,
+                                        legacyDir: customLegacyDir,
+                                        workspaceDir: customWorkspaceDir,
+                                        mcpConfigPath: customMcpConfigPath,
+                                        mcpDir: path.dirname(customMcpConfigPath)
+                                    }
+                                });
+                            });
+                        });
+                    });
+                });
+            } else {
+                callback({ mode, platform });
+            }
         });
     });
 }
@@ -71,7 +153,7 @@ function promptMCP(callback) {
         return callback('y');
     }
     console.log("");
-    rl.question("Do you also want to install the MCP Pack (Unreal, Rhino, Resolve, Grandma3, Resolume, Github, etc)? (y/n): ", (answer) => {
+    rl.question("Do you also want to install the MCP Pack (Unreal, Adobe, Resolve, Grandma3, Resolume, Github, etc)? (y/n): ", (answer) => {
         callback(answer);
     });
 }
@@ -99,7 +181,7 @@ function copyDirRecursiveSync(source, target) {
     });
 }
 
-promptMode(({ mode, platform }) => {
+promptMode(({ mode, platform, customPaths }) => {
     fs.mkdirSync(backupDir, { recursive: true });
     
     let targetSkillDir = globalConfigDir;
@@ -128,6 +210,14 @@ promptMode(({ mode, platform }) => {
         targetWorkspaceDir = path.join(currentDir, '.cursor', 'workspace_skills');
         targetMcpDir = path.join(currentDir, '.cursor');
         mcpConfigPath = path.join(targetMcpDir, 'mcp.json');
+    } else if (platform === '4' && customPaths) {
+        // Custom paths
+        console.log("\n[Platform: Custom Path] Applying custom paths...");
+        targetSkillDir = customPaths.skillDir;
+        targetLegacyDir = customPaths.legacyDir;
+        targetWorkspaceDir = customPaths.workspaceDir;
+        targetMcpDir = customPaths.mcpDir;
+        mcpConfigPath = customPaths.mcpConfigPath;
     }
 
     if (mode === '2') {
@@ -188,7 +278,7 @@ promptMode(({ mode, platform }) => {
                     fs.writeFileSync(mcpConfigPath, mcpConfigStr);
                 }
             } else {
-                if (platform === '2' && !fs.existsSync(mcpConfigPath)) {
+                if ((platform === '2' || platform === '4') && !fs.existsSync(mcpConfigPath)) {
                      const wrapper = { mcpServers: JSON.parse(mcpConfigStr).mcpServers };
                      fs.writeFileSync(mcpConfigPath, JSON.stringify(wrapper, null, 2));
                 } else {

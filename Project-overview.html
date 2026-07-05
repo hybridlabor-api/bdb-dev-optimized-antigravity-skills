@@ -461,23 +461,24 @@
         <section>
             <div class="section-header">
                 <h2>Installation Manual</h2>
-                <p>Deploy the BDB Creative OS to any AI Agent environment (Antigravity, Claude Desktop, Cursor). The smart installer adapts to your workspace.</p>
+                <p>Deploy the BDB Creative OS to any AI Agent environment (Antigravity, Claude, Cursor, Windsurf, Roo Code, Cline, Aider, or custom frameworks). The smart installer auto-scans your system or allows fully manual custom path specification.</p>
             </div>
             <div class="manual-grid">
                 <div class="glass-panel">
                     <h3>One-Command Setup</h3>
-                    <p style="color: var(--text-medium); margin-top: 10px;">Run the interactive installer via NPM. It will automatically ask you which platform you are configuring and whether to merge or replace existing skills.</p>
+                    <p style="color: var(--text-medium); margin-top: 10px;">Run the interactive installer via NPM. It will auto-scan your system for active configurations and prompt you for custom targets or merge modes.</p>
                     <div class="code-block">
                         <span class="comment"># Works on macOS, Windows, Linux</span><br>
                         <span class="keyword">npx</span> @hybridlabor-api/bdb-antigravity-skills
                     </div>
                 </div>
                 <div class="glass-panel">
-                    <h3>Supported Platforms</h3>
-                    <ul style="color: var(--text-medium); margin-top: 16px; margin-left: 20px; display: flex; flex-direction: column; gap: 12px;">
-                        <li><strong>Google Antigravity:</strong> Injects natively into <code>~/.gemini/config/</code>.</li>
-                        <li><strong>Claude Desktop:</strong> Wires MCPs into <code>claude_desktop_config.json</code> and extracts skills.</li>
-                        <li><strong>Cursor & IDEs:</strong> Dumps context rules into <code>.cursor/</code> for project-level intelligence.</li>
+                    <h3>Supported & Auto-Detected Environments</h3>
+                    <ul style="color: var(--text-medium); margin-top: 16px; margin-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>Google Antigravity:</strong> Target: <code>~/.gemini/config/</code>.</li>
+                        <li><strong>Claude Desktop & Code:</strong> Automatically wires into <code>claude_desktop_config.json</code>.</li>
+                        <li><strong>Cursor, Windsurf, Roo Code, Cline:</strong> Configures workspace folders or global mcp JSON configurations.</li>
+                        <li><strong>Custom Path Mode:</strong> Provide target paths manually for any developer agents (e.g. ChatGPT Codex, Aider, custom python frameworks).</li>
                     </ul>
                 </div>
             </div>
