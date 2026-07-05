@@ -48,9 +48,12 @@ Rather than relying on skeletal python mocks or broken remote APIs, this reposit
 - **Primary: `bdb_blender_mcp`**: BlenderMCP socket integration for scene layout, mesh generation, and viewport controls.
 - **Fallback: `bdb_blender_mcp_fallback`**: djeada's python server for managing Blender TCP connections and raw python scripting.
 
-### 🎨 Adobe Creative Cloud (Illustrator, Photoshop, After Effects)
-- **Primary: `bdb_adobe_mcp`**: Leverages macOS Bundle IDs (`id "com.adobe.illustrator"`, etc.) for zero-install scripting via native ExtendScript compiler bridges. Includes built-in toolsets like `ai_draw_rectangle` to automatically script Illustrator.
-- **Secondary: `bdb_adobe_uxp_mcp`**: A three-tier WebSocket proxy (Node.js backend + native UXP plugins) for deep DOM manipulation inside Photoshop and Premiere.
+### 🎨 Adobe Creative Cloud (Illustrator, Photoshop, After Effects, Premiere Pro)
+We provide a dual-engine architecture optimized for macOS and Windows environments:
+- **Direct OS-Native Bridge (`bdb_adobe_mcp`)**: Runs zero-install scripting.
+  - **macOS:** Targets application bundle IDs directly (`id "com.adobe.illustrator"`, `id "com.adobe.Photoshop"`, `id "com.adobe.AfterEffects"`) via AppleScript `do javascript` / `DoScript` command streams. This bypasses versioning directories and supports latest apps (e.g. Adobe Illustrator 2026).
+  - **Windows:** Automatically queries and instantiates local COM objects (`Illustrator.Application`, `Photoshop.Application`, `AfterFX.Application`) via PowerShell wrapper scripts and executes transient `.jsx` ExtendScript code.
+- **Cross-Platform UXP WebSocket Bridge (`bdb_adobe_uxp_mcp`)**: A three-tier WebSocket proxy (Node.js server on port 8080 + native UXP developer plugins) for deep DOM manipulation and persistent WebSocket sessions inside Photoshop and Premiere Pro, running identically on Windows and macOS.
 
 ### 🎛️ TouchDesigner (Twin-Engine)
 - **Primary: `bdb_touchdesigner_mcp`**: MindDesigner-Bridge (`tdmcp`) on port 9980 to read and write networks via custom `.tox` structures.
@@ -64,8 +67,8 @@ Rather than relying on skeletal python mocks or broken remote APIs, this reposit
 - **Resolume**: `bdb_resolume_mcp` wraps Arena's REST API (port 8080) to sequence layers, query statuses, and trigger clips.
 
 ### 🖥️ OS Control (Dual-Engine)
-- **zavora_computer_use**: Bundled with precompiled native Rust NAPI binary objects (macOS arm64/x64, Windows, Linux) to control mouse, keyboard, windows, and apps without runtime compile errors.
-- **bdb_windows_computer_use**: Native python-based Win32 / COM / UIAutomation controller with local OCR (Tesseract) support for advanced Windows GUI automation.
+- **macOS/Linux: `zavora_computer_use`**: Bundled with precompiled native Rust NAPI binary objects (macOS arm64/x64, Linux) to control mouse, keyboard, windows, and apps without runtime compile errors.
+- **Windows: `bdb_windows_computer_use`**: Native python-based Win32 / COM / UIAutomation controller with local OCR (Tesseract) support for advanced Windows GUI automation.
 
 ---
 
@@ -96,17 +99,35 @@ The installer is built using an interactive Node-based menu. It allows you to:
 Simply tell your assistant:
 > "Please run `npx -y @hybridlabor-api/bdb-antigravity-skills@latest` to install the skills pack and configure the local MCP servers."
 
-### Option 2: Command Line (Global)
+### Option 2: Command Line (Global via NPX)
 Run the script globally in your terminal:
 ```bash
 npx -y @hybridlabor-api/bdb-antigravity-skills@latest
 ```
 
-During installation, the script will automatically:
-* Safely handle backup and configuration merging.
-* Deploy/build all local Node dependencies.
-* Run a **Python dependency pre-warming phase** (using `uv run`) to fetch and cache required library bundles, ensuring your client doesn't hit timeouts on first start.
-* Update your local client config (e.g. `~/.gemini/config.json`, `claude_desktop_config.json`, or Cursor configs) to reference the local servers.
+### Option 3: Using Homebrew (macOS)
+If you are on a Mac and prefer Homebrew, you can tap and install the package:
+```bash
+brew tap hybridlabor-api/bdb-skills
+brew install bdb-skills
+bdb-skills
+```
+
+### Option 4: Manual Shell Script (Git Clone)
+Clone the repository and run the installer script:
+```bash
+git clone https://github.com/hybridlabor-api/bdb-dev-optimized-antigravity-skills.git
+cd bdb-dev-optimized-antigravity-skills
+chmod +x installer.sh
+./installer.sh
+```
+
+**The installer script will automatically:**
+1. Back up your existing global and workspace skills safely.
+2. Deploy the new curated global config skills.
+3. Install the workspace-specific agent skills.
+4. Copy the customized `GEMINI.md` to `~/.gemini/GEMINI.md`.
+5. Pre-warm Python dependencies via `uv run` to prevent AI agent timeouts on first run.
 
 ---
 *Elevate your agency. Dominate the workflow.*
