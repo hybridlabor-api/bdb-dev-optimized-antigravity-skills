@@ -13,12 +13,20 @@
       "args": ["__MCPS_DIR__/unreal_mcp/dist/cli.js"]
     },
     "bdb_rhino_mcp": {
+      "command": "node",
+      "args": ["__MCPS_DIR__/RhinoMCP/shared/router-launcher.mjs", "--default-version", "8"]
+    },
+    "bdb_rhino_mcp_fallback": {
       "command": "uv",
-      "args": ["run", "__MCPS_DIR__/rhino_mcp.py"]
+      "args": ["--directory", "__MCPS_DIR__/golem-rhino-mcp", "run", "-m", "mcp_server"]
     },
     "bdb_davinci_mcp": {
+      "command": "node",
+      "args": ["__MCPS_DIR__/davinci-resolve-mcp/bin/davinci-resolve-mcp.mjs"]
+    },
+    "bdb_davinci_mcp_fallback": {
       "command": "uv",
-      "args": ["run", "__MCPS_DIR__/davinci_mcp.py"]
+      "args": ["--directory", "__MCPS_DIR__/davinci-mcp-professional", "run", "main.py"]
     },
     "bdb_grandma3_mcp": {
       "command": "uv",
@@ -36,17 +44,37 @@
       "command": "node",
       "args": ["__MCPS_DIR__/adobe_uxp_mcp/index.js"]
     },
+    "bdb_blender_mcp": {
+      "command": "uv",
+      "args": ["--directory", "__MCPS_DIR__/blender-mcp", "run", "-m", "blender_mcp.server"]
+    },
+    "bdb_blender_mcp_fallback": {
+      "command": "uv",
+      "args": ["--directory", "__MCPS_DIR__/blender-mcp-server", "run", "-m", "blender_mcp_server"]
+    },
+    "bdb_after_effects_mcp": {
+      "command": "node",
+      "args": ["__MCPS_DIR__/after-effects-mcp/build/index.js"]
+    },
+    "bdb_after_effects_mcp_fallback": {
+      "command": "go",
+      "args": ["run", "__MCPS_DIR__/ae-mcp/cmd/ae-mcp"]
+    },
+    "bdb_vectorworks_mcp": {
+      "command": "uv",
+      "args": ["run", "-r", "__MCPS_DIR__/vectorworks-mcp/requirements.txt", "__MCPS_DIR__/vectorworks-mcp/app/mcp_server.py"]
+    },
     "bdb_td_minddesigner": {
-      "command": "npx",
-      "args": ["-y", "minddesigner-tdmcp"]
+      "command": "node",
+      "args": ["__MCPS_DIR__/tdmcp/dist/index.js"]
     },
     "bdb_td_backup": {
-      "command": "npx",
-      "args": ["-y", "touchdesigner-mcp"]
+      "command": "node",
+      "args": ["__MCPS_DIR__/touchdesigner-mcp/dist/cli.js", "--stdio"]
     },
     "zavora_computer_use": {
-      "command": "npx",
-      "args": ["-y", "@zavora-ai/computer-use-mcp"]
+      "command": "node",
+      "args": ["__MCPS_DIR__/computer-use-mcp/dist/server.js"]
     }
   }
 }

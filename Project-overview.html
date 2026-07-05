@@ -448,11 +448,11 @@
         <header>
             <div class="logo">
                 BDB<span class="gradient-text-brand">OS</span>
-                <div class="version-badge">v1.1.9</div>
+                <div class="version-badge">v1.2.0</div>
             </div>
             <div style="display: flex; gap: 24px; font-size: 0.9rem; color: var(--text-medium);">
                 <div><strong>142</strong> Skills</div>
-                <div><strong>9</strong> MCP Servers</div>
+                <div><strong>19</strong> MCP Servers</div>
                 <div><strong>Universal</strong> Agent Support</div>
             </div>
         </header>
@@ -495,60 +495,90 @@
                 <div class="glass-panel mcp-card">
                     <div class="mcp-icon">🎮</div>
                     <h3>Unreal Engine 5</h3>
-                    <p>Native HTTP Web Remote Control integration. Allows the AI to spawn actors, modify material parameters, and structure scenes.</p>
+                    <p>Fully featured TS bridge & native C++ plugin (McpAutomationBridge). 36 advanced tools to control actor properties, sequences, blueprints, and materials.</p>
                     <div class="tag-row">
-                        <span class="tag">Python 3</span>
-                        <span class="tag">Web Remote</span>
+                        <span class="tag">C++ Plugin</span>
+                        <span class="tag">TypeScript</span>
                     </div>
                 </div>
-                <!-- Adobe -->
+                <!-- Adobe & After Effects -->
                 <div class="glass-panel mcp-card">
                     <div class="mcp-icon">🎨</div>
-                    <h3>Adobe Suite</h3>
-                    <p>Uses a Node.js WebSocket proxy bridging to native UXP plugins for Photoshop and Premiere. Avoids sluggish AppleScript.</p>
+                    <h3>Adobe & After Effects</h3>
+                    <p>UXP WebSocket plugins for Photoshop/Premiere and Dakkshin Node/sunqirui1987 Go+ fallbacks for After Effects. Full layer/compositions control.</p>
                     <div class="tag-row">
                         <span class="tag">Node.js</span>
-                        <span class="tag">UXP</span>
+                        <span class="tag">ExtendScript</span>
                     </div>
                 </div>
-                <!-- grandMA3 -->
+                <!-- Rhino 3D -->
                 <div class="glass-panel mcp-card">
-                    <div class="mcp-icon">💡</div>
-                    <h3>grandMA3</h3>
-                    <p>Lighting console integration via WebAPI and OSC sockets. AI can trigger macros, patch fixtures, and cue lists.</p>
+                    <div class="mcp-icon">📐</div>
+                    <h3>Rhino 3D</h3>
+                    <p>Official McNeel community server + GOLEM 3DMCP fallback with 105 tools. Gives full read/write access to geometry, grasshopper, and rendering.</p>
                     <div class="tag-row">
-                        <span class="tag">OSC</span>
-                        <span class="tag">Lua Bridge</span>
+                        <span class="tag">McNeel Yak</span>
+                        <span class="tag">Python/C#</span>
                     </div>
                 </div>
-                <!-- Resolume -->
+                <!-- DaVinci Resolve -->
                 <div class="glass-panel mcp-card">
-                    <div class="mcp-icon">🎛️</div>
-                    <h3>Resolume Arena</h3>
-                    <p>Direct VJ software manipulation via Arena REST API. AI can trigger clips, clear layers, and adjust composition effects.</p>
+                    <div class="mcp-icon">🎬</div>
+                    <h3>DaVinci Resolve</h3>
+                    <p>Official samuelgursky NPM package + Hoyt Harness professional fallback. Handles timelines, project metadata, media pool, and rendering.</p>
                     <div class="tag-row">
-                        <span class="tag">REST</span>
-                        <span class="tag">VJ</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Python API</span>
+                    </div>
+                </div>
+                <!-- Blender -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🏺</div>
+                    <h3>Blender</h3>
+                    <p>Socket-based ahujasid BlenderMCP + djeada Blender-MCP-Server fallback. Manipulates objects, materials, renders viewport, and exports files.</p>
+                    <div class="tag-row">
+                        <span class="tag">Python</span>
+                        <span class="tag">uv venv</span>
+                    </div>
+                </div>
+                <!-- Vectorworks -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🏠</div>
+                    <h3>Vectorworks</h3>
+                    <p>RAG-based search, command, and wiki indexer by togawamanabu. Guides the AI to write correct scripts and manage CAD data hierarchies.</p>
+                    <div class="tag-row">
+                        <span class="tag">uv run</span>
+                        <span class="tag">RAG Search</span>
                     </div>
                 </div>
                 <!-- TouchDesigner -->
                 <div class="glass-panel mcp-card">
                     <div class="mcp-icon">⛓️</div>
                     <h3>TouchDesigner</h3>
-                    <p>MindDesigner nodes network manipulation. AI can construct TOP/CHOP chains and backup parameter states.</p>
+                    <p>MindDesigner COMP/TOP/CHOP node network builder + 8beeeaaat fallback. Construct visuals programmatically using real-time parameter control.</p>
                     <div class="tag-row">
-                        <span class="tag">Python</span>
-                        <span class="tag">TD</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">OSC / HTTP</span>
                     </div>
                 </div>
-                <!-- Browser -->
+                <!-- grandMA3 & Resolume -->
                 <div class="glass-panel mcp-card">
-                    <div class="mcp-icon">🌐</div>
-                    <h3>Firecrawl & Chrome</h3>
-                    <p>Advanced web scraping and live Chrome DevTools integration for automated browser testing and interaction.</p>
+                    <div class="mcp-icon">💡</div>
+                    <h3>grandMA3 & Resolume</h3>
+                    <p>OSC bridge for grandMA3 console and REST API integration for Resolume Arena VJ. Connects physical hardware and real-time screen layers.</p>
                     <div class="tag-row">
-                        <span class="tag">Puppeteer</span>
-                        <span class="tag">Scraping</span>
+                        <span class="tag">OSC Sockets</span>
+                        <span class="tag">REST API</span>
+                    </div>
+                </div>
+                <!-- Computer Use -->
+                <div class="glass-panel mcp-card">
+                    <div class="mcp-icon">🖥️</div>
+                    <h3>Zavora Computer Use</h3>
+                    <p>Native NAPI-RS pre-compiled binaries. High-performance OS mouse, keyboard, clipboard, and frontmost window control without Python lag.</p>
+                    <div class="tag-row">
+                        <span class="tag">Rust NAPI</span>
+                        <span class="tag">Cross-Platform</span>
                     </div>
                 </div>
             </div>
@@ -635,8 +665,23 @@
             { name: "bdbrainstorm", desc: "Forces a comprehensive multi-agent brainstorming workflow combining debate, interactive grilling, subagent tasking, and high-end visual design.", cat: "custom", source: "Global Config" },
             { name: "MCP_Manage", desc: "Command center skill that manages and directs whitelabeled MCP servers like grandMA3, Resolume, Unreal Engine, Rhino, DaVinci, TouchDesigner, and Puppeteer.", cat: "custom", source: "Global Config" },
             { name: "bdb-updater", desc: "Allows agents to autonomously check NPM for new versions of this OS and update themselves via background schedule.", cat: "custom", source: "Global Config" },
-            { name: "bdb_td_minddesigner", desc: "TouchDesigner MindDesigner MCP - Builds real COMP, TOP, CHOP node networks from natural language prompts.", cat: "mcp", source: "Global Config" },
-            { name: "bdb_td_backup", desc: "TouchDesigner Control MCP - Sets node parameters and queries TouchDesigner project states.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_unreal_mcp", desc: "Unreal Engine 5 MCP - Spawns actors, edits materials, and automates level/sequence manipulation in UE5.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_rhino_mcp", desc: "Rhino 3D MCP - Official McNeel community server for reading/writing Rhino geometric layouts.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_rhino_mcp_fallback", desc: "Rhino 3D GOLEM MCP - Py-based fallback server with 105 tools to manipulate Rhino 8 assets.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_davinci_mcp", desc: "DaVinci Resolve MCP - samuelgursky official Node server for timeline, media pool, and render editing.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_davinci_mcp_fallback", desc: "DaVinci Resolve Pro MCP - hoyt-harness professional python fallback server for Studio edition.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_blender_mcp", desc: "Blender MCP - ahujasid BlenderMCP socket integration for object creation and scene layout.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_blender_mcp_fallback", desc: "Blender Server MCP - djeada python fallback server for managing Blender TCP connections.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_after_effects_mcp", desc: "After Effects MCP - Dakkshin node server for creating compositions and layers.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_after_effects_mcp_fallback", desc: "After Effects Go+ MCP - sunqirui1987 Go-based fallback server for scripting ExtendScript.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_vectorworks_mcp", desc: "Vectorworks MCP - togawamanabu RAG-based server that indexes SDK and helps write VectorScripts.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_td_minddesigner", desc: "TouchDesigner MindDesigner MCP - Pantani tdmcp node network generation bridge.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_td_backup", desc: "TouchDesigner Control MCP - 8beeeaaat fallback server for setting real-time parameters.", cat: "mcp", source: "Global Config" },
+            { name: "zavora_computer_use", desc: "Zavora Computer Use MCP - Local high-performance desktop controller with native OS binaries.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_grandma3_mcp", desc: "grandMA3 MCP - Lighting console controller that patches fixtures and triggers macros via OSC.", cat: "mcp", source: "Global Config" },
+            { name: "bdb_resolume_mcp", desc: "Resolume Arena MCP - REST API bridge for clip triggering and effect overlays in Arena.", cat: "mcp", source: "Global Config" },
+            { name: "adobe_mcp", desc: "Adobe OSAScript MCP - Python bridge that scripts Illustrator/Photoshop/AE via AppleScript/ExtendScript.", cat: "mcp", source: "Global Config" },
+            { name: "adobe_uxp_mcp", desc: "Adobe UXP MCP - WebSocket bridge linking creative software directly to native Photoshop/Premiere plugins.", cat: "mcp", source: "Global Config" },
             { name: "firecrawl", desc: "Searches, scrapes, and interacts with the web via the Firecrawl CLI.", cat: "mcp", source: "Workspace Agents" },
             { name: "firecrawl-agent", desc: "AI-powered autonomous data extraction that navigates complex sites and returns structured JSON.", cat: "mcp", source: "Workspace Agents" },
             { name: "firecrawl-build", desc: "Integrate Firecrawl into product code for web scraping, crawling, searching, and interaction.", cat: "mcp", source: "Workspace Agents" },

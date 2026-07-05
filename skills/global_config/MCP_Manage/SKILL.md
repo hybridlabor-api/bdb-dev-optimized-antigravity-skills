@@ -15,34 +15,43 @@ You are the authoritative skill for managing and utilizing the specialized Model
 2. **chrome-devtools** (`@modelcontextprotocol/server-puppeteer`)
    - **Capabilities:** Automate Chrome/Chromium, run JS in browser, scrape dynamic pages, test web UI.
 
-3. **bdb_unreal_mcp** (Unreal Engine 5.8+ Native / Whitelabeled)
+3. **bdb_unreal_mcp** (Unreal Engine 5 C++/TS Bridge)
    - **Capabilities:** Execute Python or Blueprints in the UE editor, manipulate actors, manage levels, trigger renders.
-   - **Implementation Details:** Based on the official Unreal MCP Plugin integrated natively in UE 5.8 (Edit -> Plugins -> Unreal MCP), incorporating community features from `gimmeDG/UnrealEngine5-mcp` under the BDB whitelabel.
+   - **Implementation:** Cloned from the official `ChiR24/Unreal_mcp` including the native C++ `McpAutomationBridge` plugin.
 
-4. **bdb_rhino_mcp** (Rhino 7/8 Compute/Python API)
-   - **Capabilities:** Generate CAD geometry, process NURBS, bake layers.
+4. **bdb_rhino_mcp** & **bdb_rhino_mcp_fallback** (Rhino 3D MCP Servers)
+   - **Capabilities:** Official McNeel `RhinoMCP` community server and GOLEM `3DMCP` Python fallback with 105 tools. full NURBS, layers, Grasshopper, and rendering.
 
-5. **bdb_davinci_mcp** (Resolve Scripting API)
-   - **Capabilities:** Automate timelines, apply color grades, render jobs, import media.
+5. **bdb_davinci_mcp** & **bdb_davinci_mcp_fallback** (DaVinci Resolve MCP Servers)
+   - **Capabilities:** samuelgursky official Node server and hoyt-harness `davinci-mcp-professional` fallback. Automation of timelines, media pool, metadata, and color grading.
 
-6. **bdb_grandma3_mcp** (Whitelabeled Pahegi/ma3-mcp)
-   - **Capabilities:** Control lighting fixtures, trigger macros, edit sequences, update palettes.
-   - **Implementation Details:** A customized, whitelabeled version of the open-source `pahegi-ma3-mcp-server`. It connects a Python environment with a Lua plugin directly running inside the grandMA3 software to control the console natively per AI.
+6. **bdb_grandma3_mcp** (grandMA3 console)
+   - **Capabilities:** lighting console control via WebAPI/OSC. Edit cue lists, patch fixtures, run macros.
 
-7. **bdb_resolume_mcp** (Resolume 7.26+ Native / Whitelabeled)
-   - **Capabilities:** Trigger clips, adjust composition parameters, control opacity and layers.
-   - **Implementation Details:** Takes advantage of the native `.mcpb` integration introduced in Resolume 7.26. Heavily utilizes the powerful implementations from `tortillaguy-resolume-mcp`, repackaged for the BDB pipeline.
+7. **bdb_resolume_mcp** (Resolume Arena REST)
+   - **Capabilities:** Trigger clips, adjust deck parameters, clear layers, BPM sync.
 
-8. **bdb_td_minddesigner** (TouchDesigner MindDesigner MCP - Main)
-   - **Capabilities:** Builds real TouchDesigner networks (COMPs, TOPs, CHOPs, SOPs, DATs) from plain language prompts.
-   - **Implementation Details:** Custom whitelabel implementation based on the open-source `minddesigner-tdmcp` server. It allows direct, real-time node network generation inside TouchDesigner from natural language descriptions.
+8. **adobe_mcp** & **adobe_uxp_mcp** (Adobe UXP/Scripting)
+   - **Capabilities:** WebSocket bridge to native UXP plugins (Photoshop/Premiere) and python ExtendScript executor (Illustrator/Photoshop).
 
-9. **bdb_td_backup** (TouchDesigner Control - Backup)
-   - **Capabilities:** Adjust parameters, query operator values, read/write node connections.
-   - **Implementation Details:** Whitelabeled version of the `8beeeaaat/touchdesigner-mcp` project, serving as a robust fallback/direct controller for existing TD files.
+9. **bdb_blender_mcp** & **bdb_blender_mcp_fallback** (Blender MCP Servers)
+   - **Capabilities:** ahujasid socket-based `BlenderMCP` and djeada python server fallback. Scene inspection, material control, object manipulation, rendering.
+
+10. **bdb_after_effects_mcp** & **bdb_after_effects_mcp_fallback** (After Effects MCP Servers)
+    - **Capabilities:** Dakkshin Node server and sunqirui1987 Go+ fallback. Compositions creation, layers styling, solid/shape preset renders, and ExtendScript triggers.
+
+11. **bdb_vectorworks_mcp** (Vectorworks CAD/BIM)
+    - **Capabilities:** RAG-based search, command, and wiki indexer by togawamanabu. Guides the AI to write correct scripts and manage CAD data hierarchies.
+
+12. **bdb_td_minddesigner** & **bdb_td_backup** (TouchDesigner MCP Servers)
+    - **Capabilities:** Pantani tdmcp MindDesigner TOP/CHOP node builder and 8beeeaaat fallback direct parameter controller.
+
+13. **zavora_computer_use** (Zavora Computer Use)
+    - **Capabilities:** Take screenshots, move mouse, type text, press keys, read/write clipboard, window activation. Pre-compiled Rust native NAPI binaries.
 
 ## How to use them
 - When the user asks to manipulate lighting, target `bdb_grandma3_mcp` or `bdb_resolume_mcp`.
-- When working on CAD or game environments, invoke `bdb_rhino_mcp` or `bdb_unreal_mcp`.
+- When working on CAD or game environments, invoke `bdb_rhino_mcp`, `bdb_unreal_mcp`, or `bdb_blender_mcp`.
 - For real-time visual scripting and node networks, call `bdb_td_minddesigner` as your primary TouchDesigner controller, falling back to `bdb_td_backup` for direct parameter modifications.
+- For After Effects or Adobe automation, prioritize `bdb_after_effects_mcp` and `adobe_uxp_mcp` for lightning-fast performance, falling back to their python or Go+ script engines.
 - Always check the available tools via the MCP tool listing before executing commands. If a server is down, instruct the user to verify the `mcp_config.json` configuration and ensure the respective host applications are running with API/OSC/Lua/network plugins enabled.

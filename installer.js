@@ -257,8 +257,8 @@ promptMode(({ mode, platform, customPaths }) => {
             copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
             console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
             
-            // Build / Setup Node-based MCPs (like adobe_uxp_mcp and unreal_mcp)
-            const nodeMcps = ['adobe_uxp_mcp', 'unreal_mcp'];
+            // Build / Setup Node-based MCPs
+            const nodeMcps = ['adobe_uxp_mcp', 'unreal_mcp', 'tdmcp', 'touchdesigner-mcp', 'davinci-resolve-mcp', 'after-effects-mcp', 'computer-use-mcp'];
             const execSync = require('child_process').execSync;
             nodeMcps.forEach(mcpFolder => {
                 const targetFolder = path.join(mcpCodeTarget, mcpFolder);
@@ -266,12 +266,32 @@ promptMode(({ mode, platform, customPaths }) => {
                     console.log(` -> Setting up Node dependencies for ${mcpFolder}...`);
                     try {
                         execSync('npm install --no-audit --no-fund', { cwd: targetFolder, stdio: 'ignore' });
-                        if (fs.existsSync(path.join(targetFolder, 'tsconfig.json'))) {
+                        if (fs.existsSync(path.join(targetFolder, 'tsconfig.json')) || fs.existsSync(path.join(targetFolder, 'tsconfig.build.json'))) {
                             console.log(` -> Compiling TypeScript for ${mcpFolder}...`);
                             execSync('npm run build', { cwd: targetFolder, stdio: 'ignore' });
                         }
                     } catch (e) {
                         console.warn(`Warning: Failed to set up ${mcpFolder}: ${e.message}`);
+                    }
+                }
+            });
+
+            // Pre-warm Python dependencies via uv to prevent agent timeouts on first run
+            const pythonMcps = [
+                { folder: 'golem-rhino-mcp', cmd: 'uv run -m mcp_server --help' },
+                { folder: 'davinci-mcp-professional', cmd: 'uv run main.py --help' },
+                { folder: 'blender-mcp', cmd: 'uv run -m blender_mcp.server --help' },
+                { folder: 'blender-mcp-server', cmd: 'uv run -m blender_mcp_server --help' },
+                { folder: 'vectorworks-mcp', cmd: 'uv run -r requirements.txt app/mcp_server.py --help' }
+            ];
+            pythonMcps.forEach(mcp => {
+                const targetFolder = path.join(mcpCodeTarget, mcp.folder);
+                if (fs.existsSync(targetFolder)) {
+                    console.log(` -> Pre-warming Python dependencies for ${mcp.folder}...`);
+                    try {
+                        execSync(mcp.cmd, { cwd: targetFolder, stdio: 'ignore' });
+                    } catch (e) {
+                        // ignore pre-warm warnings
                     }
                 }
             });
