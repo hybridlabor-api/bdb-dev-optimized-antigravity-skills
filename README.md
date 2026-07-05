@@ -1,140 +1,111 @@
-# 🚀 BDB DEV - Optimized Antigravity Skills
+# 🚀 BDB DEV - Optimized Creative & Full-Stack Skills Pack
 
-Welcome to the **BDB DEV Antigravity Skills & MCP Configuration** repository. This project serves as the backbone of our creative and full-stack development ecosystem, supercharging AI agents with highly specialized capabilities tailored for the event and creative technology industry, as well as general-purpose software engineering.
+Welcome to the **BDB DEV Skills & MCP Configuration** repository. This project serves as the backbone of our creative and full-stack development ecosystem, supercharging AI agents with highly specialized capabilities tailored for the event and creative technology industry, as well as general-purpose software engineering.
 
-By unifying 140 ultra-optimized skills and integrating state-of-the-art Model Context Protocol (MCP) servers, this repository transforms the Antigravity workflow into an unstoppable force for show control, 3D development, interactive experiences, and robust full-stack applications.
+While optimized for **Google Antigravity**, this skills pack and MCP configuration is **100% universal** and works seamlessly with all modern AI agents and developer interfaces, including **Claude Desktop, Claude Code, Cursor, Aider, Roo Code, Cline, and Windsurf**.
 
 ---
 
-## 🌟 The 140 Optimized Skills
+## 🌟 142 Optimized Skills
 
-We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **140 Optimized Antigravity Skills**. 
+We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **142 Optimized Skills**.
 
-These skills are precision-engineered for how we believe AI should be integrated into a professional daily workflow, ensuring agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
+These skills are precision-engineered to ensure agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
 
 ### 💻 Beyond Events: Normal Software & App Coding
-While heavily optimized for the creative tech industry, these skills are deeply rooted in core software engineering. They include specialized workflows for:
+While heavily optimized for the creative tech industry, these skills are deeply rooted in core software engineering:
 - **Full-Stack Development**: Spinning up Next.js App Router boilerplates, building scalable Node.js microservices, and crafting interactive frontends.
 - **App Development**: Architecting databases, designing REST APIs, and building standard web and mobile applications from scratch.
-- **Design & Quality Assurance**: Auditing UI/UX patterns, enforcing clean code principles, and setting up strict CI/CD pipelines.
+- **Design & Quality Assurance**: Auditing UI/UX patterns (utilizing `ui-ux-pro-max`), enforcing clean code principles, and setting up strict CI/CD pipelines.
 
 ---
 
 ## 🧠 BDBrainstorm: The Ultimate Ideation Engine
 
-Included in this optimized arsenal is our proprietary **BDBrainstorm** skill. 
+Included in this optimized arsenal is our proprietary **BDBrainstorm** skill.
 
-BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, subagent-driven development, and extreme UI/UX design workflows to force a comprehensive, multi-agent ideation process. It doesn't just generate ideas—it stress-tests them, architects the systems behind them, and outputs actionable, high-fidelity implementation plans. It is the creative catalyst for all our new projects.
+BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, subagent-driven development, and extreme UI/UX design workflows to force a comprehensive, multi-agent ideation process. It stress-tests designs, architectures the systems behind them, and outputs actionable, high-fidelity implementation plans.
 
 ---
 
-## 🔌 Custom MCP Integrations
+## 🔌 20 Custom Local MCP Integrations
 
-The true game-changer of this repository lies in our **Custom MCP (Model Context Protocol) Integrations**. Rather than leaving you to piece together disconnected third-party packages, this repository bundles **custom, local MCP wrappers** (in the `mcps/` directory). These bridges are installed automatically and allow our Antigravity agents to natively read, write, and execute commands within the industry's leading creative software.
+Rather than relying on skeletal python mocks or broken remote APIs, this repository bundles **20 custom, local MCP wrappers** (in the `mcps/` directory). These are built/warmed automatically and allow your AI assistant to read, write, and execute commands within the industry's leading creative software.
 
-### 🎛️ TouchDesigner
-Integrated directly into TouchDesigner via the **Pantani/tdmcp** (MindDesigner) bridge and utilizing **8beeeaaat/touchdesigner-mcp** as a fallback, agents can construct real TouchDesigner node networks via natural language. They can manipulate operators, patch CHOPs/TOPs, and automate complex node routing inside the visual programming environment.
+### 🎬 DaVinci Resolve (Triple Coverage)
+- **Primary: `bdb_davinci_mcp`**: Works on both the **Free and Studio** versions using a workspace script menu loop. Exposes 162 tools (Timeline, clips, markers, grades, Fusion) and includes local CPU-based AI models (Meta Demucs v4 for voice isolation, faster-whisper for auto-subtitles, and rembg for background removal) so free users get Studio-grade features.
+- **Studio: `bdb_davinci_mcp_studio`**: The official Node.js server (wrapping samuelgursky) for advanced direct timeline and project management in Resolve Studio.
+- **Fallback: `bdb_davinci_mcp_fallback`**: Hoyt-harness professional python server for Studio scripting.
+
+### 📐 Rhino 3D & Grasshopper (Twin-Engine)
+- **Primary: `bdb_rhino_mcp`**: McNeel's official connector (managed via Yak router) for native reading/writing of Rhino geometric layouts.
+- **Fallback: `bdb_rhino_mcp_fallback`**: The GOLEM 3D server with 105 tools to dynamically manipulate Rhino 8 assets, execute scripts, and solve Grasshopper definitions.
 
 ### 🎮 Unreal Engine
-Built on a hybrid foundation of **Unreal Engine 5 Web Remote APIs** and the **gimmeDG** toolset, our locally bundled `unreal_mcp.py` allows agents to execute REST calls directly to your UE5 project (via port 30010). From scene generation and actor spawning to complex Blueprint logic mapping, this integration turns agents into bona fide Technical Artists.
+- **Primary: `bdb_unreal_mcp`**: Connects via the Unreal Engine 5 Web Remote Control API (port 30010) and the `gimmeDG` toolset. Allows the agent to query, spawn actors, edit materials, write Blueprints, and automate level/sequencer manipulation.
 
-### 📐 Rhino 3D & Grasshopper
-Using a custom local `rhino_mcp.py` inspired by **mcneel/RhinoMCP** and **GOLEM-3DMCP-Rhino**, agents can connect directly to Rhino Compute (via REST on port 6500) to manipulate 3D geometry in Rhino 8. This extends to controlling Grasshopper definitions, tweaking parameters, and generating complex parametric 3D models directly from prompt instructions.
+### 🧊 Blender (Twin-Engine)
+- **Primary: `bdb_blender_mcp`**: BlenderMCP socket integration for scene layout, mesh generation, and viewport controls.
+- **Fallback: `bdb_blender_mcp_fallback`**: djeada's python server for managing Blender TCP connections and raw python scripting.
 
-### 🎬 DaVinci Resolve
-Powered by our locally bundled `davinci_mcp.py` (which directly wraps the native `DaVinciResolveScript` Python API), this integration gives agents the ability to manipulate timelines, organize media pools, and execute complex Fusion composites via external scripting in Resolve Studio.
+### 🎨 Adobe Creative Cloud (Illustrator, Photoshop, After Effects)
+- **Primary: `bdb_adobe_mcp`**: Leverages macOS Bundle IDs (`id "com.adobe.illustrator"`, etc.) for zero-install scripting via native ExtendScript compiler bridges. Includes built-in toolsets like `ai_draw_rectangle` to automatically script Illustrator.
+- **Secondary: `bdb_adobe_uxp_mcp`**: A three-tier WebSocket proxy (Node.js backend + native UXP plugins) for deep DOM manipulation inside Photoshop and Premiere.
 
-### 🧊 Blender
-Using community servers like **ahujasid/blender-mcp**, agents can script Blender Python (`bpy`) operations directly. This covers everything from mesh generation and material manipulation to camera automation and rendering pipelines.
-
-### ✨ Adobe Creative Cloud (Photoshop, Illustrator, Premiere, After Effects)
-We provide **two native execution modes** bundled right into this package:
-1. **OS-Native Scripting (`adobe_mcp.py`)**: Executes zero-install `osascript` AppleEvents on macOS and `win32com` PowerShell hooks on Windows for immediate scripting without any plugin installation.
-2. **UXP Proxy Architecture (`adobe_uxp_mcp`)**: A three-tier WebSocket proxy (Node.js backend + native `manifest.json` plugins for Photoshop/Premiere) allowing deep DOM control and continuous network states.
+### 🎛️ TouchDesigner (Twin-Engine)
+- **Primary: `bdb_touchdesigner_mcp`**: MindDesigner-Bridge (`tdmcp`) on port 9980 to read and write networks via custom `.tox` structures.
+- **Fallback: `bdb_touchdesigner_mcp_fallback`**: fallback TCP-based node query and inspector.
 
 ### 🏗️ Vectorworks
-Through early implementations like **vectorworks-mcp** connecting via the C++ SDK plugin, agents are paving the way for automated drafting, BIM parameter adjustments, and CAD automation within Vectorworks 2025.
+- **Primary: `bdb_vectorworks_mcp`**: Semantic RAG-based search index over VectorScript and Vectorworks API documentation (port 8765) for automated CAD drafting.
 
 ### 💡 grandMA3 & Resolume
-- **grandMA3**: Powered by our local `grandma3_mcp.py`, agents can send UDP/OSC commands and execute macros or patch fixtures directly in the console.
-- **Resolume**: Driven by our `resolume_mcp.py` wrapping the Arena REST API, agents can structure compositions, trigger clips, and sequence layers dynamically.
+- **grandMA3**: `bdb_ma3_mcp` sends OSC/UDP command streams directly to your grandMA3 console (port 8000) to automate cues, macros, and patch fixtures.
+- **Resolume**: `bdb_resolume_mcp` wraps Arena's REST API (port 8080) to sequence layers, query statuses, and trigger clips.
+
+### 🖥️ OS Control
+- **zavora_computer_use**: Bundled with precompiled native Rust NAPI binary objects (macOS arm64/x64, Windows, Linux) to control mouse, keyboard, windows, and apps without runtime compile errors.
 
 ---
 
-## ⚡ Workflow Transformation
+## 📖 11 Specialized System Skills
 
-This setup completely redefines the **Antigravity workflow**. 
-
-By combining the **140 Optimized Skills** with our **Custom MCPs**, we collapse the gap between software development and production software. An agent can now write a Python microservice, generate the web-based UI for it, write a Lua script for grandMA3 to receive the data, generate a TouchDesigner visual component, and configure an Unreal Engine scene to visualize the output—**all in a single, autonomous flow.**
+To make these MCP integrations accessible to AI agents, we provide **11 dedicated system skills** inside the `skills/global_config/` directory. If an AI agent imports this pack, it will immediately read these markdown files to learn the tool signatures, expected arguments, ExtendScript hooks, and common troubleshooting steps for each application:
+- [`bdb-unreal-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-unreal-mcp.md)
+- [`bdb-rhino-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-rhino-mcp.md)
+- [`bdb-davinci-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-davinci-mcp.md)
+- [`bdb-blender-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-blender-mcp.md)
+- [`bdb-after-effects-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-after-effects-mcp.md)
+- [`bdb-vectorworks-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-vectorworks-mcp.md)
+- [`bdb-touchdesigner-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-touchdesigner-mcp.md)
+- [`bdb-computer-use-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-computer-use-mcp.md)
+- [`bdb-grandma3-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-grandma3-mcp.md)
+- [`bdb-resolume-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-resolume-mcp.md)
+- [`bdb-adobe-suite-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-adobe-suite-mcp.md)
 
 ---
 
 ## 🛠️ Installation
 
-We support multiple installation methods depending on your environment. The installer will safely back up any existing skills, deploy the curated global/workspace skills, and configure your MCP settings.
+The installer is built using an interactive Node-based menu. It allows you to:
+1. **Backup & Overwrite**: Safely backups existing configuration files and overrides them.
+2. **Merge**: Merges the new skills, configs, and custom local MCP paths with your existing ones.
 
-### Option 1: Autonomous AI Agent (The Easiest Way)
+### Option 1: Ask Your AI Agent (Easiest)
+Simply tell your assistant:
+> "Please run `npx -y @hybridlabor-api/bdb-antigravity-skills@latest` to install the skills pack and configure the local MCP servers."
 
-Simply give your AI agent the link to this repository and ask it to read the `agent.md` file. It will clone the repository, read the instructions, and autonomously run the installation process for you!
-
-Prompt example:
-> *"Please read the `agent.md` file in https://github.com/hybridlabor-api/bdb-dev-optimized-antigravity-skills and follow its instructions to install the skills in my workspace."*
-
-### Option 2: Using NPM / NPX (Recommended for Node users)
-
-### 🤖 Autonomous Installation
-Alternatively, you can simply ask your AI agent to install it for you:
-> "Please install the @hybridlabor-api/bdb-antigravity-skills package via npx."
-
----
-
-## 🔄 Updates & Auto-Update
-Because this package is hosted on NPM, updating to the latest version is as simple as re-running the installation command:
+### Option 2: Command Line (Global)
+Run the script globally in your terminal:
 ```bash
 npx -y @hybridlabor-api/bdb-antigravity-skills@latest
 ```
 
-**Autonomous Agent Updates (`bdb-updater`):**
-We include a dedicated `bdb-updater` skill in the package. Your AI agent natively understands how to update itself! 
-Simply ask your agent: *"Check for BDB skill updates"* and it will query NPM and install the latest version automatically.
-
-**Set it and forget it:**
-You can tell your agent to automatically check for updates every week using the `/schedule` slash command:
-> `/schedule CronExpression="0 10 * * 1" Prompt="Check if there is a new version of @hybridlabor-api/bdb-antigravity-skills and update it using the bdb-updater skill"`
-
-You can install it globally via npm:
-
-```bash
-npm install -g @hybridlabor-api/bdb-antigravity-skills
-bdb-skills
-```
-
-### Option 3: Using Homebrew (macOS)
-
-If you are on a Mac and prefer Homebrew, you can install the package directly:
-
-```bash
-brew tap hybridlabor-api/bdb-skills
-brew install bdb-skills
-bdb-skills
-```
-
-### Option 4: Manual Shell Script
-
-Clone the repository and run the installer script:
-
-```bash
-git clone https://github.com/hybridlabor-api/bdb-dev-optimized-antigravity-skills.git
-cd bdb-dev-optimized-antigravity-skills
-chmod +x installer.sh
-./installer.sh
-```
-
-**The installer script will automatically:**
-1. Back up your existing global and workspace skills safely.
-2. Deploy the new curated global config skills.
-3. Install the workspace-specific agent skills.
-4. Copy the customized `GEMINI.md` to `~/.gemini/GEMINI.md`.
+During installation, the script will automatically:
+* Safely handle backup and configuration merging.
+* Deploy/build all local Node dependencies.
+* Run a **Python dependency pre-warming phase** (using `uv run`) to fetch and cache required library bundles, ensuring your client doesn't hit timeouts on first start.
+* Update your local client config (e.g. `~/.gemini/config.json`, `claude_desktop_config.json`, or Cursor configs) to reference the local servers.
 
 ---
 *Elevate your agency. Dominate the workflow.*
