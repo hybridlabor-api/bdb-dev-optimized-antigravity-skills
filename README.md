@@ -6,9 +6,9 @@ While optimized for **Google Antigravity**, this skills pack and MCP configurati
 
 ---
 
-## 🌟 143 Optimized Skills
+## 🌟 144 Optimized Skills
 
-We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **143 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.3).
+We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **144 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.3, and the **memB local semantic memory brain in v2.0.0**).
 
 These skills are precision-engineered to ensure agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
 
@@ -28,9 +28,9 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 ---
 
-## 🔌 21 Custom Local MCP Integrations
+## 🔌 22 Custom Local MCP Integrations
 
-Rather than relying on skeletal python mocks or broken remote APIs, this repository bundles **21 custom, local MCP wrappers** (in the `mcps/` directory). These are built/warmed automatically and allow your AI assistant to read, write, and execute commands within the industry's leading creative software.
+Rather than relying on skeletal python mocks or broken remote APIs, this repository bundles **22 custom, local MCP wrappers** (in the `mcps/` directory). These are built/warmed automatically and allow your AI assistant to read, write, and execute commands within the industry's leading creative software.
 
 ### 🎨 Adobe Creative Cloud (Illustrator, Photoshop, After Effects, Premiere Pro)
 We provide a dual-engine architecture optimized for macOS and Windows environments:
@@ -71,6 +71,9 @@ We provide a dual-engine architecture optimized for macOS and Windows environmen
 - **macOS/Linux: `zavora_computer_use`**: Bundled with precompiled native Rust NAPI binary objects (macOS arm64/x64, Linux) to control mouse, keyboard, windows, and apps without runtime compile errors.
 - **Windows: `bdb_windows_computer_use`**: Native python-based Win32 / COM / UIAutomation controller with local OCR (Tesseract) support for advanced Windows GUI automation.
 
+### 🧠 Local Semantic Brain (memB)
+- **`memb_mcp`**: Exposes standard long-term memory tools (`add_memory`, `search_memory`, `delete_memory`, `list_memories`) using a completely local, offline-first vector engine (powered by a bundled 30MB ONNX model and SQLite).
+
 ---
 
 ## 📖 11 Specialized System Skills
@@ -87,7 +90,9 @@ To make these MCP integrations accessible to AI agents, we provide **11 dedicate
 - [`bdb-grandma3-mcp.md`](skills/global_config/bdb-grandma3-mcp.md)
 - [`bdb-resolume-mcp.md`](skills/global_config/bdb-resolume-mcp.md)
 - [`bdb-adobe-suite-mcp.md`](skills/global_config/bdb-adobe-suite-mcp.md)
+- [`bdb-memb-mcp.md`](skills/global_config/bdb-memb-mcp.md)
 - [`openwiki-skill`](skills/global_config/openwiki-skill/SKILL.md): Direct Gemini-native integration of OpenWiki for autonomous, high-agency documentation management and release notes maintenance.
+- [`memb-skill`](skills/global_config/memb-skill/SKILL.md): BDB local-first long-term memory engine (memB). Query, remember, and adapt preferences, code architectures, and developer patterns across tasks.
 
 ---
 
@@ -128,8 +133,22 @@ To ensure your project documentation never goes out of date, configure the backg
    ```
 2. **Monitor Execution:** Tail the active logs to see background scan actions and documentation rebuild status:
    ```bash
-   tail -f ~/.openwiki/daemon.log
-   ```
+    tail -f ~/.openwiki/daemon.log
+    ```
+
+---
+
+## 🧠 memB: Custom Semantic Brain (v2.0.0)
+
+BDB OS v2.0.0 introduces a fully integrated local, offline-first semantic memory brain based on **memB**. 
+
+### ⚙️ Specifications & Capabilities
+1. **Dynamic Flower Graph Layout:** Rather than utilizing hardcoded scopes, `memB` structures your memory into a flower-like layout:
+   * **General Knowledge Hub (`category="godmode"`):** Stores universal preferences and developer specifications globally.
+   * **Dynamic Project Leaves (`project_id="<current-directory-basename>"`):** The system dynamically resolves the active workspace directory name to segment and fetch project-specific learnings, preventing context pollution.
+2. **Offline Vector Embeddings:** Bundles a pre-quantized 30MB `all-MiniLM-L6-v2` ONNX model and tokenizer. Vector calculations run locally in milliseconds.
+3. **Data Sovereignty (Zero Telemetry):** Designed from the ground up to ensure absolute data sovereignty, with no remote logging, tracking, or analytics endpoints present in the codebase.
+4. **Secret Filtration:** Blocks or redacts passwords, raw API keys, and connection strings prior to database injection.
 
 ---
 
