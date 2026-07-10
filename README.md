@@ -32,6 +32,14 @@ BDBrainstorm combines multi-agent brainstorming, the `/grill-me` slash command, 
 
 Rather than relying on skeletal python mocks or broken remote APIs, this repository bundles **21 custom, local MCP wrappers** (in the `mcps/` directory). These are built/warmed automatically and allow your AI assistant to read, write, and execute commands within the industry's leading creative software.
 
+### 🎨 Adobe Creative Cloud (Illustrator, Photoshop, After Effects, Premiere Pro)
+We provide a dual-engine architecture optimized for macOS and Windows environments:
+- **Direct OS-Native Bridge (`bdb_adobe_mcp`)**: Runs zero-install scripting.
+  - **macOS:** Targets application bundle IDs directly (`id "com.adobe.illustrator"`, `id "com.adobe.Photoshop"`, `id "com.adobe.AfterEffects"`) via AppleScript `do javascript` / `DoScript` command streams. This bypasses versioning directories and supports latest apps (e.g. Adobe Illustrator 2026).
+  - **Windows:** Automatically queries and instantiates local COM objects (`Illustrator.Application`, `Photoshop.Application`, `AfterFX.Application`) via PowerShell wrapper scripts and executes transient `.jsx` ExtendScript code.
+- **Cross-Platform UXP WebSocket Bridge (`bdb_adobe_uxp_mcp`)**: A three-tier WebSocket proxy (Node.js server on port 8080 + native UXP developer plugins) for deep DOM manipulation and persistent WebSocket sessions inside Photoshop and Premiere Pro, running identically on Windows and macOS.
+
+
 ### 🎬 DaVinci Resolve (Triple Coverage)
 - **Primary: `bdb_davinci_mcp`**: Works on both the **Free and Studio** versions using a workspace script menu loop. Exposes 162 tools (Timeline, clips, markers, grades, Fusion) and includes local CPU-based AI models (Meta Demucs v4 for voice isolation, faster-whisper for auto-subtitles, and rembg for background removal) so free users get Studio-grade features.
 - **Studio: `bdb_davinci_mcp_studio`**: The official Node.js server (wrapping samuelgursky) for advanced direct timeline and project management in Resolve Studio.
@@ -41,6 +49,9 @@ Rather than relying on skeletal python mocks or broken remote APIs, this reposit
 - **Primary: `bdb_rhino_mcp`**: McNeel's official connector (managed via Yak router) for native reading/writing of Rhino geometric layouts.
 - **Fallback: `bdb_rhino_mcp_fallback`**: The GOLEM 3D server with 105 tools to dynamically manipulate Rhino 8 assets, execute scripts, and solve Grasshopper definitions.
 
+### 🏗️ Vectorworks
+- **Primary: `bdb_vectorworks_mcp`**: Semantic RAG-based search index over VectorScript and Vectorworks API documentation (port 8765) for automated CAD drafting.
+
 ### 🎮 Unreal Engine
 - **Primary: `bdb_unreal_mcp`**: Connects via the Unreal Engine 5 Web Remote Control API (port 30010) and the `gimmeDG` toolset. Allows the agent to query, spawn actors, edit materials, write Blueprints, and automate level/sequencer manipulation.
 
@@ -48,19 +59,9 @@ Rather than relying on skeletal python mocks or broken remote APIs, this reposit
 - **Primary: `bdb_blender_mcp`**: BlenderMCP socket integration for scene layout, mesh generation, and viewport controls.
 - **Fallback: `bdb_blender_mcp_fallback`**: djeada's python server for managing Blender TCP connections and raw python scripting.
 
-### 🎨 Adobe Creative Cloud (Illustrator, Photoshop, After Effects, Premiere Pro)
-We provide a dual-engine architecture optimized for macOS and Windows environments:
-- **Direct OS-Native Bridge (`bdb_adobe_mcp`)**: Runs zero-install scripting.
-  - **macOS:** Targets application bundle IDs directly (`id "com.adobe.illustrator"`, `id "com.adobe.Photoshop"`, `id "com.adobe.AfterEffects"`) via AppleScript `do javascript` / `DoScript` command streams. This bypasses versioning directories and supports latest apps (e.g. Adobe Illustrator 2026).
-  - **Windows:** Automatically queries and instantiates local COM objects (`Illustrator.Application`, `Photoshop.Application`, `AfterFX.Application`) via PowerShell wrapper scripts and executes transient `.jsx` ExtendScript code.
-- **Cross-Platform UXP WebSocket Bridge (`bdb_adobe_uxp_mcp`)**: A three-tier WebSocket proxy (Node.js server on port 8080 + native UXP developer plugins) for deep DOM manipulation and persistent WebSocket sessions inside Photoshop and Premiere Pro, running identically on Windows and macOS.
-
 ### 🎛️ TouchDesigner (Twin-Engine)
 - **Primary: `bdb_touchdesigner_mcp`**: MindDesigner-Bridge (`tdmcp`) on port 9980 to read and write networks via custom `.tox` structures.
 - **Fallback: `bdb_touchdesigner_mcp_fallback`**: fallback TCP-based node query and inspector.
-
-### 🏗️ Vectorworks
-- **Primary: `bdb_vectorworks_mcp`**: Semantic RAG-based search index over VectorScript and Vectorworks API documentation (port 8765) for automated CAD drafting.
 
 ### 💡 grandMA3 & Resolume
 - **grandMA3**: `bdb_ma3_mcp` sends OSC/UDP command streams directly to your grandMA3 console (port 8000) to automate cues, macros, and patch fixtures.
