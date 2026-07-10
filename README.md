@@ -8,7 +8,7 @@ While optimized for **Google Antigravity**, this skills pack and MCP configurati
 
 ## 🌟 143 Optimized Skills
 
-We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **143 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.2).
+We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **143 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.3).
 
 These skills are precision-engineered to ensure agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
 
@@ -93,7 +93,7 @@ To make these MCP integrations accessible to AI agents, we provide **11 dedicate
 
 ## 📖 OpenWiki Native System
 
-BDB OS v1.3.2 introduces a fully **Gemini-Native OpenWiki** engine designed to autonomously maintain codebase wikis, README entries, and release notes across all your active projects.
+BDB OS v1.3.3 introduces a fully **Gemini-Native OpenWiki** engine designed to autonomously maintain codebase wikis, README entries, and release notes across all your active projects.
 
 ### 🧠 How It Works
 1. **No Node CLI Overhead:** Rather than utilizing an external Javascript engine and model API keys, the system runs inside your local Antigravity environment, leveraging the 1M+ context window of **Gemini 3.5 Flash** for free.

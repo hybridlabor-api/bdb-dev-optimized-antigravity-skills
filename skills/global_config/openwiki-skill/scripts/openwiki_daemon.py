@@ -87,6 +87,11 @@ def check_and_update_project(project_dir):
     # Check if there are meaningful changes to document
     has_changes = False
     
+    # If the wiki folder doesn't exist yet, we must run the initial build
+    if not os.path.exists(os.path.join(project_dir, ".openwiki")):
+        has_changes = True
+        log(f"No .openwiki folder found. Triggering initial documentation build for {project_dir}")
+    
     # Look for changes since last wiki run or unstaged changes
     if "### Git Changes since last Wiki Update" in evidence:
         section = evidence.split("### Git Changes since last Wiki Update")[1].split("###")[0].strip()
