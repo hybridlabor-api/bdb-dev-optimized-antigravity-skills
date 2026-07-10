@@ -63,9 +63,5 @@ if launchctl list | grep "com.bdb.openwiki.daemon" > /dev/null; then
     echo " -> Success! OpenWiki Background Daemon is running."
     echo " -> Logs are written to: $DAEMON_LOG_DIR/daemon.log"
     echo " -> You can register project directories in: $DAEMON_LOG_DIR/projects.json"
-else
-    echo " -> Warning: LaunchAgent loaded but may not be active. Check: launchctl list | grep openwiki"
 fi
 echo "========================================================="
-EOF
-,Description:
