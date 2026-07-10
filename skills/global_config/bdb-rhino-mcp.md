@@ -76,7 +76,7 @@ Open a Grasshopper file, adjust structural dimensions, and extract the generated
 
 ```json
 // Step 1: Load file
-// Tool: grasshopper.open_definition(path="/Users/timrennings/project/truss.gh")
+// Tool: grasshopper.open_definition(path="/Users/<username>/project/truss.gh")
 
 // Step 2: Modify span and height
 // Tool: grasshopper.set_parameter(name_or_id="SpanSlider", value=150.0)

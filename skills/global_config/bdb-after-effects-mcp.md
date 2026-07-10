@@ -103,7 +103,7 @@ if (comp && comp instanceof CompItem) {
   ```json
   "AfterEffectsMCP": {
     "command": "node",
-    "args": ["/Users/timrennings/bdb-dev-optimized-antigravity-skills/mcps/after-effects-mcp/build/index.js"]
+    "args": ["<your-home-directory>/.gemini/config/mcps/after-effects-mcp/build/index.js"]
   }
   ```
 

@@ -8,7 +8,7 @@ While optimized for **Google Antigravity**, this skills pack and MCP configurati
 
 ## 🌟 143 Optimized Skills
 
-We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **143 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.1).
+We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **143 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.2).
 
 These skills are precision-engineered to ensure agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
 
@@ -76,48 +76,57 @@ We provide a dual-engine architecture optimized for macOS and Windows environmen
 ## 📖 11 Specialized System Skills
 
 To make these MCP integrations accessible to AI agents, we provide **11 dedicated system skills** inside the `skills/global_config/` directory. If an AI agent imports this pack, it will immediately read these markdown files to learn the tool signatures, expected arguments, ExtendScript hooks, and common troubleshooting steps for each application:
-- [`bdb-unreal-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-unreal-mcp.md)
-- [`bdb-rhino-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-rhino-mcp.md)
-- [`bdb-davinci-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-davinci-mcp.md)
-- [`bdb-blender-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-blender-mcp.md)
-- [`bdb-after-effects-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-after-effects-mcp.md)
-- [`bdb-vectorworks-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-vectorworks-mcp.md)
-- [`bdb-touchdesigner-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-touchdesigner-mcp.md)
-- [`bdb-computer-use-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-computer-use-mcp.md)
-- [`bdb-grandma3-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-grandma3-mcp.md)
-- [`bdb-resolume-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-resolume-mcp.md)
-- [`bdb-adobe-suite-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-adobe-suite-mcp.md)
-- [`openwiki-skill`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/openwiki-skill/SKILL.md): Direct Gemini-native integration of OpenWiki for autonomous, high-agency documentation management and release notes maintenance.
+- [`bdb-unreal-mcp.md`](skills/global_config/bdb-unreal-mcp.md)
+- [`bdb-rhino-mcp.md`](skills/global_config/bdb-rhino-mcp.md)
+- [`bdb-davinci-mcp.md`](skills/global_config/bdb-davinci-mcp.md)
+- [`bdb-blender-mcp.md`](skills/global_config/bdb-blender-mcp.md)
+- [`bdb-after-effects-mcp.md`](skills/global_config/bdb-after-effects-mcp.md)
+- [`bdb-vectorworks-mcp.md`](skills/global_config/bdb-vectorworks-mcp.md)
+- [`bdb-touchdesigner-mcp.md`](skills/global_config/bdb-touchdesigner-mcp.md)
+- [`bdb-computer-use-mcp.md`](skills/global_config/bdb-computer-use-mcp.md)
+- [`bdb-grandma3-mcp.md`](skills/global_config/bdb-grandma3-mcp.md)
+- [`bdb-resolume-mcp.md`](skills/global_config/bdb-resolume-mcp.md)
+- [`bdb-adobe-suite-mcp.md`](skills/global_config/bdb-adobe-suite-mcp.md)
+- [`openwiki-skill`](skills/global_config/openwiki-skill/SKILL.md): Direct Gemini-native integration of OpenWiki for autonomous, high-agency documentation management and release notes maintenance.
 
 ---
 
 ## 📖 OpenWiki Native System
 
-BDB OS v1.3.1 introduces a fully **Gemini-Native OpenWiki** engine designed to autonomously maintain codebase wikis, README entries, and release notes across all your active projects.
+BDB OS v1.3.2 introduces a fully **Gemini-Native OpenWiki** engine designed to autonomously maintain codebase wikis, README entries, and release notes across all your active projects.
 
 ### 🧠 How It Works
 1. **No Node CLI Overhead:** Rather than utilizing an external Javascript engine and model API keys, the system runs inside your local Antigravity environment, leveraging the 1M+ context window of **Gemini 3.5 Flash** for free.
-2. **Git Evidence Loop:** The daemon executes a sub-second Python helper ([openwiki_helper.py](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/openwiki-skill/scripts/openwiki_helper.py)) to parse Git changes and unstaged diffs.
+2. **Git Evidence Loop:** The daemon executes a sub-second Python helper ([openwiki_helper.py](skills/global_config/openwiki-skill/scripts/openwiki_helper.py)) to parse Git changes and unstaged diffs.
 3. **Smart Updates:** If code changes are detected, it invokes the global `agy` CLI client in print-mode to update `.openwiki/` markdown pages and root entrypoints, then commits documentation updates separately using the prefix `docs(wiki): update project specs [auto]`.
 
-### ⚙️ Setting Up the Background Daemon (macOS LaunchAgent)
+### ⚙️ Setting Up the Background Daemon
 To ensure your project documentation never goes out of date, configure the background daemon:
 
+#### On macOS (LaunchAgent)
 1. **Deploy LaunchAgent:** Run the helper installer script:
    ```bash
    bash ~/.gemini/config/skills/openwiki-skill/scripts/install_daemon.sh
    ```
-2. **Register Projects:** Add absolute directory paths to your projects config file at `~/.openwiki/projects.json`:
+
+#### On Windows (Task Scheduler)
+1. **Deploy Task Scheduler Task:** Run the PowerShell helper script in an Administrator console:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.gemini\config\skills\openwiki-skill\scripts\install_daemon.ps1"
+   ```
+
+#### For All Platforms: Register Projects & Monitor
+1. **Register Projects:** Add absolute directory paths to your projects config file at `~/.openwiki/projects.json`:
    ```json
    {
      "projects": [
-       "/Users/timrennings/bdb-dev-optimized-antigravity-skills",
-       "/Users/timrennings/Web-Projects/bdb-visual-select"
+       "/Users/<your-username>/bdb-dev-optimized-antigravity-skills",
+       "/Users/<your-username>/Web-Projects/your-project"
      ],
      "interval_seconds": 3600
    }
    ```
-3. **Monitor Execution:** Tail the active logs to see background scan actions and documentation rebuild status:
+2. **Monitor Execution:** Tail the active logs to see background scan actions and documentation rebuild status:
    ```bash
    tail -f ~/.openwiki/daemon.log
    ```

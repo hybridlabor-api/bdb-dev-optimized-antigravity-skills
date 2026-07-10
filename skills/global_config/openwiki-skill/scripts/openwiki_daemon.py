@@ -31,9 +31,10 @@ def get_projects():
     
     if not os.path.exists(config_file):
         # Create a default configuration with the current workspace
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
         default_data = {
             "projects": [
-                "/Users/timrennings/bdb-dev-optimized-antigravity-skills"
+                repo_root
             ],
             "interval_seconds": 3600
         }
@@ -66,7 +67,7 @@ def check_and_update_project(project_dir):
     log(f"Checking project: {project_dir}")
     
     # Run the openwiki_helper script to collect Git change evidence
-    helper_path = "/Users/timrennings/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py"
+    helper_path = os.path.expanduser("~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py")
     if not os.path.exists(helper_path):
         # Fallback to local repo path if helper isn't installed globally yet
         helper_path = os.path.join(os.path.dirname(__file__), "openwiki_helper.py")

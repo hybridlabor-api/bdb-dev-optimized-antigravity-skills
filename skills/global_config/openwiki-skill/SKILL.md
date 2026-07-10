@@ -36,6 +36,13 @@ A modular folder containing markdown pages designed for both human readers and A
 
 ---
 
+## 🔒 Safety and Privacy Rules (PII Protection)
+1. **Never Leak Local Username / Paths:** Under no circumstances should absolute paths containing local usernames (e.g. `/Users/timrennings/...`) be written to repository files, documentation, README, or wiki markdown files. Always use relative paths (`skills/global_config/...` or `.openwiki/quickstart.md`) or generic home folder variables (e.g. `~/.openwiki/` or `$HOME/...` or `<your-user-home>`).
+2. **Never Leak Secrets:** Do not commit or document API keys, OAuth tokens, passwords, private configuration details, or credentials in any file. Use placeholders like `<API_KEY>` or point the user to configure `.env` files.
+3. **No External URL Leaks:** Avoid hardcoding personal repository structures or domains unless they are public.
+
+---
+
 ## Step-by-Step Execution Workflow
 
 Follow this procedure strictly when executing the OpenWiki cycle:
@@ -43,7 +50,7 @@ Follow this procedure strictly when executing the OpenWiki cycle:
 ### Step 1: Collect Git Evidence & Identify Changes
 Execute the Python helper script to collect git status, diff logs, and check for a clean workspace:
 ```bash
-python3 /Users/timrennings/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command collect
+python3 ~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command collect
 ```
 Review the printout carefully to identify:
 - Which files were recently added, modified, or deleted.
@@ -53,7 +60,7 @@ Review the printout carefully to identify:
 ### Step 2: Compute Pre-Run Hash
 Determine if there are active changes in the wiki directory:
 ```bash
-python3 /Users/timrennings/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command pre-snapshot
+python3 ~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command pre-snapshot
 ```
 Save the returned hash in your context. If the Git log, status, and pre-run hash indicate no functional modifications occurred in the codebase since the last update, you may skip execution early to conserve tokens.
 
@@ -72,8 +79,8 @@ Write and edit markdown files under `.openwiki/`.
 Verify that `agent.md` or `CLAUDE.md` contains the mandatory OpenWiki block:
 ```markdown
 ## Documentation & Wiki
-- Entrypoint: [.openwiki/quickstart.md](file:///<repo-root>/.openwiki/quickstart.md)
-- Reference guides: [architecture.md](file:///<repo-root>/.openwiki/architecture.md), [release_notes.md](file:///<repo-root>/.openwiki/release_notes.md)
+- Entrypoint: [.openwiki/quickstart.md](.openwiki/quickstart.md)
+- Reference guides: [architecture.md](.openwiki/architecture.md), [release_notes.md](.openwiki/release_notes.md)
 ```
 
 Update the main `README.md` to link to `.openwiki/quickstart.md` for full developer docs.
@@ -81,12 +88,12 @@ Update the main `README.md` to link to `.openwiki/quickstart.md` for full develo
 ### Step 6: Post-Snapshot Sync
 Run the post-snapshot script to compare changes and write metadata update details:
 ```bash
-python3 /Users/timrennings/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command post-snapshot --pre-hash <pre-hash-from-step-2>
+python3 ~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command post-snapshot --pre-hash <pre-hash-from-step-2>
 ```
 
 ### Step 7: Auto-Commit Documentation
 To keep the git history clean and separate documentation churn from code changes, stage and commit the updated wiki files using the helper script:
 ```bash
-python3 /Users/timrennings/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command commit
+python3 ~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py --command commit
 ```
 This stages `.openwiki/`, `README.md`, `agent.md`, and `CLAUDE.md`, and commits them under the prefix: `docs(wiki): update project specs and codebase documentation [auto]`.
