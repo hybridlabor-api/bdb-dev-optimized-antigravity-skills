@@ -83,6 +83,10 @@
     "bdb_windows_computer_use": {
       "command": "uv",
       "args": ["run", "--directory", "__MCPS_DIR__/windows-computer-use-mcp", "run_server.py"]
+    },
+    "memb_mcp": {
+      "command": "__PYTHON_BIN__",
+      "args": ["__MCPS_DIR__/memb-mcp/run.py"]
     }
   }
 }

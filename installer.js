@@ -293,6 +293,23 @@ promptMode(({ mode, platform, customPaths }) => {
                 }
             });
 
+            // Build / Setup memB MCP Python virtual environment (BDB OS v2.0)
+            const membMcpFolder = path.join(mcpCodeTarget, 'memb-mcp');
+            if (fs.existsSync(membMcpFolder)) {
+                console.log(` -> Bootstrapping Python virtual environment for memB MCP...`);
+                try {
+                    const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+                    execSync(`${pythonCmd} -m venv .venv`, { cwd: membMcpFolder, stdio: 'ignore' });
+                    const pipPath = process.platform === 'win32' ? '.venv\\Scripts\\pip.exe' : '.venv/bin/pip';
+                    console.log(` -> Installing Python dependencies for memB MCP...`);
+                    execSync(`"${pipPath}" install --upgrade pip`, { cwd: membMcpFolder, stdio: 'ignore' });
+                    execSync(`"${pipPath}" install -r requirements.txt`, { cwd: membMcpFolder, stdio: 'ignore' });
+                    console.log(` -> memB MCP setup completed successfully.`);
+                } catch (e) {
+                    console.warn(`Warning: Failed to set up Python virtual environment for memB: ${e.message}`);
+                }
+            }
+
             // Pre-warm Python dependencies via uv to prevent agent timeouts on first run
             const pythonMcps = [
                 { folder: 'golem-rhino-mcp', cmd: 'uv run -m mcp_server --help' },
@@ -323,6 +340,12 @@ promptMode(({ mode, platform, customPaths }) => {
             let mcpConfigStr = fs.readFileSync(path.join(srcDir, 'mcp_config.json'), 'utf8');
             mcpConfigStr = mcpConfigStr.replace(/__MCPS_DIR__/g, mcpCodeTarget);
             mcpConfigStr = mcpConfigStr.replace(/\{\{HOME\}\}/g, homeDir);
+
+            // Resolve dynamic Python bin path for memB
+            const pythonBinPath = process.platform === 'win32'
+                ? path.join(mcpCodeTarget, 'memb-mcp', '.venv', 'Scripts', 'python.exe')
+                : path.join(mcpCodeTarget, 'memb-mcp', '.venv', 'bin', 'python');
+            mcpConfigStr = mcpConfigStr.replace(/__PYTHON_BIN__/g, pythonBinPath.replace(/\\/g, '/'));
             
             if (mode === '1' && fs.existsSync(mcpConfigPath)) {
                 try {
