@@ -6,9 +6,9 @@ While optimized for **Google Antigravity**, this skills pack and MCP configurati
 
 ---
 
-## 🌟 142 Optimized Skills
+## 🌟 143 Optimized Skills
 
-We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **142 Optimized Skills**.
+We started with a massive pool of over 1,400 raw AI skills. After rigorous testing, filtering, and refinement, we’ve distilled them down to a hyper-curated set of **143 Optimized Skills** (featuring a native OpenWiki documentation engine in v1.3.1).
 
 These skills are precision-engineered to ensure agents waste no time on redundant tasks and instead operate with maximum agency and context awareness.
 
@@ -87,6 +87,7 @@ To make these MCP integrations accessible to AI agents, we provide **11 dedicate
 - [`bdb-grandma3-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-grandma3-mcp.md)
 - [`bdb-resolume-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-resolume-mcp.md)
 - [`bdb-adobe-suite-mcp.md`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/bdb-adobe-suite-mcp.md)
+- [`openwiki-skill`](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/openwiki-skill/SKILL.md): Direct Gemini-native integration of OpenWiki for autonomous, high-agency documentation management and release notes maintenance.
 
 ---
 

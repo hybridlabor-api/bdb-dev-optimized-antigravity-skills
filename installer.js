@@ -173,10 +173,27 @@ function copyDirRecursiveSync(source, target) {
     files.forEach(file => {
         const curSource = path.join(source, file);
         const curTarget = path.join(target, file);
-        if (fs.lstatSync(curSource).isDirectory()) {
-            copyDirRecursiveSync(curSource, curTarget);
-        } else {
-            fs.copyFileSync(curSource, curTarget);
+        try {
+            const stat = fs.lstatSync(curSource);
+            if (stat.isSymbolicLink()) {
+                try {
+                    const linkTarget = fs.readlinkSync(curSource);
+                    if (fs.existsSync(curSource)) {
+                        if (fs.existsSync(curTarget)) fs.unlinkSync(curTarget);
+                        fs.symlinkSync(linkTarget, curTarget);
+                    } else {
+                        console.warn(`Warning: Skipping broken symlink ${curSource}`);
+                    }
+                } catch (e) {
+                    console.warn(`Warning: Could not copy symlink ${curSource}: ${e.message}`);
+                }
+            } else if (stat.isDirectory()) {
+                copyDirRecursiveSync(curSource, curTarget);
+            } else {
+                fs.copyFileSync(curSource, curTarget);
+            }
+        } catch (e) {
+            console.warn(`Warning: Failed to copy ${curSource} -> ${curTarget}: ${e.message}`);
         }
     });
 }
