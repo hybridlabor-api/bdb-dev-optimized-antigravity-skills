@@ -91,6 +91,39 @@ To make these MCP integrations accessible to AI agents, we provide **11 dedicate
 
 ---
 
+## 📖 OpenWiki Native System
+
+BDB OS v1.3.1 introduces a fully **Gemini-Native OpenWiki** engine designed to autonomously maintain codebase wikis, README entries, and release notes across all your active projects.
+
+### 🧠 How It Works
+1. **No Node CLI Overhead:** Rather than utilizing an external Javascript engine and model API keys, the system runs inside your local Antigravity environment, leveraging the 1M+ context window of **Gemini 3.5 Flash** for free.
+2. **Git Evidence Loop:** The daemon executes a sub-second Python helper ([openwiki_helper.py](file:///Users/timrennings/bdb-dev-optimized-antigravity-skills/skills/global_config/openwiki-skill/scripts/openwiki_helper.py)) to parse Git changes and unstaged diffs.
+3. **Smart Updates:** If code changes are detected, it invokes the global `agy` CLI client in print-mode to update `.openwiki/` markdown pages and root entrypoints, then commits documentation updates separately using the prefix `docs(wiki): update project specs [auto]`.
+
+### ⚙️ Setting Up the Background Daemon (macOS LaunchAgent)
+To ensure your project documentation never goes out of date, configure the background daemon:
+
+1. **Deploy LaunchAgent:** Run the helper installer script:
+   ```bash
+   bash ~/.gemini/config/skills/openwiki-skill/scripts/install_daemon.sh
+   ```
+2. **Register Projects:** Add absolute directory paths to your projects config file at `~/.openwiki/projects.json`:
+   ```json
+   {
+     "projects": [
+       "/Users/timrennings/bdb-dev-optimized-antigravity-skills",
+       "/Users/timrennings/Web-Projects/bdb-visual-select"
+     ],
+     "interval_seconds": 3600
+   }
+   ```
+3. **Monitor Execution:** Tail the active logs to see background scan actions and documentation rebuild status:
+   ```bash
+   tail -f ~/.openwiki/daemon.log
+   ```
+
+---
+
 ## 🛠️ Installation
 
 The installer is built using an interactive Node-based menu. It allows you to:
