@@ -1,3 +1,5 @@
+![BDB DEV Media | Event – Optimized Antigravity Skills](header.png)
+
 # 🚀 BDB DEV - Optimized Creative & Full-Stack Skills Pack
 
 Welcome to the **BDB DEV Skills & MCP Configuration** repository. This project serves as the backbone of our creative and full-stack development ecosystem, supercharging AI agents with highly specialized capabilities tailored for the event and creative technology industry, as well as general-purpose software engineering.
