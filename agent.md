@@ -1,9 +1,9 @@
-# BDB DEV Skills & MCP Configuration
+# BDB Skills Agent Rules
 
-This project is a creative and full-stack development ecosystem for AI agents, providing 143 optimized skills and 21 custom local MCP integrations.
+## Documentation & Wiki
+- Entrypoint: [.openwiki/quickstart.md](.openwiki/quickstart.md)
+- Reference guides: [architecture.md](.openwiki/architecture.md), [release_notes.md](.openwiki/release_notes.md)
 
-## Documentation
-- [Quickstart](.openwiki/quickstart.md) - Setup, installation, and daemon configuration
-- [Architecture](.openwiki/architecture.md) - System overview, directory structure, and integrations
-- [Decisions](.openwiki/decisions.md) - Key architectural decisions and trade-offs
-- [Release Notes](.openwiki/release_notes.md) - Version history
+## 🔒 Safety and Privacy Rules
+1. Never leak local paths containing usernames (e.g. `/Users/<username>/`). Use `~` or `$HOME`.
+2. Do not commit `.env` files or API keys.
