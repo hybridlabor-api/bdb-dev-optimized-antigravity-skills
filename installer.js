@@ -5,9 +5,19 @@ const path = require('path');
 const readline = require('readline');
 const os = require('os');
 
-console.log("=========================================================");
-console.log(" Starting BDB Optimized Antigravity Skills Installation");
-console.log("=========================================================");
+const colors = {
+    reset: "\x1b[0m",
+    bold: "\x1b[1m",
+    cyan: "\x1b[36m",
+    green: "\x1b[32m",
+    yellow: "\x1b[33m",
+    magenta: "\x1b[35m",
+    dim: "\x1b[2m"
+};
+
+console.log(`\n${colors.cyan}${colors.bold}=========================================================${colors.reset}`);
+console.log(`${colors.cyan}${colors.bold} 🚀 Starting BDB Optimized Antigravity Skills Installation${colors.reset}`);
+console.log(`${colors.cyan}${colors.bold}=========================================================${colors.reset}\n`);
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -148,13 +158,95 @@ function promptMode(callback) {
     });
 }
 
-function promptMCP(callback) {
+async function promptMcpSelection(mcpsDir) {
     if (isAutoYes) {
-        return callback('y');
+        try { return fs.readdirSync(mcpsDir, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name); } catch(e) { return []; }
     }
-    console.log("");
-    rl.question("Do you also want to install the MCP Pack (Unreal, Adobe, Resolve, Grandma3, Resolume, Github, etc)? (y/n): ", (answer) => {
-        callback(answer);
+    let availableMcps = [];
+    try { availableMcps = fs.readdirSync(mcpsDir, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name); } catch(e) { return []; }
+    if (availableMcps.length === 0) return [];
+
+    const selections = availableMcps.filter(m => m !== 'memb-mcp').map(mcp => ({ name: mcp, selected: false }));
+
+    const displayMenu = () => {
+        console.log(`\n${colors.magenta}${colors.bold}--- Select Optional MCPs to Install ---${colors.reset}`);
+        console.log(` ${colors.green}[x] memb-mcp${colors.reset} ${colors.dim}(Core Module - Always Installed)${colors.reset}`);
+        selections.forEach((mcp, index) => {
+            const check = mcp.selected ? `${colors.green}x${colors.reset}` : ' ';
+            console.log(` ${colors.cyan}${index + 1}.${colors.reset} [${check}] ${colors.bold}${mcp.name}${colors.reset}`);
+        });
+        console.log(`\n${colors.dim}Type a number to toggle, 'all' to select all, 'none' to clear, or 'done' to proceed:${colors.reset}`);
+    };
+
+    return new Promise((resolve) => {
+        const ask = () => {
+            displayMenu();
+            rl.question('\n> ', (answer) => {
+                const input = answer.trim().toLowerCase();
+                if (input === 'done' || input === '') { 
+                    resolve(['memb-mcp', ...selections.filter(s => s.selected).map(s => s.name)]); 
+                    return; 
+                }
+                if (input === 'all') { selections.forEach(s => s.selected = true); }
+                else if (input === 'none') { selections.forEach(s => s.selected = false); }
+                else {
+                    const num = parseInt(input, 10);
+                    if (!isNaN(num) && num > 0 && num <= selections.length) { selections[num - 1].selected = !selections[num - 1].selected; }
+                    else { console.log('Invalid input. Please try again.'); }
+                }
+                ask();
+            });
+        };
+        ask();
+    });
+}
+
+async function promptCredentials() {
+    if (isAutoYes) return { gemini: "", github: "" };
+    return new Promise((resolve) => {
+        console.log(`\n${colors.magenta}${colors.bold}--- Integrations & Credentials ---${colors.reset}`);
+        rl.question(`${colors.yellow}Enter your GEMINI_API_KEY for OpenWiki${colors.reset} ${colors.dim}(leave blank to skip):${colors.reset} `, (gemini) => {
+            rl.question(`${colors.yellow}Enter your GITHUB_PERSONAL_ACCESS_TOKEN for GitHub MCP${colors.reset} ${colors.dim}(leave blank to skip):${colors.reset} `, (github) => {
+                resolve({ gemini: gemini.trim(), github: github.trim() });
+            });
+        });
+    });
+}
+
+async function installOpenWikiDaemon(apiKey, targetSkillDir) {
+    if (!apiKey) { console.log(' -> Skipping OpenWiki Daemon background installation.'); return; }
+    console.log('\nInstalling OpenWiki Daemon...');
+    const { spawn, execSync } = require('child_process');
+    const scriptBase = path.join(targetSkillDir, 'openwiki-skill', 'scripts');
+    return new Promise((resolve) => {
+        let command, args;
+        if (os.platform() === 'win32') {
+            command = 'powershell.exe';
+            args = ['-ExecutionPolicy', 'Bypass', '-File', path.join(scriptBase, 'install_daemon.ps1')];
+        } else {
+            command = 'sh';
+            const scriptPath = path.join(scriptBase, 'install_daemon.sh');
+            args = [scriptPath];
+            try { fs.chmodSync(scriptPath, '755'); } catch (e) {}
+        }
+        const child = spawn(command, args, { stdio: 'inherit', env: Object.assign({}, process.env, { GEMINI_API_KEY: apiKey }) });
+        child.on('close', (code) => {
+            if (code === 0) {
+                console.log(' -> OpenWiki Daemon installed successfully.');
+                console.log(' -> Auto-starting OpenWiki Daemon for the first run...');
+                try {
+                    const pythonCmd = os.platform() === 'win32' ? 'python' : 'python3';
+                    const daemonPath = path.join(scriptBase, 'openwiki_daemon.py');
+                    execSync(`${pythonCmd} "${daemonPath}" --one-shot`, { stdio: 'ignore', env: Object.assign({}, process.env, { GEMINI_API_KEY: apiKey }) });
+                    console.log(' -> Daemon auto-started successfully.');
+                } catch(e) {
+                    console.warn(` -> Could not auto-start daemon: ${e.message}`);
+                }
+            }
+            else console.error(` -> OpenWiki Daemon installation failed with code ${code}.`);
+            resolve();
+        });
+        child.on('error', (err) => { console.error(' -> Failed to start OpenWiki Daemon script:', err); resolve(); });
     });
 }
 
@@ -266,18 +358,24 @@ promptMode(({ mode, platform, customPaths }) => {
         console.log(` -> Installed GEMINI.md to ${path.join(geminiDir, 'GEMINI.md')}`);
     }
 
-    promptMCP((answer) => {
-        if (answer.toLowerCase().startsWith('y')) {
+    (async () => {
+        const mcpSrcDir = path.join(srcDir, 'mcps');
+        const selectedMcps = await promptMcpSelection(mcpSrcDir);
+        
+        if (selectedMcps.length > 0) {
             fs.mkdirSync(targetMcpDir, { recursive: true });
-            
             const mcpCodeTarget = path.join(targetMcpDir, 'mcps');
-            copyDirRecursiveSync(path.join(srcDir, 'mcps'), mcpCodeTarget);
-            console.log(` -> Installed local MCP servers to ${mcpCodeTarget}`);
-            
-            // Build / Setup Node-based MCPs
-            const nodeMcps = ['adobe_uxp_mcp', 'unreal_mcp', 'tdmcp', 'touchdesigner-mcp', 'davinci-resolve-mcp', 'after-effects-mcp', 'computer-use-mcp'];
+            if (!fs.existsSync(mcpCodeTarget)) fs.mkdirSync(mcpCodeTarget, { recursive: true });
+
+            console.log(`\nInstalling ${selectedMcps.length} selected MCPs...`);
+            selectedMcps.forEach(mcp => {
+                copyDirRecursiveSync(path.join(mcpSrcDir, mcp), path.join(mcpCodeTarget, mcp));
+            });
+            console.log(` -> Installed selected MCP servers to ${mcpCodeTarget}`);
+
             const execSync = require('child_process').execSync;
-            nodeMcps.forEach(mcpFolder => {
+            const nodeMcps = ['adobe_uxp_mcp', 'unreal_mcp', 'tdmcp', 'touchdesigner-mcp', 'davinci-resolve-mcp', 'after-effects-mcp', 'computer-use-mcp'];
+            nodeMcps.filter(m => selectedMcps.includes(m)).forEach(mcpFolder => {
                 const targetFolder = path.join(mcpCodeTarget, mcpFolder);
                 if (fs.existsSync(path.join(targetFolder, 'package.json'))) {
                     console.log(` -> Setting up Node dependencies for ${mcpFolder}...`);
@@ -287,30 +385,26 @@ promptMode(({ mode, platform, customPaths }) => {
                             console.log(` -> Compiling TypeScript for ${mcpFolder}...`);
                             execSync('npm run build', { cwd: targetFolder, stdio: 'ignore' });
                         }
-                    } catch (e) {
-                        console.warn(`Warning: Failed to set up ${mcpFolder}: ${e.message}`);
-                    }
+                    } catch (e) { console.warn(`Warning: Failed to set up ${mcpFolder}: ${e.message}`); }
                 }
             });
 
-            // Build / Setup memB MCP Python virtual environment (BDB OS v2.0)
-            const membMcpFolder = path.join(mcpCodeTarget, 'memb-mcp');
-            if (fs.existsSync(membMcpFolder)) {
-                console.log(` -> Bootstrapping Python virtual environment for memB MCP...`);
-                try {
-                    const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
-                    execSync(`${pythonCmd} -m venv .venv`, { cwd: membMcpFolder, stdio: 'ignore' });
-                    const pipPath = process.platform === 'win32' ? '.venv\\Scripts\\pip.exe' : '.venv/bin/pip';
-                    console.log(` -> Installing Python dependencies for memB MCP...`);
-                    execSync(`"${pipPath}" install --upgrade pip`, { cwd: membMcpFolder, stdio: 'ignore' });
-                    execSync(`"${pipPath}" install -r requirements.txt`, { cwd: membMcpFolder, stdio: 'ignore' });
-                    console.log(` -> memB MCP setup completed successfully.`);
-                } catch (e) {
-                    console.warn(`Warning: Failed to set up Python virtual environment for memB: ${e.message}`);
+            if (selectedMcps.includes('memb-mcp')) {
+                const membMcpFolder = path.join(mcpCodeTarget, 'memb-mcp');
+                if (fs.existsSync(membMcpFolder)) {
+                    console.log(` -> Bootstrapping Python virtual environment for memB MCP...`);
+                    try {
+                        const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+                        execSync(`${pythonCmd} -m venv .venv`, { cwd: membMcpFolder, stdio: 'ignore' });
+                        const pipPath = process.platform === 'win32' ? '.venv\\Scripts\\pip.exe' : '.venv/bin/pip';
+                        console.log(` -> Installing Python dependencies for memB MCP...`);
+                        execSync(`"${pipPath}" install --upgrade pip`, { cwd: membMcpFolder, stdio: 'ignore' });
+                        execSync(`"${pipPath}" install -r requirements.txt`, { cwd: membMcpFolder, stdio: 'ignore' });
+                        console.log(` -> memB MCP setup completed successfully.`);
+                    } catch (e) { console.warn(`Warning: Failed to set up Python virtual environment for memB: ${e.message}`); }
                 }
             }
 
-            // Pre-warm Python dependencies via uv to prevent agent timeouts on first run
             const pythonMcps = [
                 { folder: 'golem-rhino-mcp', cmd: 'uv run -m mcp_server --help' },
                 { folder: 'davinci-mcp-professional', cmd: 'uv run main.py --help' },
@@ -320,15 +414,11 @@ promptMode(({ mode, platform, customPaths }) => {
                 { folder: 'vectorworks-mcp', cmd: 'uv run -r requirements.txt app/mcp_server.py --help' },
                 { folder: 'windows-computer-use-mcp', cmd: 'uv run run_server.py --help' }
             ];
-            pythonMcps.forEach(mcp => {
+            pythonMcps.filter(m => selectedMcps.includes(m.folder)).forEach(mcp => {
                 const targetFolder = path.join(mcpCodeTarget, mcp.folder);
                 if (fs.existsSync(targetFolder)) {
                     console.log(` -> Pre-warming Python dependencies for ${mcp.folder}...`);
-                    try {
-                        execSync(mcp.cmd, { cwd: targetFolder, stdio: 'ignore' });
-                    } catch (e) {
-                        // ignore pre-warm warnings
-                    }
+                    try { execSync(mcp.cmd, { cwd: targetFolder, stdio: 'ignore' }); } catch (e) {}
                 }
             });
 
@@ -338,14 +428,33 @@ promptMode(({ mode, platform, customPaths }) => {
             }
             
             let mcpConfigStr = fs.readFileSync(path.join(srcDir, 'mcp_config.json'), 'utf8');
+            try {
+                const parsedMcpConfig = JSON.parse(mcpConfigStr);
+                const finalMcpServers = {};
+                const availableFolders = fs.readdirSync(mcpSrcDir);
+                for (const [key, val] of Object.entries(parsedMcpConfig.mcpServers)) {
+                    let keep = true;
+                    for (const available of availableFolders) {
+                        if (!selectedMcps.includes(available) && JSON.stringify(val).includes(available)) {
+                            keep = false;
+                            break;
+                        }
+                    }
+                    if (keep) finalMcpServers[key] = val;
+                }
+                parsedMcpConfig.mcpServers = finalMcpServers;
+                mcpConfigStr = JSON.stringify(parsedMcpConfig, null, 2);
+            } catch(e) {}
+
             mcpConfigStr = mcpConfigStr.replace(/__MCPS_DIR__/g, mcpCodeTarget);
             mcpConfigStr = mcpConfigStr.replace(/\{\{HOME\}\}/g, homeDir);
 
-            // Resolve dynamic Python bin path for memB
-            const pythonBinPath = process.platform === 'win32'
-                ? path.join(mcpCodeTarget, 'memb-mcp', '.venv', 'Scripts', 'python.exe')
-                : path.join(mcpCodeTarget, 'memb-mcp', '.venv', 'bin', 'python');
-            mcpConfigStr = mcpConfigStr.replace(/__PYTHON_BIN__/g, pythonBinPath.replace(/\\/g, '/'));
+            if (selectedMcps.includes('memb-mcp')) {
+                const pythonBinPath = process.platform === 'win32'
+                    ? path.join(mcpCodeTarget, 'memb-mcp', '.venv', 'Scripts', 'python.exe')
+                    : path.join(mcpCodeTarget, 'memb-mcp', '.venv', 'bin', 'python');
+                mcpConfigStr = mcpConfigStr.replace(/__PYTHON_BIN__/g, pythonBinPath.replace(/\\/g, '/'));
+            }
             
             if (mode === '1' && fs.existsSync(mcpConfigPath)) {
                 try {
@@ -370,11 +479,25 @@ promptMode(({ mode, platform, customPaths }) => {
         } else {
             console.log(" -> Skipping MCP installation.");
         }
+
+        const creds = await promptCredentials();
         
-        console.log("=========================================================");
-        console.log(" Installation complete! The environment now has the ");
-        console.log(" optimized skill configuration.");
-        console.log("=========================================================");
+        if (creds.gemini || creds.github) {
+            const envPath = path.join(targetMcpDir, '.env');
+            let envContent = '';
+            if (fs.existsSync(envPath)) envContent = fs.readFileSync(envPath, 'utf8') + '\n';
+            if (creds.gemini && !envContent.includes('GEMINI_API_KEY=')) envContent += `GEMINI_API_KEY=${creds.gemini}\n`;
+            if (creds.github && !envContent.includes('GITHUB_PERSONAL_ACCESS_TOKEN=')) envContent += `GITHUB_PERSONAL_ACCESS_TOKEN=${creds.github}\n`;
+            if (envContent.trim().length > 0) fs.writeFileSync(envPath, envContent.trim() + '\n');
+            console.log(` -> Saved credentials to ${envPath}`);
+        }
+
+        await installOpenWikiDaemon(creds.gemini, targetSkillDir);
+        
+        console.log(`\n${colors.green}${colors.bold}=========================================================${colors.reset}`);
+        console.log(`${colors.green}${colors.bold} 🎉 Installation complete! The environment now has the ${colors.reset}`);
+        console.log(`${colors.green}${colors.bold}    optimized skill configuration.${colors.reset}`);
+        console.log(`${colors.green}${colors.bold}=========================================================${colors.reset}`);
         rl.close();
-    });
+    })();
 });
