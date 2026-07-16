@@ -3,170 +3,283 @@ import os
 import sys
 import json
 import time
+import glob
 import argparse
 import subprocess
 from datetime import datetime
+
+try:
+    from google import genai
+except ImportError:
+    genai = None
+
+LOG_DIR = os.path.join(os.path.expanduser("~"), ".openwiki")
+LOG_FILE = os.path.join(LOG_DIR, "daemon.log")
+MODEL_ID = "gemma-4-12b-it"
+
+SYSTEM_PROMPT = """You are a technical documentation generator for software projects.
+You receive git evidence (recent commits, diffs, status) and existing wiki pages.
+Your job is to produce updated wiki documentation.
+
+Respond with a JSON object where keys are file paths relative to .openwiki/ and values are the full markdown content for each page.
+Only include pages that need updates. Use these page names:
+- quickstart.md: Developer onboarding, CLI commands, workspace orientation
+- architecture.md: Tech stack, module boundaries, data flows, directory structure
+- release_notes.md: Version history, changelogs, features shipped
+- decisions.md: Key design decisions, trade-offs, constraints
+
+Rules:
+- Document ONLY what is evidenced in the git data. Never invent features.
+- Use professional technical writing: clear headings, markdown tables, code blocks.
+- Never include absolute paths with usernames. Use relative paths or ~ notation.
+- Never include API keys, secrets, or credentials.
+- Keep content concise and scannable.
+
+Respond with ONLY valid JSON. No markdown fencing, no explanation."""
+
 
 def log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     formatted = f"[{timestamp}] {msg}"
     print(formatted)
-    
-    # Write to ~/.openwiki/daemon.log
-    home = os.path.expanduser("~")
-    log_dir = os.path.join(home, ".openwiki")
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, "daemon.log")
+    os.makedirs(LOG_DIR, exist_ok=True)
     try:
-        with open(log_file, "a") as f:
+        with open(LOG_FILE, "a") as f:
             f.write(formatted + "\n")
-    except Exception as e:
-        print(f"Error writing to log file: {e}")
+    except Exception:
+        pass
+
 
 def get_projects():
-    home = os.path.expanduser("~")
-    config_dir = os.path.join(home, ".openwiki")
-    os.makedirs(config_dir, exist_ok=True)
-    config_file = os.path.join(config_dir, "projects.json")
-    
+    config_file = os.path.join(LOG_DIR, "projects.json")
+    os.makedirs(LOG_DIR, exist_ok=True)
+
     if not os.path.exists(config_file):
-        # Create a default configuration with the current workspace
         repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
-        default_data = {
-            "projects": [
-                repo_root
-            ],
-            "interval_seconds": 3600
-        }
+        default_data = {"projects": [repo_root], "interval_seconds": 7200}
         try:
             with open(config_file, "w") as f:
                 json.dump(default_data, f, indent=2)
-            log(f"Created default config file at {config_file}")
         except Exception as e:
             log(f"Error writing default config: {e}")
-            return [os.getcwd()], 3600
-            
+            return [], 7200
+
     try:
         with open(config_file, "r") as f:
             data = json.load(f)
-            return data.get("projects", []), data.get("interval_seconds", 3600)
+            return data.get("projects", []), data.get("interval_seconds", 7200)
     except Exception as e:
-        log(f"Error reading projects config: {e}")
-        return [], 3600
+        log(f"Error reading config: {e}")
+        return [], 7200
 
-def check_and_update_project(project_dir):
-    if not os.path.exists(project_dir):
-        log(f"Project directory does not exist: {project_dir}")
-        return False
-        
-    git_dir = os.path.join(project_dir, ".git")
-    if not os.path.exists(git_dir):
-        log(f"Not a git repository: {project_dir}")
-        return False
-        
-    log(f"Checking project: {project_dir}")
-    
-    # Run the openwiki_helper script to collect Git change evidence
-    helper_path = os.path.expanduser("~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py")
-    if not os.path.exists(helper_path):
-        # Fallback to local repo path if helper isn't installed globally yet
-        helper_path = os.path.join(os.path.dirname(__file__), "openwiki_helper.py")
-        
+
+def find_helper():
+    candidates = [
+        os.path.expanduser("~/.gemini/config/skills/openwiki-skill/scripts/openwiki_helper.py"),
+        os.path.join(os.path.dirname(__file__), "openwiki_helper.py"),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return None
+
+
+def run_helper(helper_path, command, cwd, extra_args=None):
+    cmd = [sys.executable, helper_path, "--command", command, "--cwd", cwd]
+    if extra_args:
+        cmd.extend(extra_args)
     try:
-        res = subprocess.run(
-            ["python3", helper_path, "--command", "collect", "--cwd", project_dir],
-            capture_output=True,
-            text=True,
-            check=True
-        )
-        evidence = res.stdout
+        res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return res.stdout.strip()
     except Exception as e:
-        log(f"Error running helper collect in {project_dir}: {e}")
+        log(f"Helper error ({command}): {e}")
+        return None
+
+
+def read_existing_wiki(project_dir):
+    wiki_dir = os.path.join(project_dir, ".openwiki")
+    pages = {}
+    if not os.path.isdir(wiki_dir):
+        return pages
+    for md_file in glob.glob(os.path.join(wiki_dir, "*.md")):
+        name = os.path.basename(md_file)
+        try:
+            with open(md_file, "r") as f:
+                pages[name] = f.read()
+        except Exception:
+            pass
+    return pages
+
+
+def has_meaningful_changes(evidence):
+    if not evidence:
         return False
-        
-    # Check if there are meaningful changes to document
-    has_changes = False
-    
-    # If the wiki folder doesn't exist yet, we must run the initial build
-    if not os.path.exists(os.path.join(project_dir, ".openwiki")):
-        has_changes = True
-        log(f"No .openwiki folder found. Triggering initial documentation build for {project_dir}")
-    
-    # Look for changes since last wiki run or unstaged changes
+
     if "### Git Changes since last Wiki Update" in evidence:
         section = evidence.split("### Git Changes since last Wiki Update")[1].split("###")[0].strip()
-        if section and section != "(no output)" and section != "(no changes in commits)":
-            has_changes = True
-            log(f"Found new commits since last update in {project_dir}")
-            
+        if section and section not in ("(no output)", "(no changes in commits)"):
+            return True
+
     if "### Unstaged File Diffs" in evidence:
         section = evidence.split("### Unstaged File Diffs")[1].strip()
-        if section and section != "(no unstaged changes)" and section != "(clean working directory)":
-            has_changes = True
-            log(f"Found unstaged changes in {project_dir}")
-            
-    if "Not a git repository" in evidence:
-        log(f"Git is not initialized in {project_dir}")
-        return False
-
-    if not has_changes:
-        log(f"No changes detected for {project_dir}. Skipping documentation update.")
-        return False
-        
-    # Run agy in non-interactive print mode to run the openwiki-skill
-    log(f"Triggering autonomous documentation rebuild for {project_dir} via Antigravity...")
-    agy_path = "/opt/homebrew/bin/agy"
-    if not os.path.exists(agy_path):
-        agy_path = "agy" # fallback to path search
-        
-    try:
-        # Prompt the agent to run the openwiki-skill. It will run in the background
-        # and auto-commit the files separately using --dangerously-skip-permissions.
-        cmd = [
-            agy_path, 
-            "--prompt", 
-            "Run the openwiki-skill to synchronize my documentation and commit changes.", 
-            "--dangerously-skip-permissions"
-        ]
-        log(f"Running command: {' '.join(cmd)}")
-        run_res = subprocess.run(
-            cmd,
-            cwd=project_dir,
-            capture_output=True,
-            text=True
-        )
-        if run_res.returncode == 0:
-            log(f"Successfully completed documentation update for {project_dir}")
+        if section and section not in ("(no unstaged changes)", "(clean working directory)"):
             return True
-        else:
-            log(f"Failed to update documentation for {project_dir}: {run_res.stderr}")
-            return False
-    except Exception as e:
-        log(f"Exception running agy for {project_dir}: {e}")
+
+    return False
+
+
+def call_gemma(api_key, evidence, existing_pages):
+    client = genai.Client(api_key=api_key)
+
+    existing_context = ""
+    if existing_pages:
+        existing_context = "\n\n---\n\n".join(
+            f"## Existing: {name}\n{content}" for name, content in existing_pages.items()
+        )
+
+    user_msg = f"## Git Evidence\n\n{evidence}"
+    if existing_context:
+        user_msg += f"\n\n## Existing Wiki Pages\n\n{existing_context}"
+
+    response = client.models.generate_content(
+        model=MODEL_ID,
+        contents=user_msg,
+        config=genai.types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+            temperature=0.3,
+            max_output_tokens=8192,
+        ),
+    )
+
+    raw = response.text.strip()
+    if raw.startswith("```"):
+        raw = raw.split("\n", 1)[1] if "\n" in raw else raw[3:]
+        if raw.endswith("```"):
+            raw = raw[:-3]
+        raw = raw.strip()
+
+    return json.loads(raw)
+
+
+def write_wiki_pages(project_dir, pages):
+    wiki_dir = os.path.join(project_dir, ".openwiki")
+    os.makedirs(wiki_dir, exist_ok=True)
+    written = []
+    for name, content in pages.items():
+        safe_name = os.path.basename(name)
+        if not safe_name.endswith(".md"):
+            safe_name += ".md"
+        path = os.path.join(wiki_dir, safe_name)
+        try:
+            with open(path, "w") as f:
+                f.write(content)
+            written.append(safe_name)
+        except Exception as e:
+            log(f"Error writing {safe_name}: {e}")
+    return written
+
+
+def check_and_update_project(project_dir, api_key):
+    if not os.path.isdir(os.path.join(project_dir, ".git")):
+        log(f"Not a git repo: {project_dir}")
         return False
 
-def run_daemon_loop():
-    log("Starting OpenWiki Daemon background monitoring loop...")
+    log(f"Checking: {project_dir}")
+
+    helper = find_helper()
+    if not helper:
+        log("Cannot find openwiki_helper.py")
+        return False
+
+    evidence = run_helper(helper, "collect", project_dir)
+    if not evidence or "Not a git repository" in evidence:
+        log(f"Collect failed for {project_dir}")
+        return False
+
+    wiki_exists = os.path.isdir(os.path.join(project_dir, ".openwiki"))
+    if wiki_exists and not has_meaningful_changes(evidence):
+        log(f"No changes detected for {project_dir}, skipping.")
+        return False
+
+    if not api_key:
+        log("No GEMINI_API_KEY set. Skipping API call (collect-only mode).")
+        return False
+
+    existing_pages = read_existing_wiki(project_dir)
+
+    pre_hash = run_helper(helper, "pre-snapshot", project_dir)
+
+    log(f"Calling {MODEL_ID} for documentation update...")
+    try:
+        pages = call_gemma(api_key, evidence, existing_pages)
+    except Exception as e:
+        log(f"Gemma API error: {e}")
+        return False
+
+    if not pages or not isinstance(pages, dict):
+        log("Empty or invalid response from model.")
+        return False
+
+    written = write_wiki_pages(project_dir, pages)
+    log(f"Updated {len(written)} pages: {', '.join(written)}")
+
+    if pre_hash:
+        run_helper(helper, "post-snapshot", project_dir, ["--pre-hash", pre_hash])
+
+    commit_result = run_helper(helper, "commit", project_dir)
+    if commit_result:
+        log(f"Commit: {commit_result}")
+
+    return True
+
+
+def run_daemon_loop(api_key):
+    log("OpenWiki daemon started (Gemma 4 direct API mode)")
     while True:
-        projects, interval = get_projects()
-        log(f"Scanning {len(projects)} registered projects...")
-        for project in projects:
-            check_and_update_project(project)
-        log(f"Scan complete. Sleeping for {interval} seconds...")
-        time.sleep(interval)
+        try:
+            projects, interval = get_projects()
+            log(f"Scanning {len(projects)} projects...")
+            for project in projects:
+                try:
+                    check_and_update_project(project, api_key)
+                except Exception as e:
+                    log(f"Error processing {project}: {e}")
+            log(f"Scan complete. Sleeping {interval}s...")
+            time.sleep(interval)
+        except KeyboardInterrupt:
+            log("Daemon stopped by user.")
+            break
+        except Exception as e:
+            log(f"Loop error: {e}")
+            time.sleep(60)
+
 
 def main():
-    parser = argparse.ArgumentParser(description="OpenWiki Daemon Controller")
-    parser.add_argument("--one-shot", action="store_true", help="Run once and exit instead of loop")
+    if genai is None:
+        print("ERROR: google-genai package not installed.")
+        print("Install it with: pip3 install google-genai")
+        sys.exit(1)
+
+    parser = argparse.ArgumentParser(description="OpenWiki Daemon - Gemma 4 Direct API")
+    parser.add_argument("--one-shot", action="store_true", help="Run once and exit")
     args = parser.parse_args()
-    
+
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        log("WARNING: GEMINI_API_KEY not set. Will collect evidence but skip documentation generation.")
+        log("Set it with: export GEMINI_API_KEY=your-key")
+
     if args.one_shot:
-        log("Running OpenWiki check in one-shot mode...")
+        log("One-shot mode")
         projects, _ = get_projects()
         for project in projects:
-            check_and_update_project(project)
+            try:
+                check_and_update_project(project, api_key or None)
+            except Exception as e:
+                log(f"Error: {e}")
     else:
-        run_daemon_loop()
+        run_daemon_loop(api_key or None)
+
 
 if __name__ == "__main__":
     main()
