@@ -6,7 +6,8 @@ Welcome to the **BDB DEV Skills & MCP Configuration** repository. This project s
 
 While optimized for **Google Antigravity**, this skills pack and MCP configuration is **100% universal** and works seamlessly with all modern AI agents and developer interfaces, including **Claude Desktop, Claude Code, Cursor, Aider, Roo Code, Cline, and Windsurf**.
 
-> 🎙 **Audio Deep Dive:** [Listen to the Voice Explanation: "Give AI Agents Control of Creative Software"](assets/Give_AI_Agents_Control_of_Creative_Software.m4a)
+> 🎙 **Audio Deep Dive: "Give AI Agents Control of Creative Software"**  
+> <video src="https://github.com/hybridlabor-api/bdb-dev-optimized-antigravity-skills/raw/main/assets/Give_AI_Agents_Control_of_Creative_Software.m4a" controls="controls" width="100%"></video>
 
 ---
 
