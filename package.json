@@ -1,10 +1,10 @@
 {
-  "name": "@hybridlabor-api/bdb-antigravity-skills",
+  "name": "@hybridlabor-api/bdb-antigravity-skills-pro",
   "version": "2.1.0",
   "description": "Optimized Antigravity skills and MCP pack for BDB DEV",
   "main": "installer.js",
   "bin": {
-    "bdb-skills": "./installer.js"
+    "bdb-skills-pro": "./installer.js"
   },
   "publishConfig": {
     "access": "public"

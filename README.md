@@ -156,6 +156,10 @@ BDB OS v2.0.0 introduces a fully integrated local, offline-first semantic memory
 
 ## 🛠️ Installation
 
+### 🆚 Which Version Should I Use?
+- **Pro Version (`bdb-antigravity-skills-pro`)**: Includes all 144 optimized skills, the interactive MCP selection UI, and **active background daemons**. It automatically installs and orchestrates the `memB` local semantic memory engine and the `OpenWiki` self-documenting git-hooks. Best for fully autonomous, long-term project management.
+- **Legacy Version (`bdb-antigravity-skills@legacy`)**: The lightweight v1.x pack. It contains the core skills and standard local MCPs, but **does not** include any persistent background processes, automated wiki generation, or semantic memory. Best for strict, stateless environments where no background daemons are desired.
+
 The installer is built using an interactive Node-based menu. It allows you to:
 1. **Backup & Overwrite**: Safely backups existing configuration files and overrides them.
 2. **Merge**: Merges the new skills, configs, and custom local MCP paths with your existing ones.
