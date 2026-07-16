@@ -162,12 +162,19 @@ The installer is built using an interactive Node-based menu. It allows you to:
 
 ### Option 1: Ask Your AI Agent (Easiest)
 Simply tell your assistant:
-> "Please run `npx -y @hybridlabor-api/bdb-antigravity-skills@latest` to install the skills pack and configure the local MCP servers."
+> "Please run `npx -y @hybridlabor-api/bdb-antigravity-skills-pro` to install the skills pack and configure the local MCP servers."
 
 ### Option 2: Command Line (Global via NPX)
 Run the script globally in your terminal:
+
+**For the latest v2 with OpenWiki and memB:**
 ```bash
-npx -y @hybridlabor-api/bdb-antigravity-skills@latest
+npx -y @hybridlabor-api/bdb-antigravity-skills-pro
+```
+
+**For the legacy v1 (no background daemons):**
+```bash
+npx -y @hybridlabor-api/bdb-antigravity-skills@legacy
 ```
 
 ### Option 3: Using Homebrew (macOS)
