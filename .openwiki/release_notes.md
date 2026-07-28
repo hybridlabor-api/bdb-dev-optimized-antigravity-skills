@@ -1,5 +1,9 @@
 # Release Notes
 
+## v2.2.0
+- **memB Core Architecture Update**: Synced `memb_ingest.py` which now natively generates an AI-first flat-file markdown vault (Top-Down Radial God Mode Topology) to allow native zero-compute context navigation for local 30MB SLMs.
+- Replaced `_CLAUDE.md` with a universal `agent.md` operating manual for the vector engine in the vault.
+
 ## v2.1.0
 - Split package into `-pro` (with OpenWiki and memB background daemons) and `@legacy` tags on NPM.
 - Rewrote the OpenWiki daemon to use direct Gemma 4 API calls, fixing infinite recursion bugs and `agy` agent spawning issues.
