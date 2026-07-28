@@ -16,8 +16,9 @@
     "Project-overview.html",
     "assets/",
     "skills/",
-    "mcps/"
+    "mcps/",
+    "vendor/"
   ],
   "author": "BDB DEV",
-  "license": "ISC"
+  "license": "Apache-2.0"
 }
