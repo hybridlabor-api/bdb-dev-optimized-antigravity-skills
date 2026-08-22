@@ -89,9 +89,22 @@ const isAutoYes = process.argv.includes('-y') || process.argv.includes('--yes');
 function detectPlatforms() {
     const detections = [];
     
-    // Antigravity
+    // Google Antigravity
     if (fs.existsSync(geminiDir)) {
-        detections.push("Google Antigravity (detected at " + geminiDir + ")");
+        detections.push({ name: "Google Antigravity", path: geminiDir, key: "antigravity" });
+    }
+
+    // Codex CLI / ChatGPT Codex
+    const codexDir = path.join(homeDir, '.codex');
+    if (fs.existsSync(codexDir) || fs.existsSync(path.join(homeDir, '.codex', 'config.toml'))) {
+        detections.push({ name: "ChatGPT Codex CLI", path: codexDir, key: "codex" });
+    }
+
+    // Claude Code CLI
+    const claudeCodeConfig = path.join(homeDir, '.claude.json');
+    const claudeCodeDir = path.join(homeDir, '.claude');
+    if (fs.existsSync(claudeCodeConfig) || fs.existsSync(claudeCodeDir)) {
+        detections.push({ name: "Claude Code CLI", path: claudeCodeDir, key: "claudecode" });
     }
     
     // Claude Desktop
@@ -99,31 +112,39 @@ function detectPlatforms() {
         ? path.join(process.env.APPDATA || homeDir, 'Claude')
         : path.join(homeDir, 'Library', 'Application Support', 'Claude');
     if (fs.existsSync(claudePath)) {
-        detections.push("Claude Desktop (detected at " + claudePath + ")");
+        detections.push({ name: "Claude Desktop", path: claudePath, key: "claudedesktop" });
     }
     
-    // Cursor
+    // Cursor IDE
     const cursorPath = process.platform === 'win32' 
         ? path.join(process.env.APPDATA || homeDir, 'Cursor')
         : path.join(homeDir, 'Library', 'Application Support', 'Cursor');
     if (fs.existsSync(cursorPath)) {
-        detections.push("Cursor IDE (detected at " + cursorPath + ")");
+        detections.push({ name: "Cursor IDE", path: cursorPath, key: "cursor" });
     }
 
-    // VS Code (for Cline/Roo Code)
-    const vscodePath = process.platform === 'win32' 
-        ? path.join(process.env.APPDATA || homeDir, 'Code')
-        : path.join(homeDir, 'Library', 'Application Support', 'Code');
-    if (fs.existsSync(vscodePath)) {
-        detections.push("VS Code / Cline / Roo Code (detected at " + vscodePath + ")");
-    }
-
-    // Windsurf
+    // Windsurf IDE
     const windsurfPath = process.platform === 'win32' 
         ? path.join(process.env.APPDATA || homeDir, 'Windsurf')
         : path.join(homeDir, 'Library', 'Application Support', 'Windsurf');
     if (fs.existsSync(windsurfPath)) {
-        detections.push("Windsurf IDE (detected at " + windsurfPath + ")");
+        detections.push({ name: "Windsurf IDE", path: windsurfPath, key: "windsurf" });
+    }
+
+    // Roo Code & Cline (VS Code Extensions)
+    const vscodePath = process.platform === 'win32' 
+        ? path.join(process.env.APPDATA || homeDir, 'Code')
+        : path.join(homeDir, 'Library', 'Application Support', 'Code');
+    const rooPath = path.join(homeDir, '.roo');
+    const clinePath = path.join(homeDir, '.cline');
+    if (fs.existsSync(vscodePath) || fs.existsSync(rooPath) || fs.existsSync(clinePath)) {
+        detections.push({ name: "Roo Code / Cline / VS Code", path: vscodePath, key: "vscode" });
+    }
+
+    // Aider CLI
+    const aiderConf = path.join(homeDir, '.aider.conf.yml');
+    if (fs.existsSync(aiderConf) || fs.existsSync(path.join(homeDir, '.aider'))) {
+        detections.push({ name: "Aider CLI", path: homeDir, key: "aider" });
     }
 
     return detections;
@@ -137,7 +158,7 @@ function promptMode(callback) {
     const detections = detectPlatforms();
     if (detections.length > 0) {
         console.log("\nDetected Agent Environments on this system:");
-        detections.forEach(d => console.log("  * " + d));
+        detections.forEach(d => console.log("  * " + d.name + " (detected at " + d.path + ")"));
     } else {
         console.log("\nNo active agent config directories auto-detected in standard locations.");
     }
